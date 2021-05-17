@@ -62,6 +62,6 @@ janfridl@seznam.cz <br/>
     * Výstup: String v textovém poli a tlačítko na zkopírování
 * Nefunkční požadavky 
   * Výkonnost
-    * Minimální prodlevou při práci s obrázky do Full HD
+    * Minimální prodleva při práci s obrázky do Full HD
   * Spolehlivost
     * Chyba může nastat pouze při nahrávání obrázku či při práci s extrémním rozlišení
