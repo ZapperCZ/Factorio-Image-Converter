@@ -32,23 +32,22 @@ Verze 1.0
 * Celková hrubá architektura
   * Pracovní tok
     1. Uživatel si vybere obrázek pro import
-        * Uživatel kliknutím na tlačítko Import otevře prohlížeč souborů
-        * V prohlížeči si uživatel vybere obrázek, pokud je jeho rozlišení příliš velké, bude upozorněn
-        * V případě velkého rozlišení může uživatel pokračovat s možností nestability programu, a nebo vybrat menší obrázek
+       * Uživatel kliknutím na tlačítko Import otevře prohlížeč souborů
+       * V prohlížeči si uživatel vybere obrázek, pokud je jeho rozlišení příliš velké, bude upozorněn
+       * V případě velkého rozlišení může uživatel pokračovat s možností nestability programu, a nebo vybrat menší obrázek
     2. Uživatel upraví obrázek
-        * Po nahrání obrázku ho uživatel může upravit
-        * K dispozici má automatický výběr finální palety a rozlišení, štětec s nastavitelnou velikostí a barvou a manuální úpravu finální palety a rozlišení
-        * Uživatel také může přepínat mezi zobrazeným obrázkem a porovnávat původní obrázek s výsledným
-        * Základní uživatel bude převážně používat automatických úprav a možná trochu manuální korekce
-        * Pokročilý uživatel může využít poskytnutých manuálních nástrojů k velkým úpravám obrázku a dosažení ideálního výsledku
+       * Po nahrání obrázku ho uživatel může upravit
+       * K dispozici má automatický výběr finální palety a rozlišení, štětec s nastavitelnou velikostí a barvou a manuální úpravu finální palety a rozlišení
+       * Uživatel také může přepínat mezi zobrazeným obrázkem a porovnávat původní obrázek s výsledným
+       * Základní uživatel bude převážně používat automatických úprav a možná trochu manuální korekce
+       * Pokročilý uživatel může využít poskytnutých manuálních nástrojů k velkým úpravám obrázku a dosažení ideálního výsledku
     3. Uživatel exportuje obrázek
-        * Když je uživatel hotov s úpravou, může exportovat svůj výtvor
-        * Po stisknutí tlačítka se otevře dialog, ve kterém si uživatel může zkopírovat výsledný string, který nahraje do hry
-        * V dialogu se také dozví, kolik ho jeho výtvor bude stát ve hře materiálů.
-        * Pokud se mu nelíbí cena, může zrušit export a za pomocí palety vyměnit některé bloky a poté znovu exportovat
+       * Když je uživatel hotov s úpravou, může exportovat svůj výtvor
+       * Po stisknutí tlačítka se otevře dialog, ve kterém si uživatel může zkopírovat výsledný string, který nahraje do hry
+       * V dialogu se také dozví, kolik ho jeho výtvor bude stát ve hře materiálů.
+       * Pokud se mu nelíbí cena, může zrušit export a za pomocí palety vyměnit některé bloky a poté znovu exportovat
   * GUI
-    ![Program GUI](GUI_Diagram.png)
-    
+     ![Program GUI](GUI_Diagram.png)
   * Detaily
     * U veškerých tlačítek, které uživatel zmáčkne je dána zpětná vazba o tom, co se stalo.
     * Základní uživatel může využít informačního dialogu na hlavním okně který se otevře stisknutím tlačítka v pravém horním rohu.<br/>V tomto dialogu najde instrukce k používání programu a také užitečné zkratky pro urychlení úpravy obrázku
