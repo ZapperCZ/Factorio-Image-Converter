@@ -1,4 +1,4 @@
-## Factorio Image Converter
+# Factorio Image Converter
 
 Jan Frídl <br/>
 janfridl@seznam.cz <br/>
