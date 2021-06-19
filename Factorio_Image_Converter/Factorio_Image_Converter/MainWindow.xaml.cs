@@ -315,6 +315,7 @@ namespace Factorio_Image_Converter
         }
         private void btn_Import_Click(object sender, RoutedEventArgs e)
         {
+            imagePath = "";
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = "c:\\";
             openFileDialog.Filter = "Image files (*.png;*.jpg)|*.png;*.jpg";    //Add more image formats
@@ -323,8 +324,9 @@ namespace Factorio_Image_Converter
 
             openFileDialog.ShowDialog();
 
-            if (openFileDialog.FileName != null)
+            if (openFileDialog.FileName != "")
             {
+                Debug.WriteLine(imagePath);
                 imagePath = openFileDialog.FileName;
 
                 //Save the image
@@ -335,9 +337,16 @@ namespace Factorio_Image_Converter
         }
         private void btn_Export_Click(object sender, RoutedEventArgs e)
         {
-            ConvertImageToBlocks(ResultImage);       //This will convert only colors that are present in UsableBlocks.json, currently there is no color conversion
-            ConvertBlocksToJSON(@"..\..\2-Resources\Blueprint.json");
-            CompressAndEncodeJSON(@"..\..\2-Resources\Blueprint.json");
+            if(imagePath != null)
+            {
+                ConvertImageToBlocks(ResultImage);       //This will convert only colors that are present in UsableBlocks.json, currently there is no color conversion
+                ConvertBlocksToJSON(@"..\..\2-Resources\Blueprint.json");
+                CompressAndEncodeJSON(@"..\..\2-Resources\Blueprint.json");
+            }
+            else
+            {
+                MessageBox.Show("No image selected");
+            }
         }
     }
 }
