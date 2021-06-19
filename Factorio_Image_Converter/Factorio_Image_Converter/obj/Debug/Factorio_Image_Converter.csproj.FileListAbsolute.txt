@@ -13,3 +13,7 @@ C:\Users\user\Škola\MVOP\WPF-Factorio_Image_Converter\Factorio_Image_Converter\
 C:\Users\user\Škola\MVOP\WPF-Factorio_Image_Converter\Factorio_Image_Converter\Factorio_Image_Converter\obj\Debug\Factorio_Image_Converter.csproj.CoreCompileInputs.cache
 C:\Users\user\Škola\MVOP\WPF-Factorio_Image_Converter\Factorio_Image_Converter\Factorio_Image_Converter\obj\Debug\Factorio_Image_Converter.exe
 C:\Users\user\Škola\MVOP\WPF-Factorio_Image_Converter\Factorio_Image_Converter\Factorio_Image_Converter\obj\Debug\Factorio_Image_Converter.pdb
+C:\Users\user\Škola\MVOP\WPF-Factorio_Image_Converter\Factorio_Image_Converter\Factorio_Image_Converter\bin\Debug\Newtonsoft.Json.dll
+C:\Users\user\Škola\MVOP\WPF-Factorio_Image_Converter\Factorio_Image_Converter\Factorio_Image_Converter\bin\Debug\zlib.net.dll
+C:\Users\user\Škola\MVOP\WPF-Factorio_Image_Converter\Factorio_Image_Converter\Factorio_Image_Converter\bin\Debug\Newtonsoft.Json.xml
+C:\Users\user\Škola\MVOP\WPF-Factorio_Image_Converter\Factorio_Image_Converter\Factorio_Image_Converter\obj\Debug\Factorio_Image_Converter.csproj.CopyComplete

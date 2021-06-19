@@ -1,0 +1,2396 @@
+﻿{
+  "blueprint": {
+    "description": "Palette for image converter",
+    "icons": [
+      {
+        "signal": {
+          "type": "item",
+          "name": "accumulator"
+        },
+        "index": 1
+      },
+      {
+        "signal": {
+          "type": "item",
+          "name": "splitter"
+        },
+        "index": 2
+      }
+    ],
+    "entities": [
+      {
+        "entity_number": 1,
+        "name": "wooden-chest",
+        "position": {
+          "x": 138.5,
+          "y": -63.5
+        }
+      },
+      {
+        "entity_number": 2,
+        "name": "wooden-chest",
+        "position": {
+          "x": 139.5,
+          "y": -63.5
+        }
+      },
+      {
+        "entity_number": 3,
+        "name": "wooden-chest",
+        "position": {
+          "x": 138.5,
+          "y": -62.5
+        }
+      },
+      {
+        "entity_number": 4,
+        "name": "wooden-chest",
+        "position": {
+          "x": 139.5,
+          "y": -62.5
+        }
+      },
+      {
+        "entity_number": 5,
+        "name": "wooden-chest",
+        "position": {
+          "x": 140.5,
+          "y": -63.5
+        }
+      },
+      {
+        "entity_number": 6,
+        "name": "wooden-chest",
+        "position": {
+          "x": 141.5,
+          "y": -63.5
+        }
+      },
+      {
+        "entity_number": 7,
+        "name": "wooden-chest",
+        "position": {
+          "x": 140.5,
+          "y": -62.5
+        }
+      },
+      {
+        "entity_number": 8,
+        "name": "wooden-chest",
+        "position": {
+          "x": 141.5,
+          "y": -62.5
+        }
+      },
+      {
+        "entity_number": 9,
+        "name": "iron-chest",
+        "position": {
+          "x": 144.5,
+          "y": -63.5
+        }
+      },
+      {
+        "entity_number": 10,
+        "name": "iron-chest",
+        "position": {
+          "x": 145.5,
+          "y": -63.5
+        }
+      },
+      {
+        "entity_number": 11,
+        "name": "iron-chest",
+        "position": {
+          "x": 144.5,
+          "y": -62.5
+        }
+      },
+      {
+        "entity_number": 12,
+        "name": "iron-chest",
+        "position": {
+          "x": 145.5,
+          "y": -62.5
+        }
+      },
+      {
+        "entity_number": 13,
+        "name": "iron-chest",
+        "position": {
+          "x": 146.5,
+          "y": -63.5
+        }
+      },
+      {
+        "entity_number": 14,
+        "name": "iron-chest",
+        "position": {
+          "x": 147.5,
+          "y": -63.5
+        }
+      },
+      {
+        "entity_number": 15,
+        "name": "iron-chest",
+        "position": {
+          "x": 146.5,
+          "y": -62.5
+        }
+      },
+      {
+        "entity_number": 16,
+        "name": "iron-chest",
+        "position": {
+          "x": 147.5,
+          "y": -62.5
+        }
+      },
+      {
+        "entity_number": 17,
+        "name": "transport-belt",
+        "position": {
+          "x": 150.5,
+          "y": -63.5
+        }
+      },
+      {
+        "entity_number": 18,
+        "name": "transport-belt",
+        "position": {
+          "x": 151.5,
+          "y": -63.5
+        }
+      },
+      {
+        "entity_number": 19,
+        "name": "transport-belt",
+        "position": {
+          "x": 150.5,
+          "y": -62.5
+        }
+      },
+      {
+        "entity_number": 20,
+        "name": "transport-belt",
+        "position": {
+          "x": 151.5,
+          "y": -62.5
+        }
+      },
+      {
+        "entity_number": 21,
+        "name": "transport-belt",
+        "position": {
+          "x": 152.5,
+          "y": -63.5
+        }
+      },
+      {
+        "entity_number": 22,
+        "name": "transport-belt",
+        "position": {
+          "x": 153.5,
+          "y": -63.5
+        }
+      },
+      {
+        "entity_number": 23,
+        "name": "transport-belt",
+        "position": {
+          "x": 152.5,
+          "y": -62.5
+        }
+      },
+      {
+        "entity_number": 24,
+        "name": "transport-belt",
+        "position": {
+          "x": 153.5,
+          "y": -62.5
+        }
+      },
+      {
+        "entity_number": 25,
+        "name": "underground-belt",
+        "position": {
+          "x": 156.5,
+          "y": -63.5
+        },
+        "type": "input"
+      },
+      {
+        "entity_number": 26,
+        "name": "underground-belt",
+        "position": {
+          "x": 157.5,
+          "y": -63.5
+        },
+        "type": "input"
+      },
+      {
+        "entity_number": 27,
+        "name": "underground-belt",
+        "position": {
+          "x": 156.5,
+          "y": -62.5
+        },
+        "type": "input"
+      },
+      {
+        "entity_number": 28,
+        "name": "underground-belt",
+        "position": {
+          "x": 157.5,
+          "y": -62.5
+        },
+        "type": "input"
+      },
+      {
+        "entity_number": 29,
+        "name": "underground-belt",
+        "position": {
+          "x": 158.5,
+          "y": -63.5
+        },
+        "type": "input"
+      },
+      {
+        "entity_number": 30,
+        "name": "underground-belt",
+        "position": {
+          "x": 159.5,
+          "y": -63.5
+        },
+        "type": "input"
+      },
+      {
+        "entity_number": 31,
+        "name": "underground-belt",
+        "position": {
+          "x": 158.5,
+          "y": -62.5
+        },
+        "type": "input"
+      },
+      {
+        "entity_number": 32,
+        "name": "underground-belt",
+        "position": {
+          "x": 159.5,
+          "y": -62.5
+        },
+        "type": "input"
+      },
+      {
+        "entity_number": 33,
+        "name": "splitter",
+        "position": {
+          "x": 163,
+          "y": -63.5
+        }
+      },
+      {
+        "entity_number": 34,
+        "name": "splitter",
+        "position": {
+          "x": 163,
+          "y": -62.5
+        }
+      },
+      {
+        "entity_number": 35,
+        "name": "splitter",
+        "position": {
+          "x": 165,
+          "y": -63.5
+        }
+      },
+      {
+        "entity_number": 36,
+        "name": "splitter",
+        "position": {
+          "x": 165,
+          "y": -62.5
+        }
+      },
+      {
+        "entity_number": 37,
+        "name": "burner-inserter",
+        "position": {
+          "x": 168.5,
+          "y": -63.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 38,
+        "name": "burner-inserter",
+        "position": {
+          "x": 169.5,
+          "y": -63.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 39,
+        "name": "burner-inserter",
+        "position": {
+          "x": 168.5,
+          "y": -62.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 40,
+        "name": "burner-inserter",
+        "position": {
+          "x": 169.5,
+          "y": -62.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 41,
+        "name": "burner-inserter",
+        "position": {
+          "x": 170.5,
+          "y": -63.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 42,
+        "name": "burner-inserter",
+        "position": {
+          "x": 171.5,
+          "y": -63.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 43,
+        "name": "burner-inserter",
+        "position": {
+          "x": 170.5,
+          "y": -62.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 44,
+        "name": "burner-inserter",
+        "position": {
+          "x": 171.5,
+          "y": -62.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 45,
+        "name": "wooden-chest",
+        "position": {
+          "x": 138.5,
+          "y": -61.5
+        }
+      },
+      {
+        "entity_number": 46,
+        "name": "wooden-chest",
+        "position": {
+          "x": 139.5,
+          "y": -61.5
+        }
+      },
+      {
+        "entity_number": 47,
+        "name": "wooden-chest",
+        "position": {
+          "x": 138.5,
+          "y": -60.5
+        }
+      },
+      {
+        "entity_number": 48,
+        "name": "wooden-chest",
+        "position": {
+          "x": 139.5,
+          "y": -60.5
+        }
+      },
+      {
+        "entity_number": 49,
+        "name": "wooden-chest",
+        "position": {
+          "x": 140.5,
+          "y": -61.5
+        }
+      },
+      {
+        "entity_number": 50,
+        "name": "wooden-chest",
+        "position": {
+          "x": 141.5,
+          "y": -61.5
+        }
+      },
+      {
+        "entity_number": 51,
+        "name": "wooden-chest",
+        "position": {
+          "x": 140.5,
+          "y": -60.5
+        }
+      },
+      {
+        "entity_number": 52,
+        "name": "wooden-chest",
+        "position": {
+          "x": 141.5,
+          "y": -60.5
+        }
+      },
+      {
+        "entity_number": 53,
+        "name": "iron-chest",
+        "position": {
+          "x": 144.5,
+          "y": -61.5
+        }
+      },
+      {
+        "entity_number": 54,
+        "name": "iron-chest",
+        "position": {
+          "x": 145.5,
+          "y": -61.5
+        }
+      },
+      {
+        "entity_number": 55,
+        "name": "iron-chest",
+        "position": {
+          "x": 144.5,
+          "y": -60.5
+        }
+      },
+      {
+        "entity_number": 56,
+        "name": "iron-chest",
+        "position": {
+          "x": 145.5,
+          "y": -60.5
+        }
+      },
+      {
+        "entity_number": 57,
+        "name": "iron-chest",
+        "position": {
+          "x": 146.5,
+          "y": -61.5
+        }
+      },
+      {
+        "entity_number": 58,
+        "name": "iron-chest",
+        "position": {
+          "x": 147.5,
+          "y": -61.5
+        }
+      },
+      {
+        "entity_number": 59,
+        "name": "iron-chest",
+        "position": {
+          "x": 146.5,
+          "y": -60.5
+        }
+      },
+      {
+        "entity_number": 60,
+        "name": "iron-chest",
+        "position": {
+          "x": 147.5,
+          "y": -60.5
+        }
+      },
+      {
+        "entity_number": 61,
+        "name": "transport-belt",
+        "position": {
+          "x": 150.5,
+          "y": -61.5
+        }
+      },
+      {
+        "entity_number": 62,
+        "name": "transport-belt",
+        "position": {
+          "x": 151.5,
+          "y": -61.5
+        }
+      },
+      {
+        "entity_number": 63,
+        "name": "transport-belt",
+        "position": {
+          "x": 150.5,
+          "y": -60.5
+        }
+      },
+      {
+        "entity_number": 64,
+        "name": "transport-belt",
+        "position": {
+          "x": 151.5,
+          "y": -60.5
+        }
+      },
+      {
+        "entity_number": 65,
+        "name": "transport-belt",
+        "position": {
+          "x": 152.5,
+          "y": -61.5
+        }
+      },
+      {
+        "entity_number": 66,
+        "name": "transport-belt",
+        "position": {
+          "x": 153.5,
+          "y": -61.5
+        }
+      },
+      {
+        "entity_number": 67,
+        "name": "transport-belt",
+        "position": {
+          "x": 152.5,
+          "y": -60.5
+        }
+      },
+      {
+        "entity_number": 68,
+        "name": "transport-belt",
+        "position": {
+          "x": 153.5,
+          "y": -60.5
+        }
+      },
+      {
+        "entity_number": 69,
+        "name": "underground-belt",
+        "position": {
+          "x": 156.5,
+          "y": -61.5
+        },
+        "type": "input"
+      },
+      {
+        "entity_number": 70,
+        "name": "underground-belt",
+        "position": {
+          "x": 157.5,
+          "y": -61.5
+        },
+        "type": "input"
+      },
+      {
+        "entity_number": 71,
+        "name": "underground-belt",
+        "position": {
+          "x": 156.5,
+          "y": -60.5
+        },
+        "type": "input"
+      },
+      {
+        "entity_number": 72,
+        "name": "underground-belt",
+        "position": {
+          "x": 157.5,
+          "y": -60.5
+        },
+        "type": "input"
+      },
+      {
+        "entity_number": 73,
+        "name": "underground-belt",
+        "position": {
+          "x": 158.5,
+          "y": -61.5
+        },
+        "type": "input"
+      },
+      {
+        "entity_number": 74,
+        "name": "underground-belt",
+        "position": {
+          "x": 159.5,
+          "y": -61.5
+        },
+        "type": "input"
+      },
+      {
+        "entity_number": 75,
+        "name": "underground-belt",
+        "position": {
+          "x": 158.5,
+          "y": -60.5
+        },
+        "type": "input"
+      },
+      {
+        "entity_number": 76,
+        "name": "underground-belt",
+        "position": {
+          "x": 159.5,
+          "y": -60.5
+        },
+        "type": "input"
+      },
+      {
+        "entity_number": 77,
+        "name": "splitter",
+        "position": {
+          "x": 163,
+          "y": -61.5
+        }
+      },
+      {
+        "entity_number": 78,
+        "name": "splitter",
+        "position": {
+          "x": 163,
+          "y": -60.5
+        }
+      },
+      {
+        "entity_number": 79,
+        "name": "splitter",
+        "position": {
+          "x": 165,
+          "y": -61.5
+        }
+      },
+      {
+        "entity_number": 80,
+        "name": "splitter",
+        "position": {
+          "x": 165,
+          "y": -60.5
+        }
+      },
+      {
+        "entity_number": 81,
+        "name": "burner-inserter",
+        "position": {
+          "x": 168.5,
+          "y": -61.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 82,
+        "name": "burner-inserter",
+        "position": {
+          "x": 169.5,
+          "y": -61.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 83,
+        "name": "burner-inserter",
+        "position": {
+          "x": 168.5,
+          "y": -60.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 84,
+        "name": "burner-inserter",
+        "position": {
+          "x": 169.5,
+          "y": -60.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 85,
+        "name": "burner-inserter",
+        "position": {
+          "x": 170.5,
+          "y": -61.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 86,
+        "name": "burner-inserter",
+        "position": {
+          "x": 171.5,
+          "y": -61.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 87,
+        "name": "burner-inserter",
+        "position": {
+          "x": 170.5,
+          "y": -60.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 88,
+        "name": "burner-inserter",
+        "position": {
+          "x": 171.5,
+          "y": -60.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 89,
+        "name": "accumulator",
+        "position": {
+          "x": 139,
+          "y": -57
+        }
+      },
+      {
+        "entity_number": 90,
+        "name": "accumulator",
+        "position": {
+          "x": 141,
+          "y": -57
+        }
+      },
+      {
+        "entity_number": 91,
+        "name": "heat-pipe",
+        "position": {
+          "x": 144.5,
+          "y": -56.5
+        }
+      },
+      {
+        "entity_number": 92,
+        "name": "heat-pipe",
+        "position": {
+          "x": 144.5,
+          "y": -57.5
+        }
+      },
+      {
+        "entity_number": 93,
+        "name": "heat-pipe",
+        "position": {
+          "x": 145.5,
+          "y": -56.5
+        }
+      },
+      {
+        "entity_number": 94,
+        "name": "heat-pipe",
+        "position": {
+          "x": 145.5,
+          "y": -57.5
+        }
+      },
+      {
+        "entity_number": 95,
+        "name": "heat-pipe",
+        "position": {
+          "x": 146.5,
+          "y": -56.5
+        }
+      },
+      {
+        "entity_number": 96,
+        "name": "heat-pipe",
+        "position": {
+          "x": 146.5,
+          "y": -57.5
+        }
+      },
+      {
+        "entity_number": 97,
+        "name": "heat-pipe",
+        "position": {
+          "x": 147.5,
+          "y": -56.5
+        }
+      },
+      {
+        "entity_number": 98,
+        "name": "heat-pipe",
+        "position": {
+          "x": 147.5,
+          "y": -57.5
+        }
+      },
+      {
+        "entity_number": 99,
+        "name": "stone-furnace",
+        "position": {
+          "x": 151,
+          "y": -57
+        }
+      },
+      {
+        "entity_number": 100,
+        "name": "stone-furnace",
+        "position": {
+          "x": 153,
+          "y": -57
+        }
+      },
+      {
+        "entity_number": 101,
+        "name": "stone-wall",
+        "position": {
+          "x": 157.5,
+          "y": -57.5
+        }
+      },
+      {
+        "entity_number": 102,
+        "name": "stone-wall",
+        "position": {
+          "x": 157.5,
+          "y": -56.5
+        }
+      },
+      {
+        "entity_number": 103,
+        "name": "stone-wall",
+        "position": {
+          "x": 156.5,
+          "y": -57.5
+        }
+      },
+      {
+        "entity_number": 104,
+        "name": "stone-wall",
+        "position": {
+          "x": 156.5,
+          "y": -56.5
+        }
+      },
+      {
+        "entity_number": 105,
+        "name": "stone-wall",
+        "position": {
+          "x": 159.5,
+          "y": -57.5
+        }
+      },
+      {
+        "entity_number": 106,
+        "name": "stone-wall",
+        "position": {
+          "x": 159.5,
+          "y": -56.5
+        }
+      },
+      {
+        "entity_number": 107,
+        "name": "stone-wall",
+        "position": {
+          "x": 158.5,
+          "y": -57.5
+        }
+      },
+      {
+        "entity_number": 108,
+        "name": "stone-wall",
+        "position": {
+          "x": 158.5,
+          "y": -56.5
+        }
+      },
+      {
+        "entity_number": 109,
+        "name": "gate",
+        "position": {
+          "x": 163.5,
+          "y": -56.5
+        }
+      },
+      {
+        "entity_number": 110,
+        "name": "gate",
+        "position": {
+          "x": 162.5,
+          "y": -56.5
+        }
+      },
+      {
+        "entity_number": 111,
+        "name": "gate",
+        "position": {
+          "x": 163.5,
+          "y": -57.5
+        }
+      },
+      {
+        "entity_number": 112,
+        "name": "gate",
+        "position": {
+          "x": 162.5,
+          "y": -57.5
+        }
+      },
+      {
+        "entity_number": 113,
+        "name": "gate",
+        "position": {
+          "x": 165.5,
+          "y": -56.5
+        }
+      },
+      {
+        "entity_number": 114,
+        "name": "gate",
+        "position": {
+          "x": 164.5,
+          "y": -56.5
+        }
+      },
+      {
+        "entity_number": 115,
+        "name": "gate",
+        "position": {
+          "x": 165.5,
+          "y": -57.5
+        }
+      },
+      {
+        "entity_number": 116,
+        "name": "gate",
+        "position": {
+          "x": 164.5,
+          "y": -57.5
+        }
+      },
+      {
+        "entity_number": 117,
+        "name": "gun-turret",
+        "position": {
+          "x": 169,
+          "y": -57
+        }
+      },
+      {
+        "entity_number": 118,
+        "name": "gun-turret",
+        "position": {
+          "x": 171,
+          "y": -57
+        }
+      },
+      {
+        "entity_number": 119,
+        "name": "accumulator",
+        "position": {
+          "x": 139,
+          "y": -55
+        }
+      },
+      {
+        "entity_number": 120,
+        "name": "accumulator",
+        "position": {
+          "x": 141,
+          "y": -55
+        }
+      },
+      {
+        "entity_number": 121,
+        "name": "heat-pipe",
+        "position": {
+          "x": 144.5,
+          "y": -54.5
+        }
+      },
+      {
+        "entity_number": 122,
+        "name": "heat-pipe",
+        "position": {
+          "x": 144.5,
+          "y": -55.5
+        }
+      },
+      {
+        "entity_number": 123,
+        "name": "heat-pipe",
+        "position": {
+          "x": 145.5,
+          "y": -54.5
+        }
+      },
+      {
+        "entity_number": 124,
+        "name": "heat-pipe",
+        "position": {
+          "x": 145.5,
+          "y": -55.5
+        }
+      },
+      {
+        "entity_number": 125,
+        "name": "heat-pipe",
+        "position": {
+          "x": 146.5,
+          "y": -54.5
+        }
+      },
+      {
+        "entity_number": 126,
+        "name": "heat-pipe",
+        "position": {
+          "x": 146.5,
+          "y": -55.5
+        }
+      },
+      {
+        "entity_number": 127,
+        "name": "heat-pipe",
+        "position": {
+          "x": 147.5,
+          "y": -54.5
+        }
+      },
+      {
+        "entity_number": 128,
+        "name": "heat-pipe",
+        "position": {
+          "x": 147.5,
+          "y": -55.5
+        }
+      },
+      {
+        "entity_number": 129,
+        "name": "stone-furnace",
+        "position": {
+          "x": 151,
+          "y": -55
+        }
+      },
+      {
+        "entity_number": 130,
+        "name": "stone-furnace",
+        "position": {
+          "x": 153,
+          "y": -55
+        }
+      },
+      {
+        "entity_number": 131,
+        "name": "stone-wall",
+        "position": {
+          "x": 157.5,
+          "y": -55.5
+        }
+      },
+      {
+        "entity_number": 132,
+        "name": "stone-wall",
+        "position": {
+          "x": 157.5,
+          "y": -54.5
+        }
+      },
+      {
+        "entity_number": 133,
+        "name": "stone-wall",
+        "position": {
+          "x": 156.5,
+          "y": -55.5
+        }
+      },
+      {
+        "entity_number": 134,
+        "name": "stone-wall",
+        "position": {
+          "x": 156.5,
+          "y": -54.5
+        }
+      },
+      {
+        "entity_number": 135,
+        "name": "stone-wall",
+        "position": {
+          "x": 159.5,
+          "y": -55.5
+        }
+      },
+      {
+        "entity_number": 136,
+        "name": "stone-wall",
+        "position": {
+          "x": 159.5,
+          "y": -54.5
+        }
+      },
+      {
+        "entity_number": 137,
+        "name": "stone-wall",
+        "position": {
+          "x": 158.5,
+          "y": -55.5
+        }
+      },
+      {
+        "entity_number": 138,
+        "name": "stone-wall",
+        "position": {
+          "x": 158.5,
+          "y": -54.5
+        }
+      },
+      {
+        "entity_number": 139,
+        "name": "gate",
+        "position": {
+          "x": 163.5,
+          "y": -54.5
+        }
+      },
+      {
+        "entity_number": 140,
+        "name": "gate",
+        "position": {
+          "x": 162.5,
+          "y": -54.5
+        }
+      },
+      {
+        "entity_number": 141,
+        "name": "gate",
+        "position": {
+          "x": 163.5,
+          "y": -55.5
+        }
+      },
+      {
+        "entity_number": 142,
+        "name": "gate",
+        "position": {
+          "x": 162.5,
+          "y": -55.5
+        }
+      },
+      {
+        "entity_number": 143,
+        "name": "gate",
+        "position": {
+          "x": 165.5,
+          "y": -54.5
+        }
+      },
+      {
+        "entity_number": 144,
+        "name": "gate",
+        "position": {
+          "x": 164.5,
+          "y": -54.5
+        }
+      },
+      {
+        "entity_number": 145,
+        "name": "gate",
+        "position": {
+          "x": 165.5,
+          "y": -55.5
+        }
+      },
+      {
+        "entity_number": 146,
+        "name": "gate",
+        "position": {
+          "x": 164.5,
+          "y": -55.5
+        }
+      },
+      {
+        "entity_number": 147,
+        "name": "gun-turret",
+        "position": {
+          "x": 169,
+          "y": -55
+        }
+      },
+      {
+        "entity_number": 148,
+        "name": "gun-turret",
+        "position": {
+          "x": 171,
+          "y": -55
+        }
+      },
+      {
+        "entity_number": 149,
+        "name": "inserter",
+        "position": {
+          "x": 139.5,
+          "y": -50.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 150,
+        "name": "inserter",
+        "position": {
+          "x": 138.5,
+          "y": -50.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 151,
+        "name": "inserter",
+        "position": {
+          "x": 139.5,
+          "y": -51.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 152,
+        "name": "inserter",
+        "position": {
+          "x": 138.5,
+          "y": -51.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 153,
+        "name": "inserter",
+        "position": {
+          "x": 141.5,
+          "y": -50.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 154,
+        "name": "inserter",
+        "position": {
+          "x": 140.5,
+          "y": -50.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 155,
+        "name": "inserter",
+        "position": {
+          "x": 141.5,
+          "y": -51.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 156,
+        "name": "inserter",
+        "position": {
+          "x": 140.5,
+          "y": -51.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 157,
+        "name": "pipe",
+        "position": {
+          "x": 145.5,
+          "y": -50.5
+        }
+      },
+      {
+        "entity_number": 158,
+        "name": "pipe",
+        "position": {
+          "x": 144.5,
+          "y": -50.5
+        }
+      },
+      {
+        "entity_number": 159,
+        "name": "pipe",
+        "position": {
+          "x": 145.5,
+          "y": -51.5
+        }
+      },
+      {
+        "entity_number": 160,
+        "name": "pipe",
+        "position": {
+          "x": 144.5,
+          "y": -51.5
+        }
+      },
+      {
+        "entity_number": 161,
+        "name": "pipe",
+        "position": {
+          "x": 147.5,
+          "y": -50.5
+        }
+      },
+      {
+        "entity_number": 162,
+        "name": "pipe",
+        "position": {
+          "x": 146.5,
+          "y": -50.5
+        }
+      },
+      {
+        "entity_number": 163,
+        "name": "pipe",
+        "position": {
+          "x": 147.5,
+          "y": -51.5
+        }
+      },
+      {
+        "entity_number": 164,
+        "name": "pipe",
+        "position": {
+          "x": 146.5,
+          "y": -51.5
+        }
+      },
+      {
+        "entity_number": 165,
+        "name": "pipe-to-ground",
+        "position": {
+          "x": 151.5,
+          "y": -50.5
+        }
+      },
+      {
+        "entity_number": 166,
+        "name": "pipe-to-ground",
+        "position": {
+          "x": 150.5,
+          "y": -50.5
+        }
+      },
+      {
+        "entity_number": 167,
+        "name": "pipe-to-ground",
+        "position": {
+          "x": 151.5,
+          "y": -51.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 168,
+        "name": "pipe-to-ground",
+        "position": {
+          "x": 150.5,
+          "y": -51.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 169,
+        "name": "pipe-to-ground",
+        "position": {
+          "x": 153.5,
+          "y": -50.5
+        }
+      },
+      {
+        "entity_number": 170,
+        "name": "pipe-to-ground",
+        "position": {
+          "x": 152.5,
+          "y": -50.5
+        }
+      },
+      {
+        "entity_number": 171,
+        "name": "pipe-to-ground",
+        "position": {
+          "x": 153.5,
+          "y": -51.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 172,
+        "name": "pipe-to-ground",
+        "position": {
+          "x": 152.5,
+          "y": -51.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 173,
+        "name": "substation",
+        "position": {
+          "x": 157,
+          "y": -51
+        },
+        "neighbours": [
+          174,
+          205
+        ]
+      },
+      {
+        "entity_number": 174,
+        "name": "substation",
+        "position": {
+          "x": 159,
+          "y": -51
+        },
+        "neighbours": [
+          173,
+          206
+        ]
+      },
+      {
+        "entity_number": 175,
+        "name": "pump",
+        "position": {
+          "x": 163.5,
+          "y": -51
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 176,
+        "name": "pump",
+        "position": {
+          "x": 162.5,
+          "y": -51
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 177,
+        "name": "pump",
+        "position": {
+          "x": 165.5,
+          "y": -51
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 178,
+        "name": "pump",
+        "position": {
+          "x": 164.5,
+          "y": -51
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 179,
+        "name": "straight-rail",
+        "position": {
+          "x": 169,
+          "y": -51
+        }
+      },
+      {
+        "entity_number": 180,
+        "name": "straight-rail",
+        "position": {
+          "x": 171,
+          "y": -51
+        }
+      },
+      {
+        "entity_number": 181,
+        "name": "inserter",
+        "position": {
+          "x": 139.5,
+          "y": -48.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 182,
+        "name": "inserter",
+        "position": {
+          "x": 138.5,
+          "y": -48.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 183,
+        "name": "inserter",
+        "position": {
+          "x": 139.5,
+          "y": -49.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 184,
+        "name": "inserter",
+        "position": {
+          "x": 138.5,
+          "y": -49.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 185,
+        "name": "inserter",
+        "position": {
+          "x": 141.5,
+          "y": -48.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 186,
+        "name": "inserter",
+        "position": {
+          "x": 140.5,
+          "y": -48.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 187,
+        "name": "inserter",
+        "position": {
+          "x": 141.5,
+          "y": -49.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 188,
+        "name": "inserter",
+        "position": {
+          "x": 140.5,
+          "y": -49.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 189,
+        "name": "pipe",
+        "position": {
+          "x": 145.5,
+          "y": -48.5
+        }
+      },
+      {
+        "entity_number": 190,
+        "name": "pipe",
+        "position": {
+          "x": 144.5,
+          "y": -48.5
+        }
+      },
+      {
+        "entity_number": 191,
+        "name": "pipe",
+        "position": {
+          "x": 145.5,
+          "y": -49.5
+        }
+      },
+      {
+        "entity_number": 192,
+        "name": "pipe",
+        "position": {
+          "x": 144.5,
+          "y": -49.5
+        }
+      },
+      {
+        "entity_number": 193,
+        "name": "pipe",
+        "position": {
+          "x": 147.5,
+          "y": -48.5
+        }
+      },
+      {
+        "entity_number": 194,
+        "name": "pipe",
+        "position": {
+          "x": 146.5,
+          "y": -48.5
+        }
+      },
+      {
+        "entity_number": 195,
+        "name": "pipe",
+        "position": {
+          "x": 147.5,
+          "y": -49.5
+        }
+      },
+      {
+        "entity_number": 196,
+        "name": "pipe",
+        "position": {
+          "x": 146.5,
+          "y": -49.5
+        }
+      },
+      {
+        "entity_number": 197,
+        "name": "pipe-to-ground",
+        "position": {
+          "x": 151.5,
+          "y": -48.5
+        }
+      },
+      {
+        "entity_number": 198,
+        "name": "pipe-to-ground",
+        "position": {
+          "x": 150.5,
+          "y": -48.5
+        }
+      },
+      {
+        "entity_number": 199,
+        "name": "pipe-to-ground",
+        "position": {
+          "x": 151.5,
+          "y": -49.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 200,
+        "name": "pipe-to-ground",
+        "position": {
+          "x": 150.5,
+          "y": -49.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 201,
+        "name": "pipe-to-ground",
+        "position": {
+          "x": 153.5,
+          "y": -48.5
+        }
+      },
+      {
+        "entity_number": 202,
+        "name": "pipe-to-ground",
+        "position": {
+          "x": 152.5,
+          "y": -48.5
+        }
+      },
+      {
+        "entity_number": 203,
+        "name": "pipe-to-ground",
+        "position": {
+          "x": 153.5,
+          "y": -49.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 204,
+        "name": "pipe-to-ground",
+        "position": {
+          "x": 152.5,
+          "y": -49.5
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 205,
+        "name": "substation",
+        "position": {
+          "x": 157,
+          "y": -49
+        },
+        "neighbours": [
+          173,
+          206
+        ]
+      },
+      {
+        "entity_number": 206,
+        "name": "substation",
+        "position": {
+          "x": 159,
+          "y": -49
+        },
+        "neighbours": [
+          174,
+          205
+        ]
+      },
+      {
+        "entity_number": 207,
+        "name": "pump",
+        "position": {
+          "x": 163.5,
+          "y": -49
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 208,
+        "name": "pump",
+        "position": {
+          "x": 162.5,
+          "y": -49
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 209,
+        "name": "pump",
+        "position": {
+          "x": 165.5,
+          "y": -49
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 210,
+        "name": "pump",
+        "position": {
+          "x": 164.5,
+          "y": -49
+        },
+        "direction": 4
+      },
+      {
+        "entity_number": 211,
+        "name": "straight-rail",
+        "position": {
+          "x": 169,
+          "y": -49
+        }
+      },
+      {
+        "entity_number": 212,
+        "name": "straight-rail",
+        "position": {
+          "x": 171,
+          "y": -49
+        }
+      },
+      {
+        "entity_number": 213,
+        "name": "laser-turret",
+        "position": {
+          "x": 139,
+          "y": -45
+        }
+      },
+      {
+        "entity_number": 214,
+        "name": "laser-turret",
+        "position": {
+          "x": 141,
+          "y": -45
+        }
+      },
+      {
+        "entity_number": 215,
+        "name": "laser-turret",
+        "position": {
+          "x": 139,
+          "y": -43
+        }
+      },
+      {
+        "entity_number": 216,
+        "name": "laser-turret",
+        "position": {
+          "x": 141,
+          "y": -43
+        }
+      }
+    ],
+    "tiles": [
+      {
+        "position": {
+          "x": 144,
+          "y": -46
+        },
+        "name": "stone-path"
+      },
+      {
+        "position": {
+          "x": 144,
+          "y": -45
+        },
+        "name": "stone-path"
+      },
+      {
+        "position": {
+          "x": 144,
+          "y": -44
+        },
+        "name": "stone-path"
+      },
+      {
+        "position": {
+          "x": 144,
+          "y": -43
+        },
+        "name": "stone-path"
+      },
+      {
+        "position": {
+          "x": 145,
+          "y": -46
+        },
+        "name": "stone-path"
+      },
+      {
+        "position": {
+          "x": 145,
+          "y": -45
+        },
+        "name": "stone-path"
+      },
+      {
+        "position": {
+          "x": 145,
+          "y": -44
+        },
+        "name": "stone-path"
+      },
+      {
+        "position": {
+          "x": 145,
+          "y": -43
+        },
+        "name": "stone-path"
+      },
+      {
+        "position": {
+          "x": 146,
+          "y": -46
+        },
+        "name": "stone-path"
+      },
+      {
+        "position": {
+          "x": 146,
+          "y": -45
+        },
+        "name": "stone-path"
+      },
+      {
+        "position": {
+          "x": 146,
+          "y": -44
+        },
+        "name": "stone-path"
+      },
+      {
+        "position": {
+          "x": 146,
+          "y": -43
+        },
+        "name": "stone-path"
+      },
+      {
+        "position": {
+          "x": 147,
+          "y": -46
+        },
+        "name": "stone-path"
+      },
+      {
+        "position": {
+          "x": 147,
+          "y": -45
+        },
+        "name": "stone-path"
+      },
+      {
+        "position": {
+          "x": 147,
+          "y": -44
+        },
+        "name": "stone-path"
+      },
+      {
+        "position": {
+          "x": 147,
+          "y": -43
+        },
+        "name": "stone-path"
+      },
+      {
+        "position": {
+          "x": 150,
+          "y": -46
+        },
+        "name": "concrete"
+      },
+      {
+        "position": {
+          "x": 150,
+          "y": -45
+        },
+        "name": "concrete"
+      },
+      {
+        "position": {
+          "x": 150,
+          "y": -44
+        },
+        "name": "concrete"
+      },
+      {
+        "position": {
+          "x": 150,
+          "y": -43
+        },
+        "name": "concrete"
+      },
+      {
+        "position": {
+          "x": 151,
+          "y": -46
+        },
+        "name": "concrete"
+      },
+      {
+        "position": {
+          "x": 151,
+          "y": -45
+        },
+        "name": "concrete"
+      },
+      {
+        "position": {
+          "x": 151,
+          "y": -44
+        },
+        "name": "concrete"
+      },
+      {
+        "position": {
+          "x": 151,
+          "y": -43
+        },
+        "name": "concrete"
+      },
+      {
+        "position": {
+          "x": 152,
+          "y": -46
+        },
+        "name": "concrete"
+      },
+      {
+        "position": {
+          "x": 152,
+          "y": -45
+        },
+        "name": "concrete"
+      },
+      {
+        "position": {
+          "x": 152,
+          "y": -44
+        },
+        "name": "concrete"
+      },
+      {
+        "position": {
+          "x": 152,
+          "y": -43
+        },
+        "name": "concrete"
+      },
+      {
+        "position": {
+          "x": 153,
+          "y": -46
+        },
+        "name": "concrete"
+      },
+      {
+        "position": {
+          "x": 153,
+          "y": -45
+        },
+        "name": "concrete"
+      },
+      {
+        "position": {
+          "x": 153,
+          "y": -44
+        },
+        "name": "concrete"
+      },
+      {
+        "position": {
+          "x": 153,
+          "y": -43
+        },
+        "name": "concrete"
+      },
+      {
+        "position": {
+          "x": 156,
+          "y": -46
+        },
+        "name": "hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 156,
+          "y": -45
+        },
+        "name": "hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 156,
+          "y": -44
+        },
+        "name": "hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 156,
+          "y": -43
+        },
+        "name": "hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 157,
+          "y": -46
+        },
+        "name": "hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 157,
+          "y": -45
+        },
+        "name": "hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 157,
+          "y": -44
+        },
+        "name": "hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 157,
+          "y": -43
+        },
+        "name": "hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 158,
+          "y": -46
+        },
+        "name": "hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 158,
+          "y": -45
+        },
+        "name": "hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 158,
+          "y": -44
+        },
+        "name": "hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 158,
+          "y": -43
+        },
+        "name": "hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 159,
+          "y": -46
+        },
+        "name": "hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 159,
+          "y": -45
+        },
+        "name": "hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 159,
+          "y": -44
+        },
+        "name": "hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 159,
+          "y": -43
+        },
+        "name": "hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 162,
+          "y": -46
+        },
+        "name": "refined-concrete"
+      },
+      {
+        "position": {
+          "x": 162,
+          "y": -45
+        },
+        "name": "refined-concrete"
+      },
+      {
+        "position": {
+          "x": 162,
+          "y": -44
+        },
+        "name": "refined-concrete"
+      },
+      {
+        "position": {
+          "x": 162,
+          "y": -43
+        },
+        "name": "refined-concrete"
+      },
+      {
+        "position": {
+          "x": 163,
+          "y": -46
+        },
+        "name": "refined-concrete"
+      },
+      {
+        "position": {
+          "x": 163,
+          "y": -45
+        },
+        "name": "refined-concrete"
+      },
+      {
+        "position": {
+          "x": 163,
+          "y": -44
+        },
+        "name": "refined-concrete"
+      },
+      {
+        "position": {
+          "x": 163,
+          "y": -43
+        },
+        "name": "refined-concrete"
+      },
+      {
+        "position": {
+          "x": 164,
+          "y": -46
+        },
+        "name": "refined-concrete"
+      },
+      {
+        "position": {
+          "x": 164,
+          "y": -45
+        },
+        "name": "refined-concrete"
+      },
+      {
+        "position": {
+          "x": 164,
+          "y": -44
+        },
+        "name": "refined-concrete"
+      },
+      {
+        "position": {
+          "x": 164,
+          "y": -43
+        },
+        "name": "refined-concrete"
+      },
+      {
+        "position": {
+          "x": 165,
+          "y": -46
+        },
+        "name": "refined-concrete"
+      },
+      {
+        "position": {
+          "x": 165,
+          "y": -45
+        },
+        "name": "refined-concrete"
+      },
+      {
+        "position": {
+          "x": 165,
+          "y": -44
+        },
+        "name": "refined-concrete"
+      },
+      {
+        "position": {
+          "x": 165,
+          "y": -43
+        },
+        "name": "refined-concrete"
+      },
+      {
+        "position": {
+          "x": 168,
+          "y": -46
+        },
+        "name": "refined-hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 168,
+          "y": -45
+        },
+        "name": "refined-hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 168,
+          "y": -44
+        },
+        "name": "refined-hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 168,
+          "y": -43
+        },
+        "name": "refined-hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 169,
+          "y": -46
+        },
+        "name": "refined-hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 169,
+          "y": -45
+        },
+        "name": "refined-hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 169,
+          "y": -44
+        },
+        "name": "refined-hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 169,
+          "y": -43
+        },
+        "name": "refined-hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 170,
+          "y": -46
+        },
+        "name": "refined-hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 170,
+          "y": -45
+        },
+        "name": "refined-hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 170,
+          "y": -44
+        },
+        "name": "refined-hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 170,
+          "y": -43
+        },
+        "name": "refined-hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 171,
+          "y": -46
+        },
+        "name": "refined-hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 171,
+          "y": -45
+        },
+        "name": "refined-hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 171,
+          "y": -44
+        },
+        "name": "refined-hazard-concrete-left"
+      },
+      {
+        "position": {
+          "x": 171,
+          "y": -43
+        },
+        "name": "refined-hazard-concrete-left"
+      }
+    ],
+    "item": "blueprint",
+    "label": "Palette",
+    "version": 281479273906176
+  }
+}
