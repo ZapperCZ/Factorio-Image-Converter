@@ -17,3 +17,5 @@ C:\Users\user\Škola\MVOP\WPF-Factorio_Image_Converter\Factorio_Image_Converter\
 C:\Users\user\Škola\MVOP\WPF-Factorio_Image_Converter\Factorio_Image_Converter\Factorio_Image_Converter\bin\Debug\zlib.net.dll
 C:\Users\user\Škola\MVOP\WPF-Factorio_Image_Converter\Factorio_Image_Converter\Factorio_Image_Converter\bin\Debug\Newtonsoft.Json.xml
 C:\Users\user\Škola\MVOP\WPF-Factorio_Image_Converter\Factorio_Image_Converter\Factorio_Image_Converter\obj\Debug\Factorio_Image_Converter.csproj.CopyComplete
+C:\Users\user\Škola\MVOP\WPF-Factorio_Image_Converter\Factorio_Image_Converter\Factorio_Image_Converter\obj\Debug\ResultWindow.g.cs
+C:\Users\user\Škola\MVOP\WPF-Factorio_Image_Converter\Factorio_Image_Converter\Factorio_Image_Converter\obj\Debug\ResultWindow.baml

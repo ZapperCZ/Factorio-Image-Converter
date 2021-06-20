@@ -24,7 +24,7 @@ namespace Factorio_Image_Converter
     public partial class MainWindow : Window
     {
         string imagePath;
-        string Blueprint;
+        public string BlueprintString;
         System.Drawing.Image OriginalImage;
         System.Drawing.Image ResultImage;
         List<UBlock> AvailableBlocks;
@@ -46,11 +46,10 @@ namespace Factorio_Image_Converter
             FactorioBlueprint = new Root();
             LoadAvailableBlocks();
             LoadAvailableColors();
-
         }
         private void InstantiateRoot()
         {
-            //Create an instance of JSON Root
+            //Create an instance of JSON Root and initialize it
             FactorioBlueprint = new Root();
             FactorioBlueprint.blueprint = new Blueprint();
             FactorioBlueprint.blueprint.description = "The result image made by Zapper's Factorio Image Converter";
@@ -87,20 +86,17 @@ namespace Factorio_Image_Converter
                         totalPixels++;
                         foreach (UBlock block in AvailableBlocks)
                         {
-                            //Debug.WriteLine("pixel > " + pixelColorHex + " block > " + block.color);
                             if (pixelColorHex == block.color)
                             {
                                 found++;
-                                //Debug.WriteLine("block");
                                 //All positions must be 0.5 because of rails, rails are 0.0
-                                //Coordinates are based on mathematics, not IT
                                 //Entities are listed through in pairs of 4, so top left, top right, bottom left, bottom right
                                 int sizeX = Convert.ToInt32(block.occupied_space[0].ToString());
                                 int sizeY = Convert.ToInt32(block.occupied_space[2].ToString());
                                 //Debug.WriteLine("orig > " + block.occupied_space + " x > " + sizeX + " y > " + sizeY);
 
                                 List<Entity> entityList = new List<Entity>();
-                                //TODO: Finish and optimize this
+                                //TODO: Finish and optimize the following spaghetti
                                 //Maybe use some "equation" to determine the position and entity amount based on size?
 
                                 #region A_Big_Mess
@@ -197,7 +193,7 @@ namespace Factorio_Image_Converter
                         //TODO: only iterate through if we haven't found a block, otherwise it just slows the app down
                         foreach (UTile tile in AvailableTiles)
                         {
-                            //Debug.WriteLine("pixel > " + pixelColorHex + " tile > " + tile.color);
+                            #region Another_Mess
                             if (pixelColorHex == tile.color)
                             {
                                 //I hate this
@@ -234,6 +230,7 @@ namespace Factorio_Image_Converter
 
                                 break;
                             }
+                            #endregion
                         }
                     }
                 }
@@ -281,8 +278,8 @@ namespace Factorio_Image_Converter
                     }
                 }
             }
-            Blueprint = "0" + Convert.ToBase64String(compressedArray);
-            Debug.WriteLine("\n\n Blueprint \n" + Blueprint);
+            BlueprintString = "0" + Convert.ToBase64String(compressedArray);
+            Debug.WriteLine("\n\n Blueprint \n" + BlueprintString);
         }
         private void LoadAvailableBlocks()
         {
@@ -317,7 +314,6 @@ namespace Factorio_Image_Converter
         {
             imagePath = "";
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = "c:\\";
             openFileDialog.Filter = "Image files (*.png;*.jpg)|*.png;*.jpg";    //Add more image formats
             openFileDialog.FilterIndex = 1;
             openFileDialog.RestoreDirectory = true;     //Opens up where the user chose the last file
@@ -342,6 +338,9 @@ namespace Factorio_Image_Converter
                 ConvertImageToBlocks(ResultImage);       //This will convert only colors that are present in UsableBlocks.json, currently there is no color conversion
                 ConvertBlocksToJSON(@"..\..\2-Resources\Blueprint.json");
                 CompressAndEncodeJSON(@"..\..\2-Resources\Blueprint.json");
+
+                ResultWindow resultWindow = new ResultWindow(BlueprintString);
+                resultWindow.ShowDialog();
             }
             else
             {
