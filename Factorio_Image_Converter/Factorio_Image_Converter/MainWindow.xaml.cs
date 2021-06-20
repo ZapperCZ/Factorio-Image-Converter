@@ -1,40 +1,51 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Drawing;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Diagnostics;
 using System.IO;
 using Newtonsoft.Json;
 using zlib;
+using System.Windows.Media.Imaging;
 
 namespace Factorio_Image_Converter
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : INotifyPropertyChanged
     {
         string imagePath;
         public string BlueprintString;
-        System.Drawing.Image OriginalImage;
-        System.Drawing.Image ResultImage;
+        BitmapImage _bitmapImage;
+        public BitmapImage ResultImage
+        {
+            get { return _bitmapImage; }
+            set
+            {
+                if(_bitmapImage != value)
+                {
+                    _bitmapImage = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         List<UBlock> AvailableBlocks;
         List<UTile> AvailableTiles;
         List<System.Drawing.Color> AvailableColors;
 
         Root FactorioBlueprint;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         public MainWindow()
         {
+            DataContext = this;
             InitializeComponent();
             Loaded += OnLoad;
         }
@@ -66,14 +77,14 @@ namespace Factorio_Image_Converter
             defaultIcon.index = 1;
             FactorioBlueprint.blueprint.icons.Add(defaultIcon);
         }
-        private void ConvertImageToBlocks(System.Drawing.Image inputImage) //1px = 4 blocks
+        private void ConvertImageToBlocks(BitmapImage inputImage) //1px = 4 blocks
         {
             InstantiateRoot();
             //TODO: Convert pixels of image to blocks
             int index = 1;
             int found = 0;
             int totalPixels = 0;
-            Bitmap bitmap = (Bitmap)inputImage;
+            Bitmap bitmap = BitmapImage2Bitmap(inputImage);
             for (int y = 0; y < bitmap.Height; y++)
             {
                 for (int x = 0; x < bitmap.Width; x++)
@@ -326,10 +337,21 @@ namespace Factorio_Image_Converter
                 imagePath = openFileDialog.FileName;
 
                 //Save the image
-                OriginalImage = System.Drawing.Image.FromFile(imagePath);
-                ResultImage = System.Drawing.Image.FromFile(imagePath);
+                ResultImage = new BitmapImage(new Uri(imagePath));
             }
             //TODO: Image too big warning
+        }
+        private Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
+        {
+            using (MemoryStream outStream = new MemoryStream())
+            {
+                BitmapEncoder enc = new BmpBitmapEncoder();
+                enc.Frames.Add(BitmapFrame.Create(bitmapImage));
+                enc.Save(outStream);
+                Bitmap bitmap = new Bitmap(outStream);
+
+                return new Bitmap(bitmap);
+            }
         }
         private void btn_Export_Click(object sender, RoutedEventArgs e)
         {

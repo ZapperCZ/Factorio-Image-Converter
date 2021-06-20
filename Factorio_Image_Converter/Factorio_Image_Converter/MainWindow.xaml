@@ -18,7 +18,7 @@
             </Grid.RowDefinitions>
 
             <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-                <Image/>
+                <Image Source="{Binding Path=ResultImage, Mode=OneWay, NotifyOnSourceUpdated=True}"/>
             </Border>
             <Button Grid.Row="1" Grid.Column="0" Padding="4" Margin="30 10 30 0" Content="Import" Click="btn_Import_Click"/>
             <Button Grid.Row="1" Grid.Column="1" Padding="4" Margin="30 10 30 0" Content="Export" Click="btn_Export_Click"/>
