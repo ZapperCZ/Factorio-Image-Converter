@@ -33,7 +33,7 @@ namespace Factorio_Image_Converter
         }
         List<UBlock> AvailableBlocks;
         List<UTile> AvailableTiles;
-        List<System.Drawing.Color> AvailableColors;
+        List<Color> AvailableColors;
 
         Root FactorioBlueprint;
 
@@ -53,7 +53,7 @@ namespace Factorio_Image_Converter
         {
             AvailableBlocks = new List<UBlock>();
             AvailableTiles = new List<UTile>();
-            AvailableColors = new List<System.Drawing.Color>();
+            AvailableColors = new List<Color>();
             FactorioBlueprint = new Root();
             LoadAvailableBlocks();
             LoadAvailableColors();
@@ -90,11 +90,12 @@ namespace Factorio_Image_Converter
                 for (int x = 0; x < bitmap.Width; x++)
                 {
                     //Debug.WriteLine("x > "+x+" y > "+y);
-                    System.Drawing.Color pixelColor = bitmap.GetPixel(x, y);
+                    Color pixelColor = bitmap.GetPixel(x, y);
                     string pixelColorHex = ColorTranslator.ToHtml(pixelColor).ToLower();
                     if (pixelColorHex != "#000000") //transparent
                     {
                         totalPixels++;
+                        bool foundBlock = false;
                         foreach (UBlock block in AvailableBlocks)
                         {
                             if (pixelColorHex == block.color)
@@ -138,29 +139,33 @@ namespace Factorio_Image_Converter
                                         FactorioBlueprint.blueprint.entities.Add(newEntity);
                                     }
                                 }
+                                foundBlock = true;
                                 break;
                             }
                         }
                         //TODO: only iterate through if we haven't found a block, otherwise it just slows the app down
-                        foreach (UTile tile in AvailableTiles)
+                        if (!foundBlock)
                         {
-                            if (pixelColorHex == tile.color)
+                            foreach (UTile tile in AvailableTiles)
                             {
-                                found++;
-                                for (int i = 2; i > 0; i--)
+                                if (pixelColorHex == tile.color)
                                 {
-                                    for (int j = 2; j > 0; j--)
+                                    found++;
+                                    for (int i = 2; i > 0; i--)
                                     {
-                                        Tile newTile = new Tile();
-                                        Position pos = new Position();
-                                        newTile.name = tile.name;
-                                        pos.x = x + x - j;
-                                        pos.y = y + y - i;
-                                        newTile.position = pos;
-                                        FactorioBlueprint.blueprint.tiles.Add(newTile);
+                                        for (int j = 2; j > 0; j--)
+                                        {
+                                            Tile newTile = new Tile();
+                                            Position pos = new Position();
+                                            newTile.name = tile.name;
+                                            pos.x = x + x - j;
+                                            pos.y = y + y - i;
+                                            newTile.position = pos;
+                                            FactorioBlueprint.blueprint.tiles.Add(newTile);
+                                        }
                                     }
+                                    break;
                                 }
-                                break;
                             }
                         }
                     }
@@ -182,7 +187,7 @@ namespace Factorio_Image_Converter
             //Compress the JSON file using zlib deflate compression level 9, then convert to base64 and put '0' at the start
 
             //This code was inspired / copied from Gachl's Factorio Imager https://github.com/Gachl/FactorioImager
-            //This program wouldn't be possible without him unless I would spend atleast another week on trying to figure out how to make this work
+            //This program wouldn't be possible without them unless I would spend atleast another week on trying to figure out how to make this work
             //I will be honest, at the moment I have no clue how exactly does it work, but I am so glad it does
 
             string json;
@@ -232,12 +237,12 @@ namespace Factorio_Image_Converter
             //Reads all colors from available blocks and puts them into a list
             foreach (UBlock block in AvailableBlocks)
             {
-                System.Drawing.Color newColor = ColorTranslator.FromHtml(block.color);
+                Color newColor = ColorTranslator.FromHtml(block.color);
                 AvailableColors.Add(newColor);
             }
             foreach (UTile tile in AvailableTiles)
             {
-                System.Drawing.Color newColor = ColorTranslator.FromHtml(tile.color);
+                Color newColor = ColorTranslator.FromHtml(tile.color);
                 AvailableColors.Add(newColor);
             }
         }
