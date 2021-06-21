@@ -104,99 +104,39 @@ namespace Factorio_Image_Converter
                                 //Entities are listed through in pairs of 4, so top left, top right, bottom left, bottom right
                                 int sizeX = Convert.ToInt32(block.occupied_space[0].ToString());
                                 int sizeY = Convert.ToInt32(block.occupied_space[2].ToString());
-                                //Debug.WriteLine("orig > " + block.occupied_space + " x > " + sizeX + " y > " + sizeY);
+                                bool tempX = Convert.ToBoolean(sizeX - 1);
+                                bool tempY = Convert.ToBoolean(sizeY - 1);
+                                tempX = !tempX;
+                                tempY = !tempY;
+                                sizeX = Convert.ToInt32(tempX)+1;
+                                sizeY = Convert.ToInt32(tempY)+1;
 
                                 List<Entity> entityList = new List<Entity>();
-                                //TODO: Finish and optimize the following spaghetti
-                                //Maybe use some "equation" to determine the position and entity amount based on size?
 
-                                #region A_Big_Mess
-                                if (sizeX == 1 && sizeY == 1)
+                                
+                                for (int i = sizeY; i > 0; i--)
                                 {
-                                    Entity entity1 = new Entity();
-                                    Entity entity2 = new Entity();
-                                    Entity entity3 = new Entity();
-                                    Entity entity4 = new Entity();
-                                    Position pos1 = new Position();
-                                    Position pos2 = new Position();
-                                    Position pos3 = new Position();
-                                    Position pos4 = new Position();
-                                    pos1.x = x + x - 1.5;
-                                    pos1.y = y + y - 1.5;
-                                    pos2.x = x + x - 0.5;
-                                    pos2.y = y + y - 1.5;
-                                    pos3.x = x + x - 1.5;
-                                    pos3.y = y + y - 0.5;
-                                    pos4.x = x + x - 0.5;
-                                    pos4.y = y + y - 0.5;
-
-                                    entity1.position = pos1;
-                                    entity2.position = pos2;
-                                    entity3.position = pos3;
-                                    entity4.position = pos4;
-                                    entityList.Add(entity1);
-                                    entityList.Add(entity2);
-                                    entityList.Add(entity3);
-                                    entityList.Add(entity4);
-                                }
-                                else if (sizeX == 2 && sizeY == 1)
-                                {
-                                    Entity entity1 = new Entity();
-                                    Entity entity2 = new Entity();
-                                    Position pos1 = new Position();
-                                    Position pos2 = new Position();
-                                    pos1.x = x + x - 1;
-                                    pos1.y = y + y - 1.5;
-                                    pos2.x = x + x - 1;
-                                    pos2.y = y + y - 0.5;
-
-                                    entity1.position = pos1;
-                                    entity2.position = pos2;
-                                    entityList.Add(entity1);
-                                    entityList.Add(entity2);
-                                }
-                                else if (sizeX == 1 && sizeY == 2)
-                                {
-                                    Entity entity1 = new Entity();
-                                    Entity entity2 = new Entity();
-                                    Position pos1 = new Position();
-                                    Position pos2 = new Position();
-                                    pos1.x = x + x - 1.5;
-                                    pos1.y = y + y - 1;
-                                    pos2.x = x + x - 0.5;
-                                    pos2.y = y + y - 1;
-
-                                    entity1.position = pos1;
-                                    entity2.position = pos2;
-                                    entityList.Add(entity1);
-                                    entityList.Add(entity2);
-                                }
-                                else if (sizeX == 2 && sizeY == 2)
-                                {
-                                    Entity entity1 = new Entity();
-                                    Position pos = new Position();
-                                    pos.x = x + x - 1;
-                                    pos.y = y + y - 1;
-                                    entity1.position = pos;
-                                    entityList.Add(entity1);
-                                }
-                                #endregion
-
-                                foreach (Entity entity in entityList)
-                                {
-                                    entity.entity_number = index++;
-                                    entity.name = block.name;
-                                    if (block.name.Contains("underground"))
+                                    for(int j = sizeX; j > 0; j--)
                                     {
-                                        entity.type = "input";
-                                        entity.SType = true;
+                                        Entity newEntity = new Entity();
+                                        Position pos = new Position();
+                                        pos.x = x + x - j;
+                                        pos.y = y + y - i;
+                                        newEntity.position = pos;
+                                        newEntity.entity_number = index++;
+                                        newEntity.name = block.name;
+                                        if (block.name.Contains("underground"))
+                                        {
+                                            newEntity.type = "input";
+                                            newEntity.SType = true;
+                                        }
+                                        if (block.has_direction)
+                                        {
+                                            newEntity.direction = 4;
+                                            newEntity.SDirection = true;
+                                        }
+                                        FactorioBlueprint.blueprint.entities.Add(newEntity);
                                     }
-                                    if (block.has_direction)
-                                    {
-                                        entity.direction = 4;
-                                        entity.SDirection = true;
-                                    }
-                                    FactorioBlueprint.blueprint.entities.Add(entity);
                                 }
                                 break;
                             }
@@ -204,44 +144,24 @@ namespace Factorio_Image_Converter
                         //TODO: only iterate through if we haven't found a block, otherwise it just slows the app down
                         foreach (UTile tile in AvailableTiles)
                         {
-                            #region Another_Mess
                             if (pixelColorHex == tile.color)
                             {
-                                //I hate this
-                                //TODO: Fix this spaghetti in some nice loop
                                 found++;
-                                Tile tile1 = new Tile();
-                                Tile tile2 = new Tile();
-                                Tile tile3 = new Tile();
-                                Tile tile4 = new Tile();
-                                Position pos1 = new Position();
-                                Position pos2 = new Position();
-                                Position pos3 = new Position();
-                                Position pos4 = new Position();
-                                tile1.name = tile.name;
-                                tile2.name = tile.name;
-                                tile3.name = tile.name;
-                                tile4.name = tile.name;
-                                pos1.x = x + x - 2;
-                                pos1.y = y + y - 2;
-                                pos2.x = x + x - 1;
-                                pos2.y = y + y - 2;
-                                pos3.x = x + x - 2;
-                                pos3.y = y + y - 1;
-                                pos4.x = x + x - 1;
-                                pos4.y = y + y - 1;
-                                tile1.position = pos1;
-                                tile2.position = pos2;
-                                tile3.position = pos3;
-                                tile4.position = pos4;
-                                FactorioBlueprint.blueprint.tiles.Add(tile1);
-                                FactorioBlueprint.blueprint.tiles.Add(tile2);
-                                FactorioBlueprint.blueprint.tiles.Add(tile3);
-                                FactorioBlueprint.blueprint.tiles.Add(tile4);
-
+                                for (int i = 2; i > 0; i--)
+                                {
+                                    for (int j = 2; j > 0; j--)
+                                    {
+                                        Tile newTile = new Tile();
+                                        Position pos = new Position();
+                                        newTile.name = tile.name;
+                                        pos.x = x + x - j;
+                                        pos.y = y + y - i;
+                                        newTile.position = pos;
+                                        FactorioBlueprint.blueprint.tiles.Add(newTile);
+                                    }
+                                }
                                 break;
                             }
-                            #endregion
                         }
                     }
                 }
@@ -273,7 +193,7 @@ namespace Factorio_Image_Converter
             byte[] compressedArray;
             using (MemoryStream memoryStream = new MemoryStream())
             {
-                using (ZOutputStream zOutput = new ZOutputStream(memoryStream, zlibConst.Z_DEFAULT_COMPRESSION))
+                using (ZOutputStream zOutput = new ZOutputStream(memoryStream, zlibConst.Z_BEST_COMPRESSION))
                 {
                     using (Stream stream = new MemoryStream(jsonArray))
                     {
