@@ -112,7 +112,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="2-Resources\Palette-Original-JSON.json" />
-    <None Include="2-Resources\Usable-Blocks.json" />
+    <None Include="2-Resources\Palette-Normal.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

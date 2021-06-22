@@ -17,25 +17,27 @@ namespace Factorio_Image_Converter
     public partial class MainWindow : INotifyPropertyChanged
     {
         string imagePath;
-        public string BlueprintString;
+        int colorRange = 20;
+        public string BlueprintString;          //The result string
         BitmapImage _bitmapImage;
+        List<UBlock> AvailableBlocks;           //Currently loaded blocks from palette
+        List<UTile> AvailableTiles;             //Currently loaded tiles from palette
+        List<Color> AvailableColors;            //Currently colors blocks from palette
+        List<Color> ImageColors;                //All colors in the image
+        Root FactorioBlueprint;                 //Root for the result json
+
         public BitmapImage ResultImage
         {
             get { return _bitmapImage; }
             set
             {
-                if(_bitmapImage != value)
+                if (_bitmapImage != value)
                 {
                     _bitmapImage = value;
                     OnPropertyChanged();
                 }
             }
         }
-        List<UBlock> AvailableBlocks;
-        List<UTile> AvailableTiles;
-        List<Color> AvailableColors;
-
-        Root FactorioBlueprint;
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -51,9 +53,6 @@ namespace Factorio_Image_Converter
         }
         private void OnLoad(object sender,EventArgs e)
         {
-            AvailableBlocks = new List<UBlock>();
-            AvailableTiles = new List<UTile>();
-            AvailableColors = new List<Color>();
             FactorioBlueprint = new Root();
             LoadAvailableBlocks();
             LoadAvailableColors();
@@ -143,7 +142,7 @@ namespace Factorio_Image_Converter
                                 break;
                             }
                         }
-                        //TODO: only iterate through if we haven't found a block, otherwise it just slows the app down
+
                         if (!foundBlock)
                         {
                             foreach (UTile tile in AvailableTiles)
@@ -220,7 +219,9 @@ namespace Factorio_Image_Converter
         private void LoadAvailableBlocks()
         {
             //Loads Factorio Blocks and their colors from a JSON file into a List
-            StreamReader sr = new StreamReader(@"..\..\2-Resources\Usable-Blocks.json");
+            AvailableBlocks = new List<UBlock>();
+            AvailableTiles = new List<UTile>();
+            StreamReader sr = new StreamReader(@"..\..\2-Resources\Palette-Normal.json");
             string jsonString = sr.ReadToEnd();
             URoot uRoot = JsonConvert.DeserializeObject<URoot>(jsonString); //Populate the C# structure with JSON data
             foreach (UBlock block in uRoot.UsableBlocks.UBlocks)
@@ -235,6 +236,7 @@ namespace Factorio_Image_Converter
         private void LoadAvailableColors()
         {
             //Reads all colors from available blocks and puts them into a list
+            AvailableColors = new List<Color>();
             foreach (UBlock block in AvailableBlocks)
             {
                 Color newColor = ColorTranslator.FromHtml(block.color);
@@ -246,11 +248,55 @@ namespace Factorio_Image_Converter
                 AvailableColors.Add(newColor);
             }
         }
+        private void LoadImageColors()
+        {
+            //Finds all colors in the loaded image and puts the in a list
+            ImageColors = new List<Color>();
+            Bitmap bitmap = BitmapImage2Bitmap(ResultImage);
+            for(int y = 0; y < bitmap.Height; y++)
+            {
+                for(int x = 0; x < bitmap.Width; x++)
+                {
+                    bool containsColor = false;
+                    Color pixelColor = bitmap.GetPixel(x, y);
+                    if (ImageColors.Count > 0)
+                    {
+                        foreach (Color listColor in ImageColors)
+                        {
+                            if (pixelColor.R < (listColor.R + colorRange) && pixelColor.R > (listColor.R - colorRange) &&
+                                pixelColor.G < (listColor.G + colorRange) && pixelColor.G > (listColor.G - colorRange) &&
+                                pixelColor.B < (listColor.B + colorRange) && pixelColor.B > (listColor.B - colorRange))
+                            {
+                                //Already is inside list
+                                containsColor = true;
+                                break;
+                            }
+                        }
+                        if (!containsColor)
+                            ImageColors.Add(pixelColor);
+                    }
+                    else
+                        ImageColors.Add(pixelColor);
+                }
+            }
+        }
+        private Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
+        {
+            using (MemoryStream outStream = new MemoryStream())
+            {
+                BitmapEncoder enc = new BmpBitmapEncoder();
+                enc.Frames.Add(BitmapFrame.Create(bitmapImage));
+                enc.Save(outStream);
+                Bitmap bitmap = new Bitmap(outStream);
+
+                return new Bitmap(bitmap);
+            }
+        }
         private void btn_Import_Click(object sender, RoutedEventArgs e)
         {
             imagePath = "";
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Image files (*.png;*.jpg)|*.png;*.jpg";    //Add more image formats
+            openFileDialog.Filter = "Image files (*.png;*.jpg)|*.png;*.jpg";    //TODO: Add more image formats
             openFileDialog.FilterIndex = 1;
             openFileDialog.RestoreDirectory = true;     //Opens up where the user chose the last file
 
@@ -264,19 +310,12 @@ namespace Factorio_Image_Converter
                 //Save the image
                 ResultImage = new BitmapImage(new Uri(imagePath));
             }
-            //TODO: Image too big warning
-        }
-        private Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
-        {
-            using (MemoryStream outStream = new MemoryStream())
+            LoadImageColors();
+            foreach(Color listColor in ImageColors)
             {
-                BitmapEncoder enc = new BmpBitmapEncoder();
-                enc.Frames.Add(BitmapFrame.Create(bitmapImage));
-                enc.Save(outStream);
-                Bitmap bitmap = new Bitmap(outStream);
-
-                return new Bitmap(bitmap);
+                Debug.WriteLine(ColorTranslator.ToHtml(listColor));
             }
+            //TODO: Image too big warning
         }
         private void btn_Export_Click(object sender, RoutedEventArgs e)
         {
