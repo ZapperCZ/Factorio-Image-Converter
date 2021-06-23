@@ -8,7 +8,7 @@
         Title="ColorConversionWindow" Height="320" Width="383" ResizeMode="NoResize">
     <Border Padding="10">
         <ScrollViewer>
-            <StackPanel>
+            <StackPanel x:Name="stackPanel">
                 <Border Padding="2" Margin="0 2" BorderBrush="Gray" BorderThickness="1">
                     <Grid>
                         <Grid.ColumnDefinitions>

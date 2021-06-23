@@ -310,10 +310,6 @@ namespace Factorio_Image_Converter
                 ResultImage = new BitmapImage(new Uri(imagePath));
             }
             LoadImageColors();
-            foreach(Color listColor in ImageColors)
-            {
-                Debug.WriteLine(ColorTranslator.ToHtml(listColor));
-            }
             //TODO: Image too big warning
         }
         private void btn_Export_Click(object sender, RoutedEventArgs e)
@@ -335,7 +331,8 @@ namespace Factorio_Image_Converter
 
         private void btn_ColorConv_Click(object sender, RoutedEventArgs e)
         {
-            ColorConversionWindow colorWindow = new ColorConversionWindow();
+            //TODO: Fix crash when no image
+            ColorConversionWindow colorWindow = new ColorConversionWindow(ImageColors,AvailableBlocks,AvailableTiles);
             colorWindow.ShowDialog();
         }
     }

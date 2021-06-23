@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Factorio_Image_Converter
 {
-    class UTile
+    public class UTile
     {
         public string name { get; set; }
         public string color { get; set; }

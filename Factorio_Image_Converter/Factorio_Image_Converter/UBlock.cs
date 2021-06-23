@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Factorio_Image_Converter
 {
-    class UBlock
+    public class UBlock
     {
         public string name { get; set; }
         public string color { get; set; }
