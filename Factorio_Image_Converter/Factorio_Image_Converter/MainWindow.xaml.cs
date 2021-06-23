@@ -79,7 +79,6 @@ namespace Factorio_Image_Converter
         private void ConvertImageToBlocks(BitmapImage inputImage) //1px = 4 blocks
         {
             InstantiateRoot();
-            //TODO: Convert pixels of image to blocks
             int index = 1;
             int found = 0;
             int totalPixels = 0;
@@ -332,6 +331,12 @@ namespace Factorio_Image_Converter
             {
                 MessageBox.Show("No image selected");
             }
+        }
+
+        private void btn_ColorConv_Click(object sender, RoutedEventArgs e)
+        {
+            ColorConversionWindow colorWindow = new ColorConversionWindow();
+            colorWindow.ShowDialog();
         }
     }
 }

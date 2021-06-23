@@ -63,6 +63,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Blueprint.cs" />
+    <Compile Include="ColorConversionWindow.xaml.cs">
+      <DependentUpon>ColorConversionWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Entity.cs" />
     <Compile Include="Icon.cs" />
     <Compile Include="Position.cs" />
@@ -76,6 +79,10 @@
     <Compile Include="URoot.cs" />
     <Compile Include="UsableBlocks.cs" />
     <Compile Include="UTile.cs" />
+    <Page Include="ColorConversionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

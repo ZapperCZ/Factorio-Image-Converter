@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Factorio_Image_Converter"
         mc:Ignorable="d"
-        Title="Result Blueprint" Height="220" Width="350" ResizeMode="NoResize" Topmost="True">
+        Title="Result Blueprint" Height="220" Width="350" ResizeMode="NoResize">
     <Border Padding="10">
         <Grid>
             <Grid.ColumnDefinitions>
