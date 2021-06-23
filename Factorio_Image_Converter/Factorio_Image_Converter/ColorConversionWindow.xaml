@@ -5,25 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Factorio_Image_Converter"
         mc:Ignorable="d"
-        Title="ColorConversionWindow" Height="320" Width="280" ResizeMode="NoResize">
+        Title="ColorConversionWindow" Height="320" Width="383" ResizeMode="NoResize">
     <Border Padding="10">
-        <StackPanel>
-            <Border Padding="2" Margin="0 2" BorderBrush="Gray" BorderThickness="1">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="3*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="3*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Border>
-                        <Image/>
-                    </Border>
-                    <TextBlock Text="Test" Padding="0 4"/>
-                </Grid>
-            </Border>
-            
-        </StackPanel>
+        <ScrollViewer>
+            <StackPanel>
+                <Border Padding="2" Margin="0 2" BorderBrush="Gray" BorderThickness="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="4.5*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                            <Canvas Background="Red"/>
+                        </Border>
+                        <TextBlock Grid.Column="1" Text="#FF0000" Padding="8 4"/>
+                        <Image Grid.Column="2" Source="/2-Resources/Icons/General/arrow.png"/>
+                        <Border Grid.Column="3" BorderBrush="Black" BorderThickness="1">
+                            <Canvas Background="Red"/>
+                        </Border>
+                        <TextBlock Grid.Column="4" Text="laser_turret" Padding="8 4"/>
+                        <Border Grid.Column="5" Padding="1" BorderBrush="Black" BorderThickness="1">
+                            <Image Source="/2-Resources/Icons/Factorio/laser_turret.png"/>
+                        </Border>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
     </Border>
 </Window>

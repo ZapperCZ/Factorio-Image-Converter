@@ -118,7 +118,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="2-Resources\Palette-Original-JSON.json" />
+    <None Include="2-Resources\[Dev]Palette-Original.json" />
     <None Include="2-Resources\Palette-Normal.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -131,11 +131,18 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Resource Include="1-Images\converted_sans.png" />
+    <Resource Include="1-Input_Images\converted_sans.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="1-Images\Palette-black-small.png" />
-    <Resource Include="1-Images\Palette-black.png" />
+    <Resource Include="1-Input_Images\Palette-black-small.png" />
+    <Resource Include="1-Input_Images\Palette-black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="2-Resources\Icons\General\arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="2-Resources\Icons\Factorio\laser_turret.png" />
+    <Resource Include="2-Resources\Icons\Factorio\wooden_chest.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

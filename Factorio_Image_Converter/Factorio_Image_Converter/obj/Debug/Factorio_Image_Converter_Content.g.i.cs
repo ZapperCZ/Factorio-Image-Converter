@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("1-images/palette-black-small.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("1-images/palette-black.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("2-resources/icons/factorio/laser_turret.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("2-resources/icons/factorio/wooden_chest.png")]
 
 
