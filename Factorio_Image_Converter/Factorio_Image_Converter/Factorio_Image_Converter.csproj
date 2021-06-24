@@ -143,8 +143,59 @@
     <Resource Include="2-Resources\Icons\General\arrow.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="2-Resources\Icons\Factorio\laser_turret.png" />
-    <Resource Include="2-Resources\Icons\Factorio\wooden_chest.png" />
+    <Resource Include="2-Resources\Icons\Factorio\laser-turret.png" />
+    <Resource Include="2-Resources\Icons\Factorio\wooden-chest.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="2-Resources\Icons\Factorio\iron-chest.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="2-Resources\Icons\Factorio\burner-inserter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="2-Resources\Icons\Factorio\stone-furnace.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="2-Resources\Icons\Factorio\inserter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="2-Resources\Icons\Factorio\substation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="2-Resources\Icons\Factorio\pipe-to-ground.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="2-Resources\Icons\Factorio\heat-pipe.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="2-Resources\Icons\Factorio\pipe.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="2-Resources\Icons\Factorio\pump.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="2-Resources\Icons\Factorio\stone-wall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="2-Resources\Icons\Factorio\straight-rail.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="2-Resources\Icons\Factorio\accumulator.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="2-Resources\Icons\Factorio\gate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="2-Resources\Icons\Factorio\underground-belt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="2-Resources\Icons\Factorio\transport-belt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="2-Resources\Icons\Factorio\gun-turret.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="2-Resources\Icons\Factorio\splitter.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
