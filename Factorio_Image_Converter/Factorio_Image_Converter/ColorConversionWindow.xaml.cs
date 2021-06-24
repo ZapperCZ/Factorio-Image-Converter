@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Factorio_Image_Converter
 {
@@ -24,7 +26,7 @@ namespace Factorio_Image_Converter
         {
             foreach(System.Drawing.Color color in SourceColors)
             {
-                Debug.WriteLine("adding new control");
+                //Debug.WriteLine("adding new control");
                 #region Control_Creation
                 Border mainBorder = new Border();
                 Grid grid = new Grid();
@@ -73,7 +75,38 @@ namespace Factorio_Image_Converter
                 sourceColorCanvas.Background = new SolidColorBrush(DrawingC2MediaC(color));
                 sourceColorBorder.Child = sourceColorCanvas;
 
+                sourceColorHex.SetValue(Grid.ColumnProperty, 1);
+                sourceColorHex.Text = ColorTranslator.ToHtml(color);
+                sourceColorHex.Padding = new Thickness(8, 4, 8, 4);
+
+                arrowImage.SetValue(Grid.ColumnProperty,2);
+                arrowImage.Source = new BitmapImage(new Uri("2-Resources/Icons/General/arrow.png", UriKind.Relative));
+
+                resultColorBorder.SetValue(Grid.ColumnProperty, 3);
+                resultColorBorder.BorderBrush = System.Windows.Media.Brushes.Black;
+                resultColorBorder.BorderThickness = new Thickness(1);
+
+                resultColorCanvas.Background = System.Windows.Media.Brushes.White;
+                resultColorBorder.Child = resultColorCanvas;
+
+                resultBlockName.SetValue(Grid.ColumnProperty, 4);
+                resultBlockName.Text = "none";
+                resultBlockName.Padding = new Thickness(8, 4, 8, 4);
+
+                resultBlockBorder.SetValue(Grid.ColumnProperty, 5);
+                resultBlockBorder.Padding = new Thickness(1);
+                resultBlockBorder.BorderBrush = System.Windows.Media.Brushes.Black;
+                resultBlockBorder.BorderThickness = new Thickness(1);
+
+                resultBlockImage.Source = new BitmapImage(new Uri("2-Resources/Icons/General/white.png", UriKind.Relative));
+                resultBlockBorder.Child = resultBlockImage;
+
                 grid.Children.Add(sourceColorBorder);
+                grid.Children.Add(sourceColorHex);
+                grid.Children.Add(arrowImage);
+                grid.Children.Add(resultColorBorder);
+                grid.Children.Add(resultBlockName);
+                grid.Children.Add(resultBlockBorder);
                 stackPanel.Children.Add(mainBorder);
             }
         }

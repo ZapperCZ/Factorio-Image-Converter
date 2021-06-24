@@ -54,7 +54,7 @@ namespace Factorio_Image_Converter
         private void OnLoad(object sender,EventArgs e)
         {
             FactorioBlueprint = new Root();
-            LoadAvailableBlocks();
+            LoadAvailableBlocks();          //Loads the palette
             LoadAvailableColors();
         }
         private void InstantiateRoot()
