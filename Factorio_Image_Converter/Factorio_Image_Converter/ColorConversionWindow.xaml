@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Factorio_Image_Converter"
         mc:Ignorable="d"
-        Title="ColorConversionWindow" Height="320" Width="383" ResizeMode="NoResize">
+        Title="Color Conversion" Height="320" Width="383" ResizeMode="NoResize">
     <Border Padding="10">
         <ScrollViewer>
             <StackPanel x:Name="stackPanel" Margin="0 0 10 0">
+                <!-- Debug control
                 <Border Padding="2" Margin="0 2" BorderBrush="Gray" BorderThickness="1">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -33,6 +34,7 @@
                         </Border>
                     </Grid>
                 </Border>
+                -->
             </StackPanel>
         </ScrollViewer>
     </Border>

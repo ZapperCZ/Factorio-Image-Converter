@@ -332,7 +332,7 @@ namespace Factorio_Image_Converter
         private void btn_ColorConv_Click(object sender, RoutedEventArgs e)
         {
             //TODO: Fix crash when no image
-            ColorConversionWindow colorWindow = new ColorConversionWindow(ImageColors,AvailableBlocks,AvailableTiles);
+            ColorConversionWindow colorWindow = new ColorConversionWindow(ImageColors,AvailableColors,AvailableBlocks,AvailableTiles);
             colorWindow.ShowDialog();
         }
     }

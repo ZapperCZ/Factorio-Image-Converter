@@ -12,11 +12,13 @@ namespace Factorio_Image_Converter
     public partial class ColorConversionWindow : Window
     {
         List<System.Drawing.Color> ImageColors;
+        List<System.Drawing.Color> AvailableColors;
         List<UBlock> AvailableBlocks;
         List<UTile> AvailableTiles;
-        public ColorConversionWindow(List<System.Drawing.Color> ImageColors, List<UBlock> AvailableBlocks, List<UTile> AvailableTiles)
+        public ColorConversionWindow(List<System.Drawing.Color> ImageColors, List<System.Drawing.Color> AvailableColors, List<UBlock> AvailableBlocks, List<UTile> AvailableTiles)
         {
             this.ImageColors = ImageColors;
+            this.AvailableColors = AvailableColors;
             this.AvailableBlocks = AvailableBlocks;
             this.AvailableTiles = AvailableTiles;
             InitializeComponent();
@@ -41,7 +43,7 @@ namespace Factorio_Image_Converter
                 TextBlock sourceColorHex = new TextBlock();
                 System.Windows.Controls.Image arrowImage = new System.Windows.Controls.Image();
                 Border resultColorBorder = new Border();
-                Canvas resultColorCanvas = new Canvas();
+                Button resultColorButton = new Button();
                 TextBlock resultBlockName = new TextBlock();
                 Border resultBlockBorder = new Border();
                 System.Windows.Controls.Image resultBlockImage = new System.Windows.Controls.Image();
@@ -82,12 +84,11 @@ namespace Factorio_Image_Converter
                 arrowImage.SetValue(Grid.ColumnProperty,2);
                 arrowImage.Source = new BitmapImage(new Uri("2-Resources/Icons/General/arrow.png", UriKind.Relative));
 
-                resultColorBorder.SetValue(Grid.ColumnProperty, 3);
-                resultColorBorder.BorderBrush = System.Windows.Media.Brushes.Black;
-                resultColorBorder.BorderThickness = new Thickness(1);
-
-                resultColorCanvas.Background = System.Windows.Media.Brushes.White;
-                resultColorBorder.Child = resultColorCanvas;
+                resultColorButton.BorderBrush = System.Windows.Media.Brushes.Black;
+                resultColorButton.BorderThickness = new Thickness(1.1);     //because for some reason 1 for button thickness isn't the same as 1 for border thickness
+                resultColorButton.SetValue(Grid.ColumnProperty, 3);
+                resultColorButton.Background = System.Windows.Media.Brushes.White;
+                resultColorButton.Click += new RoutedEventHandler(btn_ColorPick);
 
                 resultBlockName.SetValue(Grid.ColumnProperty, 4);
                 resultBlockName.Text = "none";
@@ -104,11 +105,16 @@ namespace Factorio_Image_Converter
                 grid.Children.Add(sourceColorBorder);
                 grid.Children.Add(sourceColorHex);
                 grid.Children.Add(arrowImage);
-                grid.Children.Add(resultColorBorder);
+                grid.Children.Add(resultColorButton);
                 grid.Children.Add(resultBlockName);
                 grid.Children.Add(resultBlockBorder);
                 stackPanel.Children.Add(mainBorder);
             }
+        }
+        private void btn_ColorPick(object sender, RoutedEventArgs e)
+        {
+            CCPickerWindow CCPicker = new CCPickerWindow(AvailableColors);
+            CCPicker.ShowDialog();
         }
         private System.Windows.Media.Color DrawingC2MediaC(System.Drawing.Color inputColor)
         {

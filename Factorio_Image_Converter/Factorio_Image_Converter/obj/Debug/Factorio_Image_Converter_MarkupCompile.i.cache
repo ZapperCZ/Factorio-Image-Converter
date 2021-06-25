@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\user\Škola\MVOP\WPF-Factorio_Image_Converter\Factorio_Image_Converter\Factorio_Image_Converter\App.xaml
-3-164409415
+4-1066002082
 
-19-697327412
+201177447624
 16-71936373
-ColorConversionWindow.xaml;MainWindow.xaml;ResultWindow.xaml;
+CCPickerWindow.xaml;ColorConversionWindow.xaml;MainWindow.xaml;ResultWindow.xaml;
 
-False
+True
 
