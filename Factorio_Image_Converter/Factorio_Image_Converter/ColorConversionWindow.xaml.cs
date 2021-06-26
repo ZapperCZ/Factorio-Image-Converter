@@ -12,13 +12,11 @@ namespace Factorio_Image_Converter
     public partial class ColorConversionWindow : Window
     {
         List<System.Drawing.Color> ImageColors;
-        List<System.Drawing.Color> AvailableColors;
         List<UBlock> AvailableBlocks;
         List<UTile> AvailableTiles;
-        public ColorConversionWindow(List<System.Drawing.Color> ImageColors, List<System.Drawing.Color> AvailableColors, List<UBlock> AvailableBlocks, List<UTile> AvailableTiles)
+        public ColorConversionWindow(List<System.Drawing.Color> ImageColors, List<UBlock> AvailableBlocks, List<UTile> AvailableTiles)
         {
             this.ImageColors = ImageColors;
-            this.AvailableColors = AvailableColors;
             this.AvailableBlocks = AvailableBlocks;
             this.AvailableTiles = AvailableTiles;
             InitializeComponent();
@@ -113,7 +111,7 @@ namespace Factorio_Image_Converter
         }
         private void btn_ColorPick(object sender, RoutedEventArgs e)
         {
-            CCPickerWindow CCPicker = new CCPickerWindow(AvailableColors);
+            CCPickerWindow CCPicker = new CCPickerWindow(AvailableBlocks, AvailableTiles);
             CCPicker.ShowDialog();
         }
         private System.Windows.Media.Color DrawingC2MediaC(System.Drawing.Color inputColor)

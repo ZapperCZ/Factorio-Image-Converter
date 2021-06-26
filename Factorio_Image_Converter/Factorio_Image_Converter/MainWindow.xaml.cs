@@ -314,7 +314,7 @@ namespace Factorio_Image_Converter
         }
         private void btn_Export_Click(object sender, RoutedEventArgs e)
         {
-            if(imagePath != null)
+            if(imagePath != null)   //FIX: Crash when no file selected
             {
                 ConvertImageToBlocks(ResultImage);       //This will convert only colors that are present in UsableBlocks.json, currently there is no color conversion
                 ConvertBlocksToJSON(@"..\..\2-Resources\Blueprint.json");
@@ -332,7 +332,7 @@ namespace Factorio_Image_Converter
         private void btn_ColorConv_Click(object sender, RoutedEventArgs e)
         {
             //TODO: Fix crash when no image
-            ColorConversionWindow colorWindow = new ColorConversionWindow(ImageColors,AvailableColors,AvailableBlocks,AvailableTiles);
+            ColorConversionWindow colorWindow = new ColorConversionWindow(ImageColors,AvailableBlocks,AvailableTiles);
             colorWindow.ShowDialog();
         }
     }
