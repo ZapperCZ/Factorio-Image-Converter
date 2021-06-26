@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -87,10 +88,12 @@ namespace Factorio_Image_Converter
                 resultColorButton.SetValue(Grid.ColumnProperty, 3);
                 resultColorButton.Background = System.Windows.Media.Brushes.White;
                 resultColorButton.Click += new RoutedEventHandler(btn_ColorPick);
+                resultColorButton.Name = "ResultColor";
 
                 resultBlockName.SetValue(Grid.ColumnProperty, 4);
                 resultBlockName.Text = "none";
                 resultBlockName.Padding = new Thickness(8, 4, 8, 4);
+                resultBlockName.Name = "ResultName";
 
                 resultBlockBorder.SetValue(Grid.ColumnProperty, 5);
                 resultBlockBorder.Padding = new Thickness(1);
@@ -99,6 +102,7 @@ namespace Factorio_Image_Converter
 
                 resultBlockImage.Source = new BitmapImage(new Uri("2-Resources/Icons/General/white.png", UriKind.Relative));
                 resultBlockBorder.Child = resultBlockImage;
+                resultBlockBorder.Name = "ResultIconBorder";
 
                 grid.Children.Add(sourceColorBorder);
                 grid.Children.Add(sourceColorHex);
@@ -111,8 +115,55 @@ namespace Factorio_Image_Converter
         }
         private void btn_ColorPick(object sender, RoutedEventArgs e)
         {
+            Button btn = (Button)sender;
+            Grid grid = (Grid)btn.Parent;
+            string resultNameString = "";
+
+            Button resultColor = new Button();
+            TextBlock resultName = new TextBlock();
+            System.Windows.Controls.Image resultIcon = new System.Windows.Controls.Image();
+
+            foreach(FrameworkElement control in grid.Children)
+            {
+                UIElement element = (UIElement)control;
+                if (control.Name == "ResultColor")
+                {
+                    resultColor = (Button)element;
+                }
+                else if (control.Name == "ResultName")
+                {
+                    resultName = (TextBlock)element;
+                }
+                else if(control.Name == "ResultIconBorder")
+                {
+                    Border b = (Border)element;
+                    resultIcon = (System.Windows.Controls.Image)b.Child;
+                }
+            }
+
             CCPickerWindow CCPicker = new CCPickerWindow(AvailableBlocks, AvailableTiles);
             CCPicker.ShowDialog();
+            
+            Debug.WriteLine(CCPicker.resultBlock + " - " + CCPicker.isTile);
+
+            if (!CCPicker.isTile)   //is block
+            {
+                UBlock uBlock = AvailableBlocks.Find(block => block.name == CCPicker.resultBlock);
+                resultColor.Background = new SolidColorBrush(DrawingC2MediaC(ColorTranslator.FromHtml(uBlock.color)));
+            }
+            else
+            {
+                UTile uTile = AvailableTiles.Find(tile => tile.name == CCPicker.resultBlock);
+                resultColor.Background = new SolidColorBrush(DrawingC2MediaC(ColorTranslator.FromHtml(uTile.color)));
+            }
+            resultNameString = CCPicker.resultBlock;
+
+            if (resultNameString.Contains("left"))
+            {
+                resultNameString = resultNameString.Substring(0, resultNameString.IndexOf("left") - 1);
+            }
+            resultName.Text = resultNameString.Replace('-',' ');
+            resultIcon.Source = new BitmapImage(new Uri("2-Resources/Icons/Factorio/" + CCPicker.resultBlock + ".png", UriKind.Relative));
         }
         private System.Windows.Media.Color DrawingC2MediaC(System.Drawing.Color inputColor)
         {
