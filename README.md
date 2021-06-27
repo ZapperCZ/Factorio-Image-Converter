@@ -1,5 +1,5 @@
 # Factorio Image Converter
-This is a Windows desktop app created for conversion of pixel art into Factorio map art.<br/>
+This is a WIP Windows desktop app created for conversion of pixel art into Factorio map art.<br/>
 It was originally developed in Windows Forms, but has been ported over to WPF due to databinding and other features of WPF.
 ## Info
 The optimal input for the app is pixel art in jpeg or png format. It is not specifically designed to handle anything else.<br/>
