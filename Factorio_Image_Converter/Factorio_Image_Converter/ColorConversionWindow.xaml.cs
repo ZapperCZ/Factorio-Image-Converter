@@ -15,6 +15,7 @@ namespace Factorio_Image_Converter
         List<System.Drawing.Color> ImageColors;
         List<UBlock> AvailableBlocks;
         List<UTile> AvailableTiles;
+        public Dictionary<string, string> D_colorConversion = new Dictionary<string, string>();
         public ColorConversionWindow(List<System.Drawing.Color> ImageColors, List<UBlock> AvailableBlocks, List<UTile> AvailableTiles)
         {
             this.ImageColors = ImageColors;
@@ -25,6 +26,7 @@ namespace Factorio_Image_Converter
         }
         private void GenerateControls(List<System.Drawing.Color> SourceColors)
         {
+            //TODO: Load colors that are already present in the dictionary
             foreach(System.Drawing.Color color in SourceColors)
             {
                 //Debug.WriteLine("adding new control");
@@ -79,6 +81,7 @@ namespace Factorio_Image_Converter
                 sourceColorHex.SetValue(Grid.ColumnProperty, 1);
                 sourceColorHex.Text = ColorTranslator.ToHtml(color);
                 sourceColorHex.Padding = new Thickness(8, 4, 8, 4);
+                sourceColorHex.Name = "SourceColor";
 
                 arrowImage.SetValue(Grid.ColumnProperty,2);
                 arrowImage.Source = new BitmapImage(new Uri("2-Resources/Icons/General/arrow.png", UriKind.Relative));
@@ -118,8 +121,11 @@ namespace Factorio_Image_Converter
             Button btn = (Button)sender;
             Grid grid = (Grid)btn.Parent;
             string resultNameString = "";
+            string sourceColorHex = "";
+            string resultColorHex = "";
 
             Button resultColor = new Button();
+            TextBlock sourceColor = new TextBlock();
             TextBlock resultName = new TextBlock();
             System.Windows.Controls.Image resultIcon = new System.Windows.Controls.Image();
 
@@ -139,21 +145,28 @@ namespace Factorio_Image_Converter
                     Border b = (Border)element;
                     resultIcon = (System.Windows.Controls.Image)b.Child;
                 }
+                else if(control.Name == "SourceColor")
+                {
+                    sourceColor = (TextBlock)element;
+                }
             }
+
+            sourceColorHex = sourceColor.Text.ToLower();
 
             CCPickerWindow CCPicker = new CCPickerWindow(AvailableBlocks, AvailableTiles);
             CCPicker.ShowDialog();
             
-            Debug.WriteLine(CCPicker.resultBlock + " - " + CCPicker.isTile);
-
+            //FIX: Crash when no color selected
             if (!CCPicker.isTile)   //is block
             {
                 UBlock uBlock = AvailableBlocks.Find(block => block.name == CCPicker.resultBlock);
+                resultColorHex = uBlock.color;
                 resultColor.Background = new SolidColorBrush(DrawingC2MediaC(ColorTranslator.FromHtml(uBlock.color)));
             }
             else
             {
                 UTile uTile = AvailableTiles.Find(tile => tile.name == CCPicker.resultBlock);
+                resultColorHex = uTile.color;
                 resultColor.Background = new SolidColorBrush(DrawingC2MediaC(ColorTranslator.FromHtml(uTile.color)));
             }
             resultNameString = CCPicker.resultBlock;
@@ -164,6 +177,17 @@ namespace Factorio_Image_Converter
             }
             resultName.Text = resultNameString.Replace('-',' ');
             resultIcon.Source = new BitmapImage(new Uri("2-Resources/Icons/Factorio/" + CCPicker.resultBlock + ".png", UriKind.Relative));
+
+            if (!D_colorConversion.ContainsKey(sourceColorHex))
+            {
+                D_colorConversion.Add(sourceColorHex, resultColorHex);
+            }
+            else
+            {
+                //Overwrite existing definition
+                D_colorConversion.Remove(sourceColorHex);
+                D_colorConversion.Add(sourceColorHex, resultColorHex);
+            }
         }
         private System.Windows.Media.Color DrawingC2MediaC(System.Drawing.Color inputColor)
         {
