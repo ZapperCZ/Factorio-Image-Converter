@@ -89,7 +89,8 @@ namespace Factorio_Image_Converter
                     //Debug.WriteLine("x > "+x+" y > "+y);
                     Color pixelColor = bitmap.GetPixel(x, y);
                     string pixelColorHex = ColorTranslator.ToHtml(pixelColor).ToLower();
-                    //FIX: There is no distinction between black and transparent, FIX
+                    //FIX: There is no distinction between black and transparent
+                    //URGENT FIX: Whole thing is borked now, everything is overlapping, result looks nothing like what it is supposed to be
                     //TODO: Implement NiX3r's pixel compression code
                     if (D_colorConversion.ContainsKey(pixelColorHex))
                     {
