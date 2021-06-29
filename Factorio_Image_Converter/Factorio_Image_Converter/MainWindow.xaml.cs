@@ -22,9 +22,9 @@ namespace Factorio_Image_Converter
         BitmapImage _bitmapImage;
         List<UBlock> AvailableBlocks;           //Currently loaded blocks from palette
         List<UTile> AvailableTiles;             //Currently loaded tiles from palette
-        List<Color> AvailableColors;            //Currently colors blocks from palette
         List<Color> ImageColors;                //All colors in the image
         Root FactorioBlueprint;                 //Root for the result json
+        public Dictionary<string, string> D_colorConversion;
 
         public BitmapImage ResultImage
         {
@@ -55,7 +55,6 @@ namespace Factorio_Image_Converter
         {
             FactorioBlueprint = new Root();
             LoadAvailableBlocks();          //Loads the palette
-            LoadAvailableColors();
         }
         private void InstantiateRoot()
         {
@@ -76,7 +75,7 @@ namespace Factorio_Image_Converter
             defaultIcon.index = 1;
             FactorioBlueprint.blueprint.icons.Add(defaultIcon);
         }
-        private void ConvertImageToBlocks(BitmapImage inputImage) //1px = 4 blocks
+        private void ConvertImageToBlocks(BitmapImage inputImage) //1 image px = 4 factorio blocks
         {
             InstantiateRoot();
             int index = 1;
@@ -90,6 +89,14 @@ namespace Factorio_Image_Converter
                     //Debug.WriteLine("x > "+x+" y > "+y);
                     Color pixelColor = bitmap.GetPixel(x, y);
                     string pixelColorHex = ColorTranslator.ToHtml(pixelColor).ToLower();
+                    //FIX: There is no distinction between black and transparent, FIX
+                    //TODO: Implement NiX3r's pixel compression code
+                    if (D_colorConversion.ContainsKey(pixelColorHex))
+                    {
+                        //Debug.WriteLine("1 - " + pixelColorHex);
+                        D_colorConversion.TryGetValue(pixelColorHex, out pixelColorHex);
+                        //Debug.WriteLine("2 - " + pixelColorHex);
+                    }
                     if (pixelColorHex != "#000000") //transparent
                     {
                         totalPixels++;
@@ -99,7 +106,6 @@ namespace Factorio_Image_Converter
                             if (pixelColorHex == block.color)
                             {
                                 found++;
-                                //All positions must be 0.5 because of rails, rails are 0.0
                                 //Entities are listed through in pairs of 4, so top left, top right, bottom left, bottom right
                                 int sizeX = Convert.ToInt32(block.occupied_space[0].ToString());
                                 int sizeY = Convert.ToInt32(block.occupied_space[2].ToString());
@@ -112,7 +118,7 @@ namespace Factorio_Image_Converter
 
                                 List<Entity> entityList = new List<Entity>();
 
-                                
+                                //Filling up all the 4 spacess
                                 for (int i = sizeY; i > 0; i--)
                                 {
                                     for(int j = sizeX; j > 0; j--)
@@ -232,21 +238,6 @@ namespace Factorio_Image_Converter
                 AvailableTiles.Add(tile);
             }
         }
-        private void LoadAvailableColors()
-        {
-            //Reads all colors from available blocks and puts them into a list
-            AvailableColors = new List<Color>();
-            foreach (UBlock block in AvailableBlocks)
-            {
-                Color newColor = ColorTranslator.FromHtml(block.color);
-                AvailableColors.Add(newColor);
-            }
-            foreach (UTile tile in AvailableTiles)
-            {
-                Color newColor = ColorTranslator.FromHtml(tile.color);
-                AvailableColors.Add(newColor);
-            }
-        }
         private void LoadImageColors()
         {
             //Finds all colors in the loaded image and puts the in a list
@@ -335,7 +326,9 @@ namespace Factorio_Image_Converter
             //TODO: Fix crash when no image
             ColorConversionWindow colorWindow = new ColorConversionWindow(ImageColors,AvailableBlocks,AvailableTiles);
             colorWindow.ShowDialog();
-            foreach(KeyValuePair<string,string> entry in colorWindow.D_colorConversion)
+            D_colorConversion = colorWindow.D_colorConversion;
+
+            foreach(KeyValuePair<string,string> entry in D_colorConversion)
             {
                 Debug.WriteLine(entry.Key + " - " + entry.Value);
             }
