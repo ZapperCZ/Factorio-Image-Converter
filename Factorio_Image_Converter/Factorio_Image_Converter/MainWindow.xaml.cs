@@ -79,13 +79,14 @@ namespace Factorio_Image_Converter
         }
         private void ConvertImageToBlocks(BitmapImage inputImage) //1 image px = 4 factorio blocks
         {
+            //FIX: Completely shits itself when there is an undefined color conversion
             InstantiateRoot();
             int index = 1;
             int found = 0;
             int totalPixels = 0;
             UBlock resultBlock = new UBlock();
             UTile resultTile = new UTile();
-            Color sourceColor = new Color();
+            Color originalColor = new Color();
             Color resultColor = new Color();
             Bitmap bitmap = BitmapImage2Bitmap(inputImage);
             for (int y = 0; y < bitmap.Height; y++)
@@ -113,8 +114,13 @@ namespace Factorio_Image_Converter
                             //Debug.WriteLine(resultTile.name);
                         }
                     }
-                    sourceColor = ColorTranslator.FromHtml(pixelColorHex);
+                    else
+                    {
+                        resultColor = ColorTranslator.FromHtml(pixelColorHex);
+                    }
+                    originalColor = ColorTranslator.FromHtml(pixelColorHex);
 
+                    //FIX: The generation code breaks itself when one or more colors aren't converted
                     if (true /*pixelColorHex != "#000000"*/) //TODO: Change this to compare alpha channel
                     {
                         totalPixels++;
