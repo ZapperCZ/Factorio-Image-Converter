@@ -11,6 +11,7 @@ using System.IO;
 using Newtonsoft.Json;
 using zlib;
 using System.Windows.Media.Imaging;
+using System.Linq;
 
 namespace Factorio_Image_Converter
 {
@@ -24,7 +25,7 @@ namespace Factorio_Image_Converter
         List<UTile> AvailableTiles;             //Currently loaded tiles from palette
         List<Color> ImageColors;                //All colors in the image
         Root FactorioBlueprint;                 //Root for the result json
-        public Dictionary<string, string> D_colorConversion;
+        public Dictionary<string, string> D_colorConversion;    //TODO: Change this to store block name instead of just color
 
         public BitmapImage ResultImage
         {
@@ -54,6 +55,7 @@ namespace Factorio_Image_Converter
         private void OnLoad(object sender,EventArgs e)
         {
             FactorioBlueprint = new Root();
+            D_colorConversion = new Dictionary<string, string>();
             LoadAvailableBlocks();          //Loads the palette
         }
         private void InstantiateRoot()
@@ -81,30 +83,48 @@ namespace Factorio_Image_Converter
             int index = 1;
             int found = 0;
             int totalPixels = 0;
+            UBlock resultBlock = new UBlock();
+            UTile resultTile = new UTile();
+            Color sourceColor = new Color();
+            Color resultColor = new Color();
             Bitmap bitmap = BitmapImage2Bitmap(inputImage);
             for (int y = 0; y < bitmap.Height; y++)
             {
                 for (int x = 0; x < bitmap.Width; x++)
                 {
-                    //Debug.WriteLine("x > "+x+" y > "+y);
+                    //FIX: Code can't detect alpha channel in the image
                     Color pixelColor = bitmap.GetPixel(x, y);
                     string pixelColorHex = ColorTranslator.ToHtml(pixelColor).ToLower();
-                    //FIX: There is no distinction between black and transparent
-                    //URGENT FIX: Whole thing is borked now, everything is overlapping, result looks nothing like what it is supposed to be
                     //TODO: Implement NiX3r's pixel compression code
+                    //FIX: There is no distinction between black and transparent
+
                     if (D_colorConversion.ContainsKey(pixelColorHex))
                     {
-                        //Debug.WriteLine("1 - " + pixelColorHex);
-                        D_colorConversion.TryGetValue(pixelColorHex, out pixelColorHex);
-                        //Debug.WriteLine("2 - " + pixelColorHex);
+                        if(AvailableBlocks.Count(block => block.name == D_colorConversion[pixelColorHex]) > 0)
+                        {
+                            resultBlock = AvailableBlocks.Find(block => block.name == D_colorConversion[pixelColorHex]);
+                            resultColor = ColorTranslator.FromHtml(resultBlock.color);
+                            //Debug.WriteLine(resultBlock.name);
+                        }
+                        else
+                        {
+                            resultTile = AvailableTiles.Find(tile => tile.name == D_colorConversion[pixelColorHex]);
+                            resultColor = ColorTranslator.FromHtml(resultTile.color);
+                            //Debug.WriteLine(resultTile.name);
+                        }
                     }
-                    if (pixelColorHex != "#000000") //transparent
+                    sourceColor = ColorTranslator.FromHtml(pixelColorHex);
+
+                    if (true /*pixelColorHex != "#000000"*/) //TODO: Change this to compare alpha channel
                     {
                         totalPixels++;
                         bool foundBlock = false;
                         foreach (UBlock block in AvailableBlocks)
                         {
-                            if (pixelColorHex == block.color)
+                            Color blockColor = ColorTranslator.FromHtml(block.color);
+                            if (resultColor.R < (blockColor.R + colorRange) && resultColor.R > (blockColor.R - colorRange) &&
+                                resultColor.G < (blockColor.G + colorRange) && resultColor.G > (blockColor.G - colorRange) &&
+                                resultColor.B < (blockColor.B + colorRange) && resultColor.B > (blockColor.B - colorRange))
                             {
                                 found++;
                                 //Entities are listed through in pairs of 4, so top left, top right, bottom left, bottom right
@@ -153,7 +173,10 @@ namespace Factorio_Image_Converter
                         {
                             foreach (UTile tile in AvailableTiles)
                             {
-                                if (pixelColorHex == tile.color)
+                                Color tileColor = ColorTranslator.FromHtml(tile.color);
+                                if (resultColor.R < (tileColor.R + colorRange) && resultColor.R > (tileColor.R - colorRange) &&
+                                    resultColor.G < (tileColor.G + colorRange) && resultColor.G > (tileColor.G - colorRange) &&
+                                    resultColor.B < (tileColor.B + colorRange) && resultColor.B > (tileColor.B - colorRange))
                                 {
                                     found++;
                                     for (int i = 2; i > 0; i--)
@@ -273,6 +296,7 @@ namespace Factorio_Image_Converter
         }
         private Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
         {
+            //FIX: It's possible that alpha channel is lost here
             using (MemoryStream outStream = new MemoryStream())
             {
                 BitmapEncoder enc = new BmpBitmapEncoder();
@@ -285,6 +309,7 @@ namespace Factorio_Image_Converter
         }
         private void btn_Import_Click(object sender, RoutedEventArgs e)
         {
+            //TODO: Somehow stop accessing the file of the image after it is loaded
             imagePath = "";
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Image files (*.png;*.jpg)|*.png;*.jpg";    //TODO: Add more image formats
@@ -293,7 +318,7 @@ namespace Factorio_Image_Converter
 
             openFileDialog.ShowDialog();
 
-            if (openFileDialog.FileName != "")
+            if (openFileDialog.FileName != "")  //FIX: Doesn't work, still crashes with no image
             {
                 Debug.WriteLine(imagePath);
                 imagePath = openFileDialog.FileName;
@@ -307,7 +332,7 @@ namespace Factorio_Image_Converter
         private void btn_Export_Click(object sender, RoutedEventArgs e)
         {
             //TODO: Implement color conversion
-            if(imagePath != null)   //FIX: Crash when no file selected
+            if(imagePath != null)
             {
                 ConvertImageToBlocks(ResultImage);       //This will convert only colors that are present in UsableBlocks.json, currently there is no color conversion
                 ConvertBlocksToJSON(@"..\..\2-Resources\Blueprint.json");
@@ -324,7 +349,7 @@ namespace Factorio_Image_Converter
 
         private void btn_ColorConv_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: Fix crash when no image
+            //FIX: Crash when no image loaded
             ColorConversionWindow colorWindow = new ColorConversionWindow(ImageColors,AvailableBlocks,AvailableTiles);
             colorWindow.ShowDialog();
             D_colorConversion = colorWindow.D_colorConversion;

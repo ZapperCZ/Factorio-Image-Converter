@@ -15,9 +15,10 @@ namespace Factorio_Image_Converter
         List<System.Drawing.Color> ImageColors;
         List<UBlock> AvailableBlocks;
         List<UTile> AvailableTiles;
-        public Dictionary<string, string> D_colorConversion = new Dictionary<string, string>();
+        public Dictionary<string, string> D_colorConversion; //<original color, result block name>
         public ColorConversionWindow(List<System.Drawing.Color> ImageColors, List<UBlock> AvailableBlocks, List<UTile> AvailableTiles)
         {
+            D_colorConversion = new Dictionary<string, string>();
             this.ImageColors = ImageColors;
             this.AvailableBlocks = AvailableBlocks;
             this.AvailableTiles = AvailableTiles;
@@ -122,7 +123,7 @@ namespace Factorio_Image_Converter
             Grid grid = (Grid)btn.Parent;
             string resultNameString = "";
             string sourceColorHex = "";
-            string resultColorHex = "";
+            string resultBlockName = "";
 
             Button resultColor = new Button();
             TextBlock sourceColor = new TextBlock();
@@ -160,13 +161,13 @@ namespace Factorio_Image_Converter
             if (!CCPicker.isTile)   //is block
             {
                 UBlock uBlock = AvailableBlocks.Find(block => block.name == CCPicker.resultBlock);
-                resultColorHex = uBlock.color;
+                resultBlockName = uBlock.name;
                 resultColor.Background = new SolidColorBrush(DrawingC2MediaC(ColorTranslator.FromHtml(uBlock.color)));
             }
             else
             {
                 UTile uTile = AvailableTiles.Find(tile => tile.name == CCPicker.resultBlock);
-                resultColorHex = uTile.color;
+                resultBlockName = uTile.name;
                 resultColor.Background = new SolidColorBrush(DrawingC2MediaC(ColorTranslator.FromHtml(uTile.color)));
             }
             resultNameString = CCPicker.resultBlock;
@@ -180,13 +181,13 @@ namespace Factorio_Image_Converter
 
             if (!D_colorConversion.ContainsKey(sourceColorHex))
             {
-                D_colorConversion.Add(sourceColorHex, resultColorHex);
+                D_colorConversion.Add(sourceColorHex, resultBlockName);
             }
-            else
+            else if(D_colorConversion[sourceColorHex] != resultBlockName)
             {
                 //Overwrite existing definition
                 D_colorConversion.Remove(sourceColorHex);
-                D_colorConversion.Add(sourceColorHex, resultColorHex);
+                D_colorConversion.Add(sourceColorHex, resultBlockName);
             }
         }
         private System.Windows.Media.Color DrawingC2MediaC(System.Drawing.Color inputColor)
