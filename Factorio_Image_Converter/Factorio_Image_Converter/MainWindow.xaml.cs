@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace Factorio_Image_Converter
 {
-    //Big shoutout to Gachl (https://github.com/Gachl) for creating the monocolor image converter and to Factorio Prints () for having an amazing site (https://factorioprints.com/)
+    //Big shoutout to Gachl (https://github.com/Gachl) for creating the monocolor image converter and to Factorio Prints (https://factorioprints.com/) for creating and maintaining a great online tool
     public partial class MainWindow : INotifyPropertyChanged
     {
         string imagePath;
@@ -96,7 +96,6 @@ namespace Factorio_Image_Converter
                     Color pixelColor = bitmap.GetPixel(x, y);
                     string pixelColorHex = ColorTranslator.ToHtml(pixelColor).ToLower();
                     //TODO: Implement NiX3r's pixel compression code
-                    //FIX: There is no distinction between black and transparent
 
                     if (D_colorConversion.ContainsKey(pixelColorHex))
                     {
@@ -125,9 +124,17 @@ namespace Factorio_Image_Converter
                         foreach (UBlock block in AvailableBlocks)
                         {
                             Color blockColor = ColorTranslator.FromHtml(block.color);
-                            if (resultColor.R < (blockColor.R + colorRange) && resultColor.R > (blockColor.R - colorRange) &&
-                                resultColor.G < (blockColor.G + colorRange) && resultColor.G > (blockColor.G - colorRange) &&
-                                resultColor.B < (blockColor.B + colorRange) && resultColor.B > (blockColor.B - colorRange))
+                            int rR = resultColor.R;
+                            int rG = resultColor.G;
+                            int rB = resultColor.B;
+                            int bR = blockColor.R;
+                            int bG = blockColor.G;
+                            int bB = blockColor.B;
+                            //Checking if the current pixel corresponds to the block by comparing their colors with range accounted for
+                            //FIX: The range is borked, it leaves out some of the colors sometimes, not sure why
+                            if (rR < (bR + colorRange*2) && rR > (bR - colorRange*2) &&
+                                rG < (bG + colorRange*2) && rG > (bG - colorRange*2) &&
+                                rB < (bB + colorRange*2) && rB > (bB - colorRange*2))
                             {
                                 found++;
                                 //Entities are listed through in pairs of 4, so top left, top right, bottom left, bottom right
@@ -177,9 +184,15 @@ namespace Factorio_Image_Converter
                             foreach (UTile tile in AvailableTiles)
                             {
                                 Color tileColor = ColorTranslator.FromHtml(tile.color);
-                                if (resultColor.R < (tileColor.R + colorRange) && resultColor.R > (tileColor.R - colorRange) &&
-                                    resultColor.G < (tileColor.G + colorRange) && resultColor.G > (tileColor.G - colorRange) &&
-                                    resultColor.B < (tileColor.B + colorRange) && resultColor.B > (tileColor.B - colorRange))
+                                int rR = resultColor.R;
+                                int rG = resultColor.G;
+                                int rB = resultColor.B;
+                                int tR = tileColor.R;
+                                int tG = tileColor.G;
+                                int tB = tileColor.B;
+                                if (rR < (tR + colorRange*2) && rR > (tR - colorRange*2) &&
+                                    rG < (tG + colorRange*2) && rG > (tG - colorRange*2) &&
+                                    rB < (tB + colorRange*2) && rB > (tB - colorRange*2))
                                 {
                                     found++;
                                     for (int i = 2; i > 0; i--)
@@ -246,7 +259,7 @@ namespace Factorio_Image_Converter
                 }
             }
             BlueprintString = "0" + Convert.ToBase64String(compressedArray);
-            Debug.WriteLine("\n\n Blueprint \n" + BlueprintString);
+            //Debug.WriteLine("\n\n Blueprint \n" + BlueprintString);
         }
         private void LoadAvailableBlocks()
         {
@@ -321,15 +334,15 @@ namespace Factorio_Image_Converter
 
             openFileDialog.ShowDialog();
 
-            if (openFileDialog.FileName != "")  //FIX: Doesn't work, still crashes with no image
+            if (openFileDialog.FileName != null && openFileDialog.FileName != "")  //FIX: Doesn't work, still crashes with no image
             {
                 Debug.WriteLine(imagePath);
                 imagePath = openFileDialog.FileName;
 
                 //Save the image
                 ResultImage = new BitmapImage(new Uri(imagePath));
+                LoadImageColors();
             }
-            LoadImageColors();
             //TODO: Image too big warning
         }
         private void btn_Export_Click(object sender, RoutedEventArgs e)
