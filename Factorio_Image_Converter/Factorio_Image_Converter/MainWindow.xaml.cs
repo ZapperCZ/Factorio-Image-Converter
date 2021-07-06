@@ -19,14 +19,14 @@ namespace Factorio_Image_Converter
     public partial class MainWindow : INotifyPropertyChanged
     {
         string imagePath;
-        int colorRange = 20;
-        public string BlueprintString;          //The result string  (maybe give user access to this?)
+        int colorRange = 20;                    //Basically antialiasing (maybe give user access to this?)
+        public string BlueprintString;          //The result string
         BitmapImage _bitmapImage;
         List<UBlock> AvailableBlocks;           //Currently loaded blocks from palette
         List<UTile> AvailableTiles;             //Currently loaded tiles from palette
         List<Color> ImageColors;                //All colors in the image
         Root FactorioBlueprint;                 //Root for the result json
-        public Dictionary<string, string> D_colorConversion;    //TODO: Change this to store block name instead of just color
+        public Dictionary<string, string> D_colorConversion;    //<original color hex, result block name>
 
         public BitmapImage ResultImage
         {
@@ -88,6 +88,8 @@ namespace Factorio_Image_Converter
             UTile resultTile = new UTile();
             Color resultColor = new Color();
             Bitmap bitmap = BitmapImage2Bitmap(inputImage);
+
+            List<string> debugList = new List<string>();
             for (int y = 0; y < bitmap.Height; y++)
             {
                 for (int x = 0; x < bitmap.Width; x++)
@@ -96,45 +98,54 @@ namespace Factorio_Image_Converter
                     Color pixelColor = bitmap.GetPixel(x, y);
                     string pixelColorHex = ColorTranslator.ToHtml(pixelColor).ToLower();
                     //TODO: Implement NiX3r's pixel compression code
-
-                    if (D_colorConversion.ContainsKey(pixelColorHex))
+                    /*
+                    if (!debugList.Contains(pixelColorHex))
                     {
-                        if(AvailableBlocks.Count(block => block.name == D_colorConversion[pixelColorHex]) > 0)
+                        debugList.Add(pixelColorHex);
+                    }
+                    */
+                    //TODO: Optimize this later maybe by detecting if the pixel color has already been used in the past and using that instead of checking it again
+                    foreach (KeyValuePair<string, string> pair in D_colorConversion)
+                    {
+                        Color dictColor = ColorTranslator.FromHtml(pair.Key);
+                        if (pixelColor.R < (dictColor.R + colorRange) && pixelColor.R > (dictColor.R - colorRange) &&
+                            pixelColor.G < (dictColor.G + colorRange) && pixelColor.G > (dictColor.G - colorRange) &&
+                            pixelColor.B < (dictColor.B + colorRange) && pixelColor.B > (dictColor.B - colorRange))
                         {
-                            resultBlock = AvailableBlocks.Find(block => block.name == D_colorConversion[pixelColorHex]);
-                            resultColor = ColorTranslator.FromHtml(resultBlock.color);
-                            //Debug.WriteLine(resultBlock.name);
+                            //Debug.WriteLine("passed");
+                            //TODO: Get closest color
+                            if (AvailableBlocks.Count(block => block.name == D_colorConversion[pixelColorHex]) > 0)
+                            {
+                                resultBlock = AvailableBlocks.Find(block => block.name == pair.Value);
+                                resultColor = ColorTranslator.FromHtml(resultBlock.color);
+                                //Debug.WriteLine(resultBlock.name);
+                            }
+                            else
+                            {
+                                resultTile = AvailableTiles.Find(tile => tile.name == pair.Value);
+                                resultColor = ColorTranslator.FromHtml(resultTile.color);
+                                Debug.WriteLine(resultTile.name + " - " +  resultTile.color);
+                            }
                         }
                         else
                         {
-                            resultTile = AvailableTiles.Find(tile => tile.name == D_colorConversion[pixelColorHex]);
-                            resultColor = ColorTranslator.FromHtml(resultTile.color);
-                            //Debug.WriteLine(resultTile.name);
+                            resultColor = ColorTranslator.FromHtml(pixelColorHex);
                         }
                     }
-                    else
-                    {
-                        resultColor = ColorTranslator.FromHtml(pixelColorHex);
-                    }
 
-                    if (true /*pixelColorHex != "#000000"*/) //TODO: Change this to compare alpha channel
+                    if (true) //TODO: Change this to compare alpha channel
                     {
+                        
                         totalPixels++;
                         bool foundBlock = false;
                         foreach (UBlock block in AvailableBlocks)
                         {
                             Color blockColor = ColorTranslator.FromHtml(block.color);
-                            int rR = resultColor.R;
-                            int rG = resultColor.G;
-                            int rB = resultColor.B;
-                            int bR = blockColor.R;
-                            int bG = blockColor.G;
-                            int bB = blockColor.B;
                             //Checking if the current pixel corresponds to the block by comparing their colors with range accounted for
                             //FIX: The range is borked, it leaves out some of the colors sometimes, not sure why
-                            if (rR < (bR + colorRange*2) && rR > (bR - colorRange*2) &&
-                                rG < (bG + colorRange*2) && rG > (bG - colorRange*2) &&
-                                rB < (bB + colorRange*2) && rB > (bB - colorRange*2))
+                            if (resultColor.R < (blockColor.R + colorRange*1) && resultColor.R > (blockColor.R - colorRange*1) &&
+                                resultColor.G < (blockColor.G + colorRange*1) && resultColor.G > (blockColor.G - colorRange*1) &&
+                                resultColor.B < (blockColor.B + colorRange*1) && resultColor.B > (blockColor.B - colorRange*1))
                             {
                                 found++;
                                 //Entities are listed through in pairs of 4, so top left, top right, bottom left, bottom right
@@ -184,15 +195,10 @@ namespace Factorio_Image_Converter
                             foreach (UTile tile in AvailableTiles)
                             {
                                 Color tileColor = ColorTranslator.FromHtml(tile.color);
-                                int rR = resultColor.R;
-                                int rG = resultColor.G;
-                                int rB = resultColor.B;
-                                int tR = tileColor.R;
-                                int tG = tileColor.G;
-                                int tB = tileColor.B;
-                                if (rR < (tR + colorRange*2) && rR > (tR - colorRange*2) &&
-                                    rG < (tG + colorRange*2) && rG > (tG - colorRange*2) &&
-                                    rB < (tB + colorRange*2) && rB > (tB - colorRange*2))
+
+                                if (resultColor.R < (tileColor.R + colorRange * 1) && resultColor.R > (tileColor.R - colorRange * 1) &&
+                                    resultColor.G < (tileColor.G + colorRange * 1) && resultColor.G > (tileColor.G - colorRange * 1) &&
+                                    resultColor.B < (tileColor.B + colorRange * 1) && resultColor.B > (tileColor.B - colorRange * 1))
                                 {
                                     found++;
                                     for (int i = 2; i > 0; i--)
@@ -215,7 +221,16 @@ namespace Factorio_Image_Converter
                     }
                 }
             }
-            Debug.WriteLine("total normal pixels > " + totalPixels + " pixels recognized > " + found);
+            foreach(string color in debugList)
+            {
+                Color c = ColorTranslator.FromHtml(color);
+                Debug.WriteLine(color + " || R: " + c.R + "  \tG:" + c.G + "  \tB:" + c.B);
+            }
+            //Debug.WriteLine("total normal pixels > " + totalPixels + " pixels recognized > " + found);
+        }
+        private void ConvertBlocksToImage()
+        {
+            //TODO: This
         }
         public void ConvertBlocksToJSON(string path)
         {

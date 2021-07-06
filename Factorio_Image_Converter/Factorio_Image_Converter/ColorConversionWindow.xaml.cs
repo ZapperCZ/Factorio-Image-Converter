@@ -15,7 +15,7 @@ namespace Factorio_Image_Converter
         List<System.Drawing.Color> ImageColors;
         List<UBlock> AvailableBlocks;
         List<UTile> AvailableTiles;
-        public Dictionary<string, string> D_colorConversion; //<original color, result block name>
+        public Dictionary<string, string> D_colorConversion; //<original color hex, result block name>
         public ColorConversionWindow(List<System.Drawing.Color> ImageColors, List<UBlock> AvailableBlocks, List<UTile> AvailableTiles)
         {
             D_colorConversion = new Dictionary<string, string>();
