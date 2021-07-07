@@ -32,8 +32,11 @@ namespace Factorio_Image_Converter
             bool stop = false;
             for(int y = 0; y <= maxY; y++)
             {
-                Grid grid = new Grid();
-                grid.Height = 40;
+                Grid grid = new Grid
+                {
+                    Height = 40
+                };
+
                 for (int x = 0; x < 6; x++)
                 {
                     ColumnDefinition column = new ColumnDefinition();
@@ -89,7 +92,7 @@ namespace Factorio_Image_Converter
         }
         private System.Windows.Media.Color DrawingC2MediaC(Color inputColor)
         {
-            System.Windows.Media.Color newColor = new System.Windows.Media.Color();
+            System.Windows.Media.Color newColor;
             newColor = System.Windows.Media.Color.FromArgb(inputColor.A, inputColor.R, inputColor.G, inputColor.B);
             return newColor;
         }

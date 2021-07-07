@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace Factorio_Image_Converter
 {
-    //Big shoutout to Gachl (https://github.com/Gachl) for creating the monocolor image converter and to Factorio Prints (https://factorioprints.com/) for creating and maintaining a great online tool
+    //Big thanks to Gachl (https://github.com/Gachl) for creating the monocolor image converter and to Factorio Prints (https://factorioprints.com/) for creating and maintaining a great online tool
     public partial class MainWindow : INotifyPropertyChanged
     {
         string imagePath;
@@ -105,6 +105,12 @@ namespace Factorio_Image_Converter
                     }
                     */
                     //TODO: Optimize this later maybe by detecting if the pixel color has already been used in the past and using that instead of checking it again
+                    List<string> tempList = D_colorConversion.Keys.ToList();
+                    List<Color> keyColors = new List<Color>();
+                    foreach(string hex in tempList)
+                    {
+                        keyColors.Add(ColorTranslator.FromHtml(hex));
+                    }
                     foreach (KeyValuePair<string, string> pair in D_colorConversion)
                     {
                         Color dictColor = ColorTranslator.FromHtml(pair.Key);
@@ -114,9 +120,22 @@ namespace Factorio_Image_Converter
                         {
                             //Debug.WriteLine("passed");
                             //TODO: Get closest color
-                            if (AvailableBlocks.Count(block => block.name == D_colorConversion[pixelColorHex]) > 0)
+                            if (!D_colorConversion.ContainsKey(pixelColorHex))
                             {
+                                Color closestColor = GetClosestColorFromList(ColorTranslator.FromHtml(pixelColorHex), keyColors);
+                                pixelColorHex = ColorTranslator.ToHtml(closestColor).ToLower();
+                            }
+
+                            //FIX: Currently cannot tell tiles apart from blocks
+                            Debug.WriteLine(D_colorConversion[pixelColorHex]);
+                            if (AvailableBlocks.Count(block => block.name == pair.Value) > 0)
+                            {
+                                Debug.WriteLine(AvailableBlocks.Count(block => block.name == D_colorConversion[pixelColorHex]));
                                 resultBlock = AvailableBlocks.Find(block => block.name == pair.Value);
+                                if (resultBlock == null)
+                                {
+                                    Debug.WriteLine(pair.Value + "\t" + pixelColorHex);
+                                }
                                 resultColor = ColorTranslator.FromHtml(resultBlock.color);
                                 //Debug.WriteLine(resultBlock.name);
                             }
@@ -124,7 +143,7 @@ namespace Factorio_Image_Converter
                             {
                                 resultTile = AvailableTiles.Find(tile => tile.name == pair.Value);
                                 resultColor = ColorTranslator.FromHtml(resultTile.color);
-                                Debug.WriteLine(resultTile.name + " - " +  resultTile.color);
+                                //Debug.WriteLine(resultTile.name + " - " +  resultTile.color);
                             }
                         }
                         else
@@ -324,6 +343,20 @@ namespace Factorio_Image_Converter
                         ImageColors.Add(pixelColor);
                 }
             }
+        }
+        private Color GetClosestColorFromList(Color inputColor,List<Color> colorList)
+        {
+            //FIX: Sometimes doesn't work due to it calculating RGB values separately
+            //and then combining into one color which might not actually be in the list.
+            //This is especially noticeable with non-gray colors
+
+            //Debug.WriteLine("Input: " + ColorTranslator.ToHtml(inputColor) + "\tR: " + inputColor.R + "\tG: " + inputColor.G + "\tB:" + inputColor.B);
+            int closestR = colorList.Aggregate((x, y) => Math.Abs(x.R - inputColor.R) < Math.Abs(y.R - inputColor.R) ? x : y).R;
+            int closestG = colorList.Aggregate((x, y) => Math.Abs(x.G - inputColor.G) < Math.Abs(y.G - inputColor.G) ? x : y).G;
+            int closestB = colorList.Aggregate((x, y) => Math.Abs(x.B - inputColor.B) < Math.Abs(y.B - inputColor.B) ? x : y).B;
+            Color closestColor = Color.FromArgb(255, closestR, closestG, closestB);
+            //Debug.WriteLine("Output: " + ColorTranslator.ToHtml(closestColor) + " \tR: " + closestR + "\tG: " + closestG + "\tB:" + closestB);
+            return closestColor;
         }
         private Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
         {
