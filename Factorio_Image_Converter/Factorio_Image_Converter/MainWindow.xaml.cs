@@ -241,25 +241,52 @@ namespace Factorio_Image_Converter
             }
             //Debug.WriteLine("total normal pixels > " + totalPixels + " pixels recognized > " + found);
         }
-        private BitmapImage ConvertBlocksToBitmap()
+        private Bitmap ConvertBlocksToBitmap()
         {
-            //TODO: This
+            //Converts the blueprint structure into a bitmap
             int width = 0;
             int height = 0;
 
             foreach (Entity e in FactorioBlueprint.blueprint.entities)
             {
                 UBlock block = AvailableBlocks.Find(b => b.name == e.name);
-                int x = Convert.ToInt32(block.occupied_space[0]);
-                int y = Convert.ToInt32(block.occupied_space[2]);
-                width += x;
-                height += y;
+                int sizeX = Convert.ToInt32(block.occupied_space[0]);
+                int sizeY = Convert.ToInt32(block.occupied_space[2]);
+                width += sizeX;
+                height += sizeY;
             }
             width += FactorioBlueprint.blueprint.tiles.Count;
             height += FactorioBlueprint.blueprint.tiles.Count;
 
-            BitmapImage resultBitmap = new BitmapImage();
-            //WriteableBitmap wBitmap = new WriteableBitmap();
+            Bitmap resultBitmap = new Bitmap(width,height);
+
+            foreach(Entity e in FactorioBlueprint.blueprint.entities)
+            {
+                UBlock block = AvailableBlocks.Find(b => b.name == e.name);
+                Color c = ColorTranslator.FromHtml(block.color);
+                int sizeX = Convert.ToInt32(block.occupied_space[0]);
+                int sizeY = Convert.ToInt32(block.occupied_space[2]);
+                int posX = (int)e.position.x;
+                int posY = (int)e.position.y;
+
+                for (int y = 0; y < sizeY; y++)
+                {
+                    for(int x = 0; x < sizeX; x++)
+                    {
+                        resultBitmap.SetPixel(posX + x, posY + y, c);
+                    }
+                }
+            }
+
+            foreach (Tile t in FactorioBlueprint.blueprint.tiles)
+            {
+                UTile tile = AvailableTiles.Find(ti => ti.name == t.name);
+                Color c = ColorTranslator.FromHtml(tile.color);
+                int posX = (int)t.position.x;
+                int posY = (int)t.position.y;
+                resultBitmap.SetPixel(posX, posY, c);
+            }
+
             return resultBitmap;
         }
         public void ConvertBlocksToJSON(string path)
@@ -406,12 +433,12 @@ namespace Factorio_Image_Converter
         }
         private void btn_Export_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: Implement color conversion
             if(imagePath != null)
             {
                 ConvertImageToBlocks(ResultImage);       //This will convert only colors that are present in UsableBlocks.json, currently there is no color conversion
                 ConvertBlocksToJSON(@"..\..\2-Resources\Blueprint.json");
                 CompressAndEncodeJSON(@"..\..\2-Resources\Blueprint.json");
+                ConvertBlocksToBitmap().Save(@"..\..\2-Resources\output.png");
 
                 ResultWindow resultWindow = new ResultWindow(BlueprintString);
                 resultWindow.ShowDialog();
