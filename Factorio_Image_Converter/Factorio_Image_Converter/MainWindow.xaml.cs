@@ -80,6 +80,7 @@ namespace Factorio_Image_Converter
         }
         private void ConvertImageToBlocks(BitmapImage inputImage) //1 image px = 4 factorio blocks
         {
+            //FIX: I don't even know what is wrong at this point, but it's all just going downhill
             InstantiateRoot();
             int index = 1;
             int found = 0;
@@ -126,24 +127,17 @@ namespace Factorio_Image_Converter
                                 pixelColorHex = ColorTranslator.ToHtml(closestColor).ToLower();
                             }
 
-                            //FIX: Currently cannot tell tiles apart from blocks
-                            Debug.WriteLine(D_colorConversion[pixelColorHex]);
                             if (AvailableBlocks.Count(block => block.name == pair.Value) > 0)
                             {
-                                Debug.WriteLine(AvailableBlocks.Count(block => block.name == D_colorConversion[pixelColorHex]));
                                 resultBlock = AvailableBlocks.Find(block => block.name == pair.Value);
-                                if (resultBlock == null)
-                                {
-                                    Debug.WriteLine(pair.Value + "\t" + pixelColorHex);
-                                }
                                 resultColor = ColorTranslator.FromHtml(resultBlock.color);
-                                //Debug.WriteLine(resultBlock.name);
+                                Debug.WriteLine(resultBlock.name + " - " + resultBlock.color);
                             }
                             else
                             {
                                 resultTile = AvailableTiles.Find(tile => tile.name == pair.Value);
                                 resultColor = ColorTranslator.FromHtml(resultTile.color);
-                                //Debug.WriteLine(resultTile.name + " - " +  resultTile.color);
+                                Debug.WriteLine(resultTile.name + " - " +  resultTile.color);
                             }
                         }
                         else
@@ -247,9 +241,26 @@ namespace Factorio_Image_Converter
             }
             //Debug.WriteLine("total normal pixels > " + totalPixels + " pixels recognized > " + found);
         }
-        private void ConvertBlocksToImage()
+        private BitmapImage ConvertBlocksToBitmap()
         {
             //TODO: This
+            int width = 0;
+            int height = 0;
+
+            foreach (Entity e in FactorioBlueprint.blueprint.entities)
+            {
+                UBlock block = AvailableBlocks.Find(b => b.name == e.name);
+                int x = Convert.ToInt32(block.occupied_space[0]);
+                int y = Convert.ToInt32(block.occupied_space[2]);
+                width += x;
+                height += y;
+            }
+            width += FactorioBlueprint.blueprint.tiles.Count;
+            height += FactorioBlueprint.blueprint.tiles.Count;
+
+            BitmapImage resultBitmap = new BitmapImage();
+            //WriteableBitmap wBitmap = new WriteableBitmap();
+            return resultBitmap;
         }
         public void ConvertBlocksToJSON(string path)
         {
