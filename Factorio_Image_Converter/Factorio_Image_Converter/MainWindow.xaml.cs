@@ -246,15 +246,39 @@ namespace Factorio_Image_Converter
             //Converts the blueprint structure into a bitmap
             int width = 0;
             int height = 0;
+            int minX = 0;
+            int minY = 0;
 
             foreach (Entity e in FactorioBlueprint.blueprint.entities)
             {
                 UBlock block = AvailableBlocks.Find(b => b.name == e.name);
-                int sizeX = Convert.ToInt32(block.occupied_space[0]);
-                int sizeY = Convert.ToInt32(block.occupied_space[2]);
+                int sizeX = Convert.ToInt32(block.occupied_space[0].ToString());
+                int sizeY = Convert.ToInt32(block.occupied_space[2].ToString());
+                if((int)e.position.x < minX)
+                {
+                    minX = (int)e.position.x;
+                }
+                if ((int)e.position.y < minY)
+                {
+                    minY = (int)e.position.y;
+                }
                 width += sizeX;
                 height += sizeY;
             }
+
+            //TODO: Optimize this
+            foreach(Tile t in FactorioBlueprint.blueprint.tiles)
+            {
+                if ((int)t.position.x < minX)
+                {
+                    minX = (int)t.position.x;
+                }
+                if ((int)t.position.y < minY)
+                {
+                    minY = (int)t.position.y;
+                }
+            }
+
             width += FactorioBlueprint.blueprint.tiles.Count;
             height += FactorioBlueprint.blueprint.tiles.Count;
 
@@ -264,15 +288,16 @@ namespace Factorio_Image_Converter
             {
                 UBlock block = AvailableBlocks.Find(b => b.name == e.name);
                 Color c = ColorTranslator.FromHtml(block.color);
-                int sizeX = Convert.ToInt32(block.occupied_space[0]);
-                int sizeY = Convert.ToInt32(block.occupied_space[2]);
-                int posX = (int)e.position.x;
-                int posY = (int)e.position.y;
+                int sizeX = Convert.ToInt32(block.occupied_space[0].ToString());
+                int sizeY = Convert.ToInt32(block.occupied_space[2].ToString());
+                int posX = (int)e.position.x + -1*minX;
+                int posY = (int)e.position.y + -1*minY;
 
                 for (int y = 0; y < sizeY; y++)
                 {
                     for(int x = 0; x < sizeX; x++)
                     {
+                        //Debug.WriteLine(posX + " , " + posY + " | " + x + " , " + y);
                         resultBitmap.SetPixel(posX + x, posY + y, c);
                     }
                 }
@@ -282,8 +307,8 @@ namespace Factorio_Image_Converter
             {
                 UTile tile = AvailableTiles.Find(ti => ti.name == t.name);
                 Color c = ColorTranslator.FromHtml(tile.color);
-                int posX = (int)t.position.x;
-                int posY = (int)t.position.y;
+                int posX = (int)t.position.x + -1 * minX;
+                int posY = (int)t.position.y + -1 * minY;
                 resultBitmap.SetPixel(posX, posY, c);
             }
 
