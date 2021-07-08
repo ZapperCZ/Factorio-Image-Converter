@@ -19,7 +19,7 @@ namespace Factorio_Image_Converter
     public partial class MainWindow : INotifyPropertyChanged
     {
         string imagePath;
-        int colorRange = 20;                    //Basically antialiasing (maybe give user access to this?)
+        int colorRange = 10;                    //Basically antialiasing (maybe give user access to this?)
         public string BlueprintString;          //The result string
         BitmapImage _bitmapImage;
         List<UBlock> AvailableBlocks;           //Currently loaded blocks from palette
@@ -46,7 +46,6 @@ namespace Factorio_Image_Converter
         {
             PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
         public MainWindow()
         {
             DataContext = this;
@@ -83,8 +82,6 @@ namespace Factorio_Image_Converter
             //FIX: I don't even know what is wrong at this point, but it's all just going downhill
             InstantiateRoot();
             int index = 1;
-            int found = 0;
-            int totalPixels = 0;
             UBlock resultBlock = new UBlock();
             UTile resultTile = new UTile();
             Color resultColor = new Color();
@@ -121,12 +118,16 @@ namespace Factorio_Image_Converter
                             pixelColor.G < (dictColor.G + colorRange) && pixelColor.G > (dictColor.G - colorRange) &&
                             pixelColor.B < (dictColor.B + colorRange) && pixelColor.B > (dictColor.B - colorRange))
                         {
+                            //What was I even thinking here? Why did I complicate this so much
+                            /*
                             if (!D_colorConversion.ContainsKey(pixelColorHex))
                             {
                                 //Runs only when there isn't a conversion specified for the current color
                                 Color closestColor = GetClosestColorFromList(ColorTranslator.FromHtml(pixelColorHex), keyColors);
                                 pixelColorHex = ColorTranslator.ToHtml(closestColor).ToLower();
                             }
+                            */
+                            pixelColorHex = pair.Key;   //This literally works better than the thing above, seriously, the hell was I doing.
 
                             if (AvailableBlocks.Count(block => block.name == pair.Value) > 0)
                             {
@@ -153,8 +154,6 @@ namespace Factorio_Image_Converter
 
                     if (true) //TODO: Change this to compare alpha channel
                     {
-                        
-                        totalPixels++;
                         bool foundBlock = false;
                         foreach (UBlock block in AvailableBlocks)
                         {
@@ -165,7 +164,6 @@ namespace Factorio_Image_Converter
                                 resultColor.G < (blockColor.G + colorRange*1) && resultColor.G > (blockColor.G - colorRange*1) &&
                                 resultColor.B < (blockColor.B + colorRange*1) && resultColor.B > (blockColor.B - colorRange*1))
                             {
-                                found++;
                                 //Entities are listed through in pairs of 4, so top left, top right, bottom left, bottom right
                                 int sizeX = Convert.ToInt32(block.occupied_space[0].ToString());
                                 int sizeY = Convert.ToInt32(block.occupied_space[2].ToString());
@@ -218,7 +216,6 @@ namespace Factorio_Image_Converter
                                     resultColor.G < (tileColor.G + colorRange * 1) && resultColor.G > (tileColor.G - colorRange * 1) &&
                                     resultColor.B < (tileColor.B + colorRange * 1) && resultColor.B > (tileColor.B - colorRange * 1))
                                 {
-                                    found++;
                                     for (int i = 2; i > 0; i--)
                                     {
                                         for (int j = 2; j > 0; j--)
@@ -239,12 +236,13 @@ namespace Factorio_Image_Converter
                     }
                 }
             }
+            /*
             foreach(string color in debugList)
             {
                 Color c = ColorTranslator.FromHtml(color);
                 Debug.WriteLine(color + " || R: " + c.R + "  \tG:" + c.G + "  \tB:" + c.B);
             }
-            //Debug.WriteLine("total normal pixels > " + totalPixels + " pixels recognized > " + found);
+            */
         }
         private Bitmap ConvertBlocksToBitmap()
         {
@@ -292,13 +290,21 @@ namespace Factorio_Image_Converter
                 int sizeY = Convert.ToInt32(block.occupied_space[2].ToString());
                 int posX = (int)e.position.x + -1*minX;
                 int posY = (int)e.position.y + -1*minY;
-
-                for (int y = 0; y < sizeY; y++)
+                if(sizeX > 1 || sizeY > 1)
                 {
-                    for(int x = 0; x < sizeX; x++)
+                    posX--;
+                    posY--;
+                    for (int y = 0; y < sizeY; y++)
                     {
-                        resultBitmap.SetPixel(posX + x, posY + y, c);
+                        for (int x = 0; x < sizeX; x++)
+                        {
+                            resultBitmap.SetPixel(posX + x, posY + y, c);
+                        }
                     }
+                }
+                else
+                {
+                    resultBitmap.SetPixel(posX, posY, c);
                 }
             }
 
@@ -446,7 +452,7 @@ namespace Factorio_Image_Converter
 
             if (openFileDialog.FileName != null && openFileDialog.FileName != "")
             {
-                Debug.WriteLine(imagePath);
+                //Debug.WriteLine(imagePath);
                 imagePath = openFileDialog.FileName;
 
                 //Save the image
@@ -485,10 +491,12 @@ namespace Factorio_Image_Converter
             {
                 MessageBox.Show("No image selected");
             }
+            /*
             foreach(KeyValuePair<string,string> entry in D_colorConversion)
             {
                 Debug.WriteLine(entry.Key + " - " + entry.Value);
             }
+            */
         }
     }
 }
