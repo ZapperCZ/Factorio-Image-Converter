@@ -115,12 +115,15 @@ namespace Factorio_Image_Converter
                     foreach (KeyValuePair<string, string> pair in D_colorConversion)
                     {
                         Color dictColor = ColorTranslator.FromHtml(pair.Key);
+                        //Debug.WriteLine("R: " + pixelColor.R + "\tG:" + pixelColor.G + "\tB:" + pixelColor.B);
+                        //Debug.WriteLine("R: " + dictColor.R + "\tG:" + dictColor.G + "\tB:" + dictColor.B);
                         if (pixelColor.R < (dictColor.R + colorRange) && pixelColor.R > (dictColor.R - colorRange) &&
                             pixelColor.G < (dictColor.G + colorRange) && pixelColor.G > (dictColor.G - colorRange) &&
                             pixelColor.B < (dictColor.B + colorRange) && pixelColor.B > (dictColor.B - colorRange))
                         {
                             if (!D_colorConversion.ContainsKey(pixelColorHex))
                             {
+                                //Runs only when there isn't a conversion specified for the current color
                                 Color closestColor = GetClosestColorFromList(ColorTranslator.FromHtml(pixelColorHex), keyColors);
                                 pixelColorHex = ColorTranslator.ToHtml(closestColor).ToLower();
                             }
@@ -129,19 +132,23 @@ namespace Factorio_Image_Converter
                             {
                                 resultBlock = AvailableBlocks.Find(block => block.name == pair.Value);
                                 resultColor = ColorTranslator.FromHtml(resultBlock.color);
-                                //Debug.WriteLine(resultBlock.name + " - " + resultBlock.color);
+                                //Debug.WriteLine(resultBlock.color + "\t- " + resultBlock.name);
+                                break;
                             }
                             else
                             {
                                 resultTile = AvailableTiles.Find(tile => tile.name == pair.Value);
                                 resultColor = ColorTranslator.FromHtml(resultTile.color);
-                                //Debug.WriteLine(resultTile.name + " - " +  resultTile.color);
+                                //Debug.WriteLine(resultTile.color + "\t- " +  resultTile.name);
+                                break;
                             }
                         }
                         else
                         {
                             resultColor = ColorTranslator.FromHtml(pixelColorHex);
+                            //Debug.WriteLine(pixelColorHex + "\t- outside of range");
                         }
+                        //Debug.WriteLine("");
                     }
 
                     if (true) //TODO: Change this to compare alpha channel
@@ -478,12 +485,10 @@ namespace Factorio_Image_Converter
             {
                 MessageBox.Show("No image selected");
             }
-            /*
             foreach(KeyValuePair<string,string> entry in D_colorConversion)
             {
                 Debug.WriteLine(entry.Key + " - " + entry.Value);
             }
-            */
         }
     }
 }
