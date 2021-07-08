@@ -131,13 +131,13 @@ namespace Factorio_Image_Converter
                             {
                                 resultBlock = AvailableBlocks.Find(block => block.name == pair.Value);
                                 resultColor = ColorTranslator.FromHtml(resultBlock.color);
-                                Debug.WriteLine(resultBlock.name + " - " + resultBlock.color);
+                                //Debug.WriteLine(resultBlock.name + " - " + resultBlock.color);
                             }
                             else
                             {
                                 resultTile = AvailableTiles.Find(tile => tile.name == pair.Value);
                                 resultColor = ColorTranslator.FromHtml(resultTile.color);
-                                Debug.WriteLine(resultTile.name + " - " +  resultTile.color);
+                                //Debug.WriteLine(resultTile.name + " - " +  resultTile.color);
                             }
                         }
                         else
@@ -244,8 +244,8 @@ namespace Factorio_Image_Converter
         private Bitmap ConvertBlocksToBitmap()
         {
             //Converts the blueprint structure into a bitmap
-            int width = 0;
-            int height = 0;
+            int width = (int)ResultImage.Width*4;
+            int height = (int)ResultImage.Height*4;
             int minX = 0;
             int minY = 0;
 
@@ -262,8 +262,6 @@ namespace Factorio_Image_Converter
                 {
                     minY = (int)e.position.y;
                 }
-                width += sizeX;
-                height += sizeY;
             }
 
             //TODO: Optimize this
@@ -278,9 +276,6 @@ namespace Factorio_Image_Converter
                     minY = (int)t.position.y;
                 }
             }
-
-            width += FactorioBlueprint.blueprint.tiles.Count;
-            height += FactorioBlueprint.blueprint.tiles.Count;
 
             Bitmap resultBitmap = new Bitmap(width,height);
 
@@ -297,7 +292,6 @@ namespace Factorio_Image_Converter
                 {
                     for(int x = 0; x < sizeX; x++)
                     {
-                        //Debug.WriteLine(posX + " , " + posY + " | " + x + " , " + y);
                         resultBitmap.SetPixel(posX + x, posY + y, c);
                     }
                 }
@@ -356,7 +350,7 @@ namespace Factorio_Image_Converter
                 }
             }
             BlueprintString = "0" + Convert.ToBase64String(compressedArray);
-            //Debug.WriteLine("\n\n Blueprint \n" + BlueprintString);
+            Debug.WriteLine("\n\n Blueprint \n" + BlueprintString);
         }
         private void LoadAvailableBlocks()
         {
@@ -481,10 +475,12 @@ namespace Factorio_Image_Converter
             colorWindow.ShowDialog();
             D_colorConversion = colorWindow.D_colorConversion;
 
+            /*
             foreach(KeyValuePair<string,string> entry in D_colorConversion)
             {
                 Debug.WriteLine(entry.Key + " - " + entry.Value);
             }
+            */
         }
     }
 }
