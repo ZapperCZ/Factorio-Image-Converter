@@ -119,8 +119,6 @@ namespace Factorio_Image_Converter
                             pixelColor.G < (dictColor.G + colorRange) && pixelColor.G > (dictColor.G - colorRange) &&
                             pixelColor.B < (dictColor.B + colorRange) && pixelColor.B > (dictColor.B - colorRange))
                         {
-                            //Debug.WriteLine("passed");
-                            //TODO: Get closest color
                             if (!D_colorConversion.ContainsKey(pixelColorHex))
                             {
                                 Color closestColor = GetClosestColorFromList(ColorTranslator.FromHtml(pixelColorHex), keyColors);
@@ -321,8 +319,8 @@ namespace Factorio_Image_Converter
         {
             //Compress the JSON file using zlib deflate compression level 9, then convert to base64 and put '0' at the start
 
-            //This code was inspired / copied from Gachl's Factorio Imager https://github.com/Gachl/FactorioImager
-            //This program wouldn't be possible without them unless I would spend atleast another week on trying to figure out how to make this work
+            //This code was mostly copied from Gachl's Factorio Imager https://github.com/Gachl/FactorioImager
+            //This program wouldn't be possible without them unless I would spend a lot of time trying to figure out how to make this work
             //I will be honest, at the moment I have no clue how exactly does it work, but I am so glad it does
 
             string json;
@@ -439,7 +437,7 @@ namespace Factorio_Image_Converter
 
             openFileDialog.ShowDialog();
 
-            if (openFileDialog.FileName != null && openFileDialog.FileName != "")  //FIX: Doesn't work, still crashes with no image
+            if (openFileDialog.FileName != null && openFileDialog.FileName != "")
             {
                 Debug.WriteLine(imagePath);
                 imagePath = openFileDialog.FileName;
@@ -452,7 +450,7 @@ namespace Factorio_Image_Converter
         }
         private void btn_Export_Click(object sender, RoutedEventArgs e)
         {
-            if(imagePath != null)
+            if(imagePath != null && imagePath != "")
             {
                 ConvertImageToBlocks(ResultImage);       //This will convert only colors that are present in UsableBlocks.json, currently there is no color conversion
                 ConvertBlocksToJSON(@"..\..\2-Resources\Blueprint.json");
@@ -470,11 +468,16 @@ namespace Factorio_Image_Converter
 
         private void btn_ColorConv_Click(object sender, RoutedEventArgs e)
         {
-            //FIX: Crash when no image loaded
-            ColorConversionWindow colorWindow = new ColorConversionWindow(ImageColors,AvailableBlocks,AvailableTiles);
-            colorWindow.ShowDialog();
-            D_colorConversion = colorWindow.D_colorConversion;
-
+            if (imagePath != null && imagePath != "")
+            {
+                ColorConversionWindow colorWindow = new ColorConversionWindow(ImageColors, AvailableBlocks, AvailableTiles);
+                colorWindow.ShowDialog();
+                D_colorConversion = colorWindow.D_colorConversion;
+            }
+            else
+            {
+                MessageBox.Show("No image selected");
+            }
             /*
             foreach(KeyValuePair<string,string> entry in D_colorConversion)
             {
