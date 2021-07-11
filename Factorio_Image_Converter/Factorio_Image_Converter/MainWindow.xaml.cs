@@ -16,6 +16,8 @@ using System.Linq;
 namespace Factorio_Image_Converter
 {
     //Big thanks to Gachl (https://github.com/Gachl) for creating the monocolor image converter and to Factorio Prints (https://factorioprints.com/) for creating and maintaining a great online tool
+    //TODO: Implement transparency
+    //TODO: Maybe add some sort of progression bar for when the image is exporting
     public partial class MainWindow : INotifyPropertyChanged
     {
         string imagePath;
@@ -69,7 +71,8 @@ namespace Factorio_Image_Converter
             FactorioBlueprint.blueprint.tiles = new List<Tile>();
             FactorioBlueprint.blueprint.item = "blueprint";
             FactorioBlueprint.blueprint.label = "Image";
-            FactorioBlueprint.blueprint.version = 281479273906176;     //Factorio map version number, not sure how to get it so I harcoded the current version
+            FactorioBlueprint.blueprint.version = 281479273906176;      //Factorio map version number, not sure how to get it so I harcoded the current version
+                                                                        //TODO: Maybe find out how this actually wokrs?
             Icon defaultIcon = new Icon();
             defaultIcon.signal = new Signal();
             defaultIcon.signal.type = "item";
@@ -79,7 +82,6 @@ namespace Factorio_Image_Converter
         }
         private void ConvertImageToBlocks(BitmapImage inputImage) //1 image px = 4 factorio blocks
         {
-            //FIX: I don't even know what is wrong at this point, but it's all just going downhill
             InstantiateRoot();
             int index = 1;
             UBlock resultBlock = new UBlock();
@@ -92,7 +94,6 @@ namespace Factorio_Image_Converter
             {
                 for (int x = 0; x < bitmap.Width; x++)
                 {
-                    //FIX: Code can't detect alpha channel in the image
                     Color pixelColor = bitmap.GetPixel(x, y);
                     string pixelColorHex = ColorTranslator.ToHtml(pixelColor).ToLower();
                     //TODO: Implement NiX3r's pixel compression code
@@ -127,6 +128,7 @@ namespace Factorio_Image_Converter
                                 pixelColorHex = ColorTranslator.ToHtml(closestColor).ToLower();
                             }
                             */
+
                             pixelColorHex = pair.Key;   //This literally works better than the thing above, seriously, the hell was I doing.
 
                             if (AvailableBlocks.Count(block => block.name == pair.Value) > 0)
@@ -152,85 +154,81 @@ namespace Factorio_Image_Converter
                         //Debug.WriteLine("");
                     }
 
-                    if (true) //TODO: Change this to compare alpha channel
+                    bool foundBlock = false;
+                    foreach (UBlock block in AvailableBlocks)
                     {
-                        bool foundBlock = false;
-                        foreach (UBlock block in AvailableBlocks)
+                        Color blockColor = ColorTranslator.FromHtml(block.color);
+                        //Checking if the current pixel corresponds to the block by comparing their colors with range accounted for
+                        if (resultColor.R < (blockColor.R + colorRange * 1) && resultColor.R > (blockColor.R - colorRange * 1) &&
+                            resultColor.G < (blockColor.G + colorRange * 1) && resultColor.G > (blockColor.G - colorRange * 1) &&
+                            resultColor.B < (blockColor.B + colorRange * 1) && resultColor.B > (blockColor.B - colorRange * 1))
                         {
-                            Color blockColor = ColorTranslator.FromHtml(block.color);
-                            //Checking if the current pixel corresponds to the block by comparing their colors with range accounted for
-                            //FIX: The range is borked, it leaves out some of the colors sometimes, not sure why
-                            if (resultColor.R < (blockColor.R + colorRange*1) && resultColor.R > (blockColor.R - colorRange*1) &&
-                                resultColor.G < (blockColor.G + colorRange*1) && resultColor.G > (blockColor.G - colorRange*1) &&
-                                resultColor.B < (blockColor.B + colorRange*1) && resultColor.B > (blockColor.B - colorRange*1))
+                            //Entities are listed through in pairs of 4, so top left, top right, bottom left, bottom right
+                            int sizeX = Convert.ToInt32(block.occupied_space[0].ToString());
+                            int sizeY = Convert.ToInt32(block.occupied_space[2].ToString());
+                            bool tempX = Convert.ToBoolean(sizeX - 1);
+                            bool tempY = Convert.ToBoolean(sizeY - 1);
+                            tempX = !tempX;
+                            tempY = !tempY;
+                            sizeX = Convert.ToInt32(tempX) + 1;
+                            sizeY = Convert.ToInt32(tempY) + 1;
+
+                            List<Entity> entityList = new List<Entity>();
+
+                            //Filling up all the 4 spacess
+                            for (int i = sizeY; i > 0; i--)
                             {
-                                //Entities are listed through in pairs of 4, so top left, top right, bottom left, bottom right
-                                int sizeX = Convert.ToInt32(block.occupied_space[0].ToString());
-                                int sizeY = Convert.ToInt32(block.occupied_space[2].ToString());
-                                bool tempX = Convert.ToBoolean(sizeX - 1);
-                                bool tempY = Convert.ToBoolean(sizeY - 1);
-                                tempX = !tempX;
-                                tempY = !tempY;
-                                sizeX = Convert.ToInt32(tempX)+1;
-                                sizeY = Convert.ToInt32(tempY)+1;
-
-                                List<Entity> entityList = new List<Entity>();
-
-                                //Filling up all the 4 spacess
-                                for (int i = sizeY; i > 0; i--)
+                                for (int j = sizeX; j > 0; j--)
                                 {
-                                    for(int j = sizeX; j > 0; j--)
+                                    Entity newEntity = new Entity();
+                                    Position pos = new Position();
+                                    pos.x = x + x - j;
+                                    pos.y = y + y - i;
+                                    newEntity.position = pos;
+                                    newEntity.entity_number = index++;
+                                    newEntity.name = block.name;
+                                    if (block.name.Contains("underground"))
                                     {
-                                        Entity newEntity = new Entity();
+                                        newEntity.type = "input";
+                                        newEntity.SType = true;
+                                    }
+                                    if (block.has_direction)
+                                    {
+                                        newEntity.direction = 4;
+                                        newEntity.SDirection = true;
+                                    }
+                                    FactorioBlueprint.blueprint.entities.Add(newEntity);
+                                }
+                            }
+                            foundBlock = true;
+                            break;
+                        }
+                    }
+
+                    if (!foundBlock)
+                    {
+                        foreach (UTile tile in AvailableTiles)
+                        {
+                            Color tileColor = ColorTranslator.FromHtml(tile.color);
+
+                            if (resultColor.R < (tileColor.R + colorRange * 1) && resultColor.R > (tileColor.R - colorRange * 1) &&
+                                resultColor.G < (tileColor.G + colorRange * 1) && resultColor.G > (tileColor.G - colorRange * 1) &&
+                                resultColor.B < (tileColor.B + colorRange * 1) && resultColor.B > (tileColor.B - colorRange * 1))
+                            {
+                                for (int i = 2; i > 0; i--)
+                                {
+                                    for (int j = 2; j > 0; j--)
+                                    {
+                                        Tile newTile = new Tile();
                                         Position pos = new Position();
+                                        newTile.name = tile.name;
                                         pos.x = x + x - j;
                                         pos.y = y + y - i;
-                                        newEntity.position = pos;
-                                        newEntity.entity_number = index++;
-                                        newEntity.name = block.name;
-                                        if (block.name.Contains("underground"))
-                                        {
-                                            newEntity.type = "input";
-                                            newEntity.SType = true;
-                                        }
-                                        if (block.has_direction)
-                                        {
-                                            newEntity.direction = 4;
-                                            newEntity.SDirection = true;
-                                        }
-                                        FactorioBlueprint.blueprint.entities.Add(newEntity);
+                                        newTile.position = pos;
+                                        FactorioBlueprint.blueprint.tiles.Add(newTile);
                                     }
                                 }
-                                foundBlock = true;
                                 break;
-                            }
-                        }
-
-                        if (!foundBlock)
-                        {
-                            foreach (UTile tile in AvailableTiles)
-                            {
-                                Color tileColor = ColorTranslator.FromHtml(tile.color);
-
-                                if (resultColor.R < (tileColor.R + colorRange * 1) && resultColor.R > (tileColor.R - colorRange * 1) &&
-                                    resultColor.G < (tileColor.G + colorRange * 1) && resultColor.G > (tileColor.G - colorRange * 1) &&
-                                    resultColor.B < (tileColor.B + colorRange * 1) && resultColor.B > (tileColor.B - colorRange * 1))
-                                {
-                                    for (int i = 2; i > 0; i--)
-                                    {
-                                        for (int j = 2; j > 0; j--)
-                                        {
-                                            Tile newTile = new Tile();
-                                            Position pos = new Position();
-                                            newTile.name = tile.name;
-                                            pos.x = x + x - j;
-                                            pos.y = y + y - i;
-                                            newTile.position = pos;
-                                            FactorioBlueprint.blueprint.tiles.Add(newTile);
-                                        }
-                                    }
-                                    break;
-                                }
                             }
                         }
                     }
@@ -247,6 +245,7 @@ namespace Factorio_Image_Converter
         private Bitmap ConvertBlocksToBitmap()
         {
             //Converts the blueprint structure into a bitmap
+            //TODO: Optimize this
             int width = (int)ResultImage.Width*4;
             int height = (int)ResultImage.Height*4;
             int minX = 0;
@@ -267,7 +266,6 @@ namespace Factorio_Image_Converter
                 }
             }
 
-            //TODO: Optimize this
             foreach(Tile t in FactorioBlueprint.blueprint.tiles)
             {
                 if ((int)t.position.x < minX)
@@ -428,15 +426,23 @@ namespace Factorio_Image_Converter
         }
         private Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
         {
-            //FIX: It's possible that alpha channel is lost here
             using (MemoryStream outStream = new MemoryStream())
             {
-                BitmapEncoder enc = new BmpBitmapEncoder();
+                BitmapEncoder enc = new PngBitmapEncoder();
                 enc.Frames.Add(BitmapFrame.Create(bitmapImage));
                 enc.Save(outStream);
                 Bitmap bitmap = new Bitmap(outStream);
-
                 return new Bitmap(bitmap);
+            }
+        }
+        public void SaveBitmapImage(BitmapImage bi, string filePath)
+        {
+            BitmapEncoder encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(bi));
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                encoder.Save(fileStream);
             }
         }
         private void btn_Import_Click(object sender, RoutedEventArgs e)
@@ -457,10 +463,12 @@ namespace Factorio_Image_Converter
 
                 //Save the image
                 ResultImage = new BitmapImage(new Uri(imagePath));
+                
                 LoadImageColors();
             }
             //TODO: Image too big warning
         }
+
         private void btn_Export_Click(object sender, RoutedEventArgs e)
         {
             if(imagePath != null && imagePath != "")

@@ -204,5 +204,12 @@
   <ItemGroup>
     <Resource Include="2-Resources\Icons\Factorio\splitter.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="2-Resources\Icons\Factorio\concrete.png" />
+    <Resource Include="2-Resources\Icons\Factorio\hazard-concrete-left.png" />
+    <Resource Include="2-Resources\Icons\Factorio\refined-concrete.png" />
+    <Resource Include="2-Resources\Icons\Factorio\refined-hazard-concrete-left.png" />
+    <Resource Include="2-Resources\Icons\Factorio\stone-path.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

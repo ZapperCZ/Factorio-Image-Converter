@@ -5,22 +5,39 @@ using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Factorio_Image_Converter
 {
-    public partial class CCPickerWindow : Window
+    public partial class CCPickerWindow : INotifyPropertyChanged
     {
         public string resultBlock;
         public bool isTile;
-        string currentBlock;
+        string _currentBlock = "none";
         List<UBlock> AvailableBlocks;
         List<UTile> AvailableTiles;
+        public string CurrentBlock
+        {
+            get { return _currentBlock.Replace('-',' '); }
+            set 
+            {
+                _currentBlock = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         public CCPickerWindow(List<UBlock> AvailableBlocks, List<UTile> AvailableTiles)
         {
+            DataContext = this;
             this.AvailableBlocks = AvailableBlocks;
             this.AvailableTiles = AvailableTiles;
-            currentBlock = "none";  //TODO: Bind BlockName TextBlock to this
             InitializeComponent();
             GenerateControls();
         }
@@ -37,7 +54,7 @@ namespace Factorio_Image_Converter
                     Height = 40
                 };
 
-                for (int x = 0; x < 6; x++)
+                for (int x = 0; x < 6; x++)     //Amount of columns
                 {
                     ColumnDefinition column = new ColumnDefinition();
                     column.Width = new GridLength(1, GridUnitType.Star);
@@ -49,7 +66,7 @@ namespace Factorio_Image_Converter
                     if(index < AvailableBlocks.Count)
                     {
                         colorBtn.Background = new System.Windows.Media.SolidColorBrush(DrawingC2MediaC(ColorTranslator.FromHtml(AvailableBlocks[index].color)));
-                        colorBtn.Name = "false0" + AvailableBlocks[index].name.Replace('-','_');       //header indicates if block is tile or not
+                        colorBtn.Name = "false0" + AvailableBlocks[index].name.Replace('-','_');       //header indicates if block is tile or not, 0 is the separator
                     }
                     else
                     {
@@ -81,13 +98,12 @@ namespace Factorio_Image_Converter
             string blockName = colorBtn.Name.Substring(colorBtn.Name.IndexOf('0')+1).Replace('_', '-');
             BlockColor.Background = colorBtn.Background;
             BlockIcon.Source = new BitmapImage(new Uri("2-Resources/Icons/Factorio/" + blockName + ".png", UriKind.Relative));
-            BlockName.Text = blockName.Replace('-',' ');
-            currentBlock = blockName;
+            CurrentBlock = blockName;
             isTile = Convert.ToBoolean(colorBtn.Name.Substring(0, colorBtn.Name.IndexOf('0')));
         }
         private void btn_Confirm_Color(object sender, RoutedEventArgs e)
         {
-            resultBlock = currentBlock;
+            resultBlock = CurrentBlock.Replace(' ','-');
             Close();
         }
         private System.Windows.Media.Color DrawingC2MediaC(Color inputColor)

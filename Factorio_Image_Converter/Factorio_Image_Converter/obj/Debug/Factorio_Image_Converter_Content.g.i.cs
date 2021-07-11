@@ -8,6 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("2-resources/icons/factorio/iron-chest.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("2-resources/icons/factorio/concrete.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("2-resources/icons/factorio/hazard-concrete-left.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("2-resources/icons/factorio/refined-concrete.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("2-resources/icons/factorio/refined-hazard-concrete-left.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("2-resources/icons/factorio/stone-brick.png")]
 
 

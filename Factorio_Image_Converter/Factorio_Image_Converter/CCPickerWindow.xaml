@@ -38,7 +38,7 @@
                             <Image x:Name="BlockIcon" Grid.Column="1"/>
                         </Border>
                     </Grid>
-                    <TextBlock x:Name="BlockName" Margin="0 4" TextWrapping="Wrap" TextAlignment="Center" Text="none"/>
+                    <TextBlock x:Name="BlockName" Margin="0 4" TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Path=CurrentBlock, Mode=OneWay, NotifyOnSourceUpdated=True}"/>
                 </StackPanel>
             </Border>
             <Button Margin ="8 5 0 0" Grid.Column="1" Grid.Row="1" Content="Ok" VerticalAlignment="Top" Click="btn_Confirm_Color"/>

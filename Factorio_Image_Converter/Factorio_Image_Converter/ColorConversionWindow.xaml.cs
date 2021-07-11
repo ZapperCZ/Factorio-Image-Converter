@@ -156,38 +156,41 @@ namespace Factorio_Image_Converter
 
             CCPickerWindow CCPicker = new CCPickerWindow(AvailableBlocks, AvailableTiles);
             CCPicker.ShowDialog();
-            
+
             //FIX: Crash when no color selected
-            if (!CCPicker.isTile)   //is block
+            if (CCPicker.resultBlock != null && CCPicker.resultBlock != "")
             {
-                UBlock uBlock = AvailableBlocks.Find(block => block.name == CCPicker.resultBlock);
-                resultBlockName = uBlock.name;
-                resultColor.Background = new SolidColorBrush(DrawingC2MediaC(ColorTranslator.FromHtml(uBlock.color)));
-            }
-            else
-            {
-                UTile uTile = AvailableTiles.Find(tile => tile.name == CCPicker.resultBlock);
-                resultBlockName = uTile.name;
-                resultColor.Background = new SolidColorBrush(DrawingC2MediaC(ColorTranslator.FromHtml(uTile.color)));
-            }
-            resultNameString = CCPicker.resultBlock;
+                if (!CCPicker.isTile)   //is block
+                {
+                    UBlock uBlock = AvailableBlocks.Find(block => block.name == CCPicker.resultBlock);
+                    resultBlockName = uBlock.name;
+                    resultColor.Background = new SolidColorBrush(DrawingC2MediaC(ColorTranslator.FromHtml(uBlock.color)));
+                }
+                else
+                {
+                    UTile uTile = AvailableTiles.Find(tile => tile.name == CCPicker.resultBlock);
+                    resultBlockName = uTile.name;
+                    resultColor.Background = new SolidColorBrush(DrawingC2MediaC(ColorTranslator.FromHtml(uTile.color)));
+                }
+                resultNameString = CCPicker.resultBlock;
 
-            if (resultNameString.Contains("left"))
-            {
-                resultNameString = resultNameString.Substring(0, resultNameString.IndexOf("left") - 1);
-            }
-            resultName.Text = resultNameString.Replace('-',' ');
-            resultIcon.Source = new BitmapImage(new Uri("2-Resources/Icons/Factorio/" + CCPicker.resultBlock + ".png", UriKind.Relative));
+                if (resultNameString.Contains("left"))
+                {
+                    resultNameString = resultNameString.Substring(0, resultNameString.IndexOf("left") - 1);
+                }
+                resultName.Text = resultNameString.Replace('-', ' ');
+                resultIcon.Source = new BitmapImage(new Uri("2-Resources/Icons/Factorio/" + CCPicker.resultBlock + ".png", UriKind.Relative));
 
-            if (!D_colorConversion.ContainsKey(sourceColorHex))
-            {
-                D_colorConversion.Add(sourceColorHex, resultBlockName);
-            }
-            else if(D_colorConversion[sourceColorHex] != resultBlockName)
-            {
-                //Overwrite existing definition
-                D_colorConversion.Remove(sourceColorHex);
-                D_colorConversion.Add(sourceColorHex, resultBlockName);
+                if (!D_colorConversion.ContainsKey(sourceColorHex))
+                {
+                    D_colorConversion.Add(sourceColorHex, resultBlockName);
+                }
+                else if (D_colorConversion[sourceColorHex] != resultBlockName)
+                {
+                    //Overwrite existing definition
+                    D_colorConversion.Remove(sourceColorHex);
+                    D_colorConversion.Add(sourceColorHex, resultBlockName);
+                }
             }
         }
         private System.Windows.Media.Color DrawingC2MediaC(System.Drawing.Color inputColor)
