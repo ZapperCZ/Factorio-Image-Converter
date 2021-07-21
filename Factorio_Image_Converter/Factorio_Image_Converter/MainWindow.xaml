@@ -30,7 +30,16 @@
             </Grid>
             <Border Padding="10 0 0 0"  Grid.Column="1">
                 <StackPanel>
-                    <Button Content="Color conversion" Padding="0 3" Click="btn_ColorConv_Click"/>
+                    <Button Content="Color conversion" Padding="0 5" Click="btn_ColorConv_Click"/>
+                    <Slider Margin="20 10" Name="test"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <RadioButton Grid.Column="0" Content="Original Image"/>
+                        <RadioButton Grid.Column="1" Content="Result Image"/>
+                    </Grid>
                 </StackPanel>
             </Border>
         </Grid>

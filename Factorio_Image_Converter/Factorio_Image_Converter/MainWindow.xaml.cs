@@ -23,21 +23,23 @@ namespace Factorio_Image_Converter
         string imagePath;
         int colorRange = 10;                    //Basically antialiasing (maybe give user access to this?)
         public string BlueprintString;          //The result string
-        BitmapImage _bitmapImage;
+        BitmapImage _currentImage;
+        BitmapImage OriginalImage;
+        BitmapImage ResultImage;
         List<UBlock> AvailableBlocks;           //Currently loaded blocks from palette
         List<UTile> AvailableTiles;             //Currently loaded tiles from palette
         List<Color> ImageColors;                //All colors in the image
         Root FactorioBlueprint;                 //Root for the result json
         public Dictionary<string, string> D_colorConversion;    //<original color hex, result block name>
 
-        public BitmapImage ResultImage
+        public BitmapImage CurrentImage
         {
-            get { return _bitmapImage; }
+            get { return _currentImage; }
             set
             {
-                if (_bitmapImage != value)
+                if (_currentImage != value)
                 {
-                    _bitmapImage = value;
+                    _currentImage = value;
                     OnPropertyChanged();
                 }
             }
@@ -246,8 +248,8 @@ namespace Factorio_Image_Converter
         {
             //Converts the blueprint structure into a bitmap
             //TODO: Optimize this
-            int width = (int)ResultImage.Width*4;
-            int height = (int)ResultImage.Height*4;
+            int width = (int)CurrentImage.Width*4;
+            int height = (int)CurrentImage.Height*4;
             int minX = 0;
             int minY = 0;
 
@@ -382,7 +384,7 @@ namespace Factorio_Image_Converter
         {
             //Finds all colors in the loaded image and puts the in a list
             ImageColors = new List<Color>();
-            Bitmap bitmap = BitmapImage2Bitmap(ResultImage);
+            Bitmap bitmap = BitmapImage2Bitmap(CurrentImage);
             for(int y = 0; y < bitmap.Height; y++)
             {
                 for(int x = 0; x < bitmap.Width; x++)
@@ -445,6 +447,34 @@ namespace Factorio_Image_Converter
                 encoder.Save(fileStream);
             }
         }
+        public void rbtn_ChangeImage(object sender, RoutedEventArgs e)
+        {
+            int target;
+            System.Windows.Controls.Button senderBtn = (System.Windows.Controls.Button)sender;
+            if (senderBtn.Name.Contains("Original"))
+            {
+                target = 0;
+            }
+            else
+            {
+                target = 1;
+            }
+            ChangeCurrentImage(target);
+        }
+        public void ChangeCurrentImage(int target)  //0 = original, 1 = result
+        {
+            if (target == 0)
+            {
+                _currentImage = OriginalImage;
+            }
+            else
+            {
+                if(ResultImage != null)
+                {
+                    _currentImage = ResultImage;
+                }
+            }
+        }
         private void btn_Import_Click(object sender, RoutedEventArgs e)
         {
             //TODO: Somehow stop accessing the file of the image after it is loaded
@@ -462,7 +492,7 @@ namespace Factorio_Image_Converter
                 imagePath = openFileDialog.FileName;
 
                 //Save the image
-                ResultImage = new BitmapImage(new Uri(imagePath));
+                CurrentImage = new BitmapImage(new Uri(imagePath));
                 
                 LoadImageColors();
             }
@@ -473,7 +503,7 @@ namespace Factorio_Image_Converter
         {
             if(imagePath != null && imagePath != "")
             {
-                ConvertImageToBlocks(ResultImage);       //This will convert only colors that are present in UsableBlocks.json, currently there is no color conversion
+                ConvertImageToBlocks(CurrentImage);       //This will convert only colors that are present in UsableBlocks.json, currently there is no color conversion
                 ConvertBlocksToJSON(@"..\..\2-Resources\Blueprint.json");
                 CompressAndEncodeJSON(@"..\..\2-Resources\Blueprint.json");
                 ConvertBlocksToBitmap().Save(@"..\..\2-Resources\output.png");
