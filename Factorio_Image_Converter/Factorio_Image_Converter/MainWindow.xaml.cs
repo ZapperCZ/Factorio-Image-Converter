@@ -17,6 +17,7 @@ namespace Factorio_Image_Converter
 {
     //Big thanks to Gachl (https://github.com/Gachl) for creating the monocolor image converter and to Factorio Prints (https://factorioprints.com/) for creating and maintaining a great online tool
     //TODO: Implement transparency
+    //TODO: Default non-converted colors to being transarent by default
     //TODO: Maybe add some sort of progression bar for when the image is exporting
     public partial class MainWindow : INotifyPropertyChanged
     {
@@ -438,6 +439,19 @@ namespace Factorio_Image_Converter
                 return new Bitmap(bitmap);
             }
         }
+
+        private BitmapImage Bitmap2BitmapImage(Bitmap bitmap)
+        {
+            MemoryStream ms = new MemoryStream();
+            bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+            BitmapImage bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            ms.Seek(0, SeekOrigin.Begin);
+            bitmapImage.StreamSource = ms;
+            bitmapImage.EndInit();
+            return bitmapImage;
+        }
+
         public void SaveBitmapImage(BitmapImage bi, string filePath)
         {
             BitmapEncoder encoder = new PngBitmapEncoder();
@@ -451,14 +465,16 @@ namespace Factorio_Image_Converter
         public void rbtn_ChangeImage(object sender, RoutedEventArgs e)
         {
             int target;
-            System.Windows.Controls.Button senderBtn = (System.Windows.Controls.Button)sender;
-            if (senderBtn.Name.Contains("Original"))
+            System.Windows.Controls.RadioButton senderRbtn = (System.Windows.Controls.RadioButton)sender;
+            if (senderRbtn.Content.ToString().Contains("Original"))
             {
                 target = 0;
+                Debug.WriteLine("Orig");
             }
             else
             {
                 target = 1;
+                Debug.WriteLine("Resu");
             }
             ChangeCurrentImage(target);
         }
@@ -466,13 +482,21 @@ namespace Factorio_Image_Converter
         {
             if (target == 0)
             {
+                Debug.Write("C-Orig-");
                 CurrentImage = OriginalImage;
+                Debug.WriteLine("S");
             }
             else
             {
+                Debug.Write("C-Resu-");
                 if(ResultImage != null)
                 {
+                    Debug.WriteLine("S");
                     CurrentImage = ResultImage;
+                }
+                else
+                {
+                    Debug.WriteLine("F");
                 }
             }
         }
@@ -508,7 +532,10 @@ namespace Factorio_Image_Converter
                 ConvertImageToBlocks(CurrentImage);       //This will convert only colors that are present in UsableBlocks.json, currently there is no color conversion
                 ConvertBlocksToJSON(@"..\..\2-Resources\Blueprint.json");
                 CompressAndEncodeJSON(@"..\..\2-Resources\Blueprint.json");
-                ConvertBlocksToBitmap().Save(@"..\..\2-Resources\output.png");
+                Bitmap ResultBitmap = ConvertBlocksToBitmap();
+                ResultBitmap.Save(@"..\..\2-Resources\output.png");
+                ResultImage = Bitmap2BitmapImage(ResultBitmap);
+
 
                 ResultWindow resultWindow = new ResultWindow(BlueprintString);
                 resultWindow.ShowDialog();

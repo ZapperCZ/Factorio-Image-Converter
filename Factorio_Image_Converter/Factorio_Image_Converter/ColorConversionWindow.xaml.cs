@@ -158,6 +158,7 @@ namespace Factorio_Image_Converter
             CCPicker.ShowDialog();
 
             //FIX: Crash when no color selected
+            //TODO: Add transparent color option
             if (CCPicker.resultBlock != null && CCPicker.resultBlock != "")
             {
                 if (!CCPicker.isTile)   //is block

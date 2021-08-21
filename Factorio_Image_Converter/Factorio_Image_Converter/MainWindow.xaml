@@ -37,8 +37,8 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <RadioButton Grid.Column="0" IsChecked="True" Content="Original Image"/>
-                        <RadioButton Grid.Column="1" Content="Result Image"/>
+                        <RadioButton Grid.Column="0" Click="rbtn_ChangeImage" IsChecked="True" Content="Original Image"/>
+                        <RadioButton Grid.Column="1" Click="rbtn_ChangeImage" Content="Result Image"/>
                     </Grid>
                 </StackPanel>
             </Border>
