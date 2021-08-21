@@ -20,17 +20,17 @@ namespace Factorio_Image_Converter
     //TODO: Maybe add some sort of progression bar for when the image is exporting
     public partial class MainWindow : INotifyPropertyChanged
     {
-        string imagePath;
-        int colorRange = 10;                    //Basically antialiasing (maybe give user access to this?)
-        public string BlueprintString;          //The result string
-        BitmapImage _currentImage;
-        BitmapImage OriginalImage;
-        BitmapImage ResultImage;
+        string imagePath;                       //Path of the user loaded image
+        int colorRange = 10;                    //Intensity of antialiasing removal (maybe give user access to this?)
+        public string BlueprintString;          //The result Factorio blueprint string
+        BitmapImage _currentImage;              //Current shown image
+        BitmapImage OriginalImage;              //The image user selected for conversion
+        BitmapImage ResultImage;                //The converted image
         List<UBlock> AvailableBlocks;           //Currently loaded blocks from palette
         List<UTile> AvailableTiles;             //Currently loaded tiles from palette
         List<Color> ImageColors;                //All colors in the image
         Root FactorioBlueprint;                 //Root for the result json
-        public Dictionary<string, string> D_colorConversion;    //<original color hex, result block name>
+        public Dictionary<string, string> D_colorConversion;    //Dictionary that ties image colors with the Factorio colors <original color hex, result block name>
 
         public BitmapImage CurrentImage
         {
@@ -39,6 +39,7 @@ namespace Factorio_Image_Converter
             {
                 if (_currentImage != value)
                 {
+                    Debug.WriteLine("set curr img");
                     _currentImage = value;
                     OnPropertyChanged();
                 }
@@ -465,13 +466,13 @@ namespace Factorio_Image_Converter
         {
             if (target == 0)
             {
-                _currentImage = OriginalImage;
+                CurrentImage = OriginalImage;
             }
             else
             {
                 if(ResultImage != null)
                 {
-                    _currentImage = ResultImage;
+                    CurrentImage = ResultImage;
                 }
             }
         }
@@ -492,7 +493,8 @@ namespace Factorio_Image_Converter
                 imagePath = openFileDialog.FileName;
 
                 //Save the image
-                CurrentImage = new BitmapImage(new Uri(imagePath));
+                OriginalImage = new BitmapImage(new Uri(imagePath));
+                ChangeCurrentImage(0);
                 
                 LoadImageColors();
             }
