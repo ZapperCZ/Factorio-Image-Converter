@@ -4,11 +4,11 @@
 winexe
 C#
 .cs
-D:\Hanzo\Programming\Factorio-Image-Converter\Factorio_Image_Converter\Factorio_Image_Converter\obj\Debug\
+D:\Hanzo\Programming\Factorio-Image-Converter\Factorio_Image_Converter\Factorio_Image_Converter\obj\Release\
 Factorio_Image_Converter
 none
 false
-DEBUG;TRACE
+TRACE
 D:\Hanzo\Programming\Factorio-Image-Converter\Factorio_Image_Converter\Factorio_Image_Converter\App.xaml
 4-1066002082
 
@@ -16,5 +16,5 @@ D:\Hanzo\Programming\Factorio-Image-Converter\Factorio_Image_Converter\Factorio_
 16-1716805152
 CCPickerWindow.xaml;ColorConversionWindow.xaml;MainWindow.xaml;ResultWindow.xaml;
 
-False
+True
 

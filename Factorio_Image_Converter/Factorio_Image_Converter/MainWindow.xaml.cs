@@ -294,8 +294,6 @@ namespace Factorio_Image_Converter
                 int posY = (int)e.position.y + -1*minY;
                 if(sizeX > 1 || sizeY > 1)
                 {
-                    posX--;
-                    posY--;
                     for (int y = 0; y < sizeY; y++)
                     {
                         for (int x = 0; x < sizeX; x++)
