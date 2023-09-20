@@ -321,6 +321,7 @@ namespace Factorio_Image_Converter
         }
         public void ConvertBlocksToJSON(string path)
         {
+            //FIX: Can crash, for some reason the file cannot be accessed as it's already being used
             using (StreamWriter sw = File.CreateText(path))
             {
                 JsonSerializer jsonSerializer = new JsonSerializer();
@@ -548,7 +549,9 @@ namespace Factorio_Image_Converter
         {
             if (imagePath != null && imagePath != "")
             {
-                ColorConversionWindow colorWindow = new ColorConversionWindow(ImageColors, AvailableBlocks, AvailableTiles);
+                ColorConversionWindow colorWindow = new ColorConversionWindow(ImageColors, AvailableBlocks, AvailableTiles, D_colorConversion);
+                if(D_colorConversion.Count > 0)
+                    colorWindow.D_colorConversion = D_colorConversion;
                 colorWindow.ShowDialog();
                 D_colorConversion = colorWindow.D_colorConversion;
             }

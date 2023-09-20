@@ -16,9 +16,9 @@ namespace Factorio_Image_Converter
         List<UBlock> AvailableBlocks;
         List<UTile> AvailableTiles;
         public Dictionary<string, string> D_colorConversion; //<original color hex, result block name>
-        public ColorConversionWindow(List<System.Drawing.Color> ImageColors, List<UBlock> AvailableBlocks, List<UTile> AvailableTiles)
+        public ColorConversionWindow(List<System.Drawing.Color> ImageColors, List<UBlock> AvailableBlocks, List<UTile> AvailableTiles, Dictionary<string, string> D_colorConversion)
         {
-            D_colorConversion = new Dictionary<string, string>();
+            this.D_colorConversion = D_colorConversion;// = new Dictionary<string, string>();
             this.ImageColors = ImageColors;
             this.AvailableBlocks = AvailableBlocks;
             this.AvailableTiles = AvailableTiles;
@@ -27,19 +27,37 @@ namespace Factorio_Image_Converter
         }
         private void GenerateControls(List<System.Drawing.Color> SourceColors)
         {
+            string sourceColorHexValue = "";
+            bool colorIsAssigned;
+            string resultColorHtml = "";
+            UBlock uBlock;
+            UTile uTile;
             //TODO: Load colors that are already present in the dictionary
-            foreach(System.Drawing.Color color in SourceColors)
+            foreach (System.Drawing.Color color in SourceColors)
             {
-                //Debug.WriteLine("adding new control");
+                sourceColorHexValue = ColorTranslator.ToHtml(color).ToLower();
+                if (D_colorConversion.ContainsKey(sourceColorHexValue))
+                {
+                    colorIsAssigned = true;
+                    uBlock = AvailableBlocks.Find(block => block.name == D_colorConversion[sourceColorHexValue]);
+                    uTile = AvailableTiles.Find(tile => tile.name == D_colorConversion[sourceColorHexValue]);
+                    if (uBlock != null)
+                        resultColorHtml = uBlock.color;
+                    else
+                        resultColorHtml = uTile.color;
+                }
+                else
+                    colorIsAssigned = false;
+
                 #region Control_Creation
                 Border mainBorder = new Border();
                 Grid grid = new Grid();
-                ColumnDefinition column0 = new ColumnDefinition();
-                ColumnDefinition column1 = new ColumnDefinition();
-                ColumnDefinition column2 = new ColumnDefinition();
-                ColumnDefinition column3 = new ColumnDefinition();
-                ColumnDefinition column4 = new ColumnDefinition();
-                ColumnDefinition column5 = new ColumnDefinition();
+                ColumnDefinition column0 = new ColumnDefinition();  //Original color
+                ColumnDefinition column1 = new ColumnDefinition();  //Hex value (might be redundant?)
+                ColumnDefinition column2 = new ColumnDefinition();  //Arrow
+                ColumnDefinition column3 = new ColumnDefinition();  //User selected color/block
+                ColumnDefinition column4 = new ColumnDefinition();  //Name of the block
+                ColumnDefinition column5 = new ColumnDefinition();  //Image of the block
                 Border sourceColorBorder = new Border();
                 Canvas sourceColorCanvas = new Canvas();
                 TextBlock sourceColorHex = new TextBlock();
@@ -93,9 +111,14 @@ namespace Factorio_Image_Converter
                 resultColorButton.Background = System.Windows.Media.Brushes.White;
                 resultColorButton.Click += new RoutedEventHandler(btn_ColorPick);
                 resultColorButton.Name = "ResultColor";
+                if (colorIsAssigned)
+                    resultColorButton.Background = new SolidColorBrush(DrawingC2MediaC(ColorTranslator.FromHtml(resultColorHtml)));
 
                 resultBlockName.SetValue(Grid.ColumnProperty, 4);
-                resultBlockName.Text = "none";
+                if(colorIsAssigned)
+                    resultBlockName.Text = D_colorConversion[sourceColorHexValue];
+                else
+                    resultBlockName.Text = "none";
                 resultBlockName.Padding = new Thickness(8, 4, 8, 4);
                 resultBlockName.Name = "ResultName";
 
@@ -104,7 +127,10 @@ namespace Factorio_Image_Converter
                 resultBlockBorder.BorderBrush = System.Windows.Media.Brushes.Black;
                 resultBlockBorder.BorderThickness = new Thickness(1);
 
-                resultBlockImage.Source = new BitmapImage(new Uri("2-Resources/Icons/General/white.png", UriKind.Relative));
+                if(colorIsAssigned)
+                    resultBlockImage.Source = new BitmapImage(new Uri("2-Resources/Icons/Factorio/" + D_colorConversion[sourceColorHexValue] + ".png", UriKind.Relative));
+                else
+                    resultBlockImage.Source = new BitmapImage(new Uri("2-Resources/Icons/General/white.png", UriKind.Relative));
                 resultBlockBorder.Child = resultBlockImage;
                 resultBlockBorder.Name = "ResultIconBorder";
 
@@ -122,7 +148,7 @@ namespace Factorio_Image_Converter
             Button btn = (Button)sender;
             Grid grid = (Grid)btn.Parent;
             string resultNameString = "";
-            string sourceColorHex = "";
+            string sourceColorHexValue = "";
             string resultBlockName = "";
 
             Button resultColor = new Button();
@@ -152,7 +178,7 @@ namespace Factorio_Image_Converter
                 }
             }
 
-            sourceColorHex = sourceColor.Text.ToLower();
+            sourceColorHexValue = sourceColor.Text.ToLower();
 
             CCPickerWindow CCPicker = new CCPickerWindow(AvailableBlocks, AvailableTiles);
             CCPicker.ShowDialog();
@@ -182,15 +208,15 @@ namespace Factorio_Image_Converter
                 resultName.Text = resultNameString.Replace('-', ' ');
                 resultIcon.Source = new BitmapImage(new Uri("2-Resources/Icons/Factorio/" + CCPicker.resultBlock + ".png", UriKind.Relative));
 
-                if (!D_colorConversion.ContainsKey(sourceColorHex))
+                if (!D_colorConversion.ContainsKey(sourceColorHexValue))
                 {
-                    D_colorConversion.Add(sourceColorHex, resultBlockName);
+                    D_colorConversion.Add(sourceColorHexValue, resultBlockName);
                 }
-                else if (D_colorConversion[sourceColorHex] != resultBlockName)
+                else if (D_colorConversion[sourceColorHexValue] != resultBlockName)
                 {
                     //Overwrite existing definition
-                    D_colorConversion.Remove(sourceColorHex);
-                    D_colorConversion.Add(sourceColorHex, resultBlockName);
+                    D_colorConversion.Remove(sourceColorHexValue);
+                    D_colorConversion.Add(sourceColorHexValue, resultBlockName);
                 }
             }
         }
