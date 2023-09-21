@@ -183,10 +183,10 @@ namespace Factorio_Image_Converter
             CCPickerWindow CCPicker = new CCPickerWindow(AvailableBlocks, AvailableTiles);
             CCPicker.ShowDialog();
 
-            //FIX: Crash when no color selected
             //TODO: Add transparent color option
-            if (CCPicker.resultBlock != null && CCPicker.resultBlock != "")
+            if (CCPicker.resultBlock != null && CCPicker.resultBlock != "none")
             {
+                Debug.WriteLine("Result: " + CCPicker.resultBlock);
                 if (!CCPicker.isTile)   //is block
                 {
                     UBlock uBlock = AvailableBlocks.Find(block => block.name == CCPicker.resultBlock);

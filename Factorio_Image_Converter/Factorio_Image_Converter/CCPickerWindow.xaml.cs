@@ -7,6 +7,7 @@ using System.Windows.Media.Imaging;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 
 namespace Factorio_Image_Converter
 {
@@ -76,6 +77,8 @@ namespace Factorio_Image_Converter
                     colorBtn.BorderBrush = System.Windows.Media.Brushes.Black;
                     colorBtn.BorderThickness = new Thickness(2);
                     colorBtn.Click += new RoutedEventHandler(btn_Color_Click);
+                    colorBtn.MouseDoubleClick += new MouseButtonEventHandler(btn_Confirm_Color);
+                    colorBtn.MouseEnter += new MouseEventHandler(btn_Color_Click);
 
                     grid.Children.Add(colorBtn);
 
