@@ -19,6 +19,7 @@ namespace Factorio_Image_Converter
     //TODO: Implement transparency
     //TODO: Default non-converted colors to being transarent by default
     //TODO: Maybe add some sort of progression bar for when the image is exporting
+    //TODO: Improve the design of the interface, design it closer to how the Factorio interface looks
     public partial class MainWindow : INotifyPropertyChanged
     {
         string imagePath;                       //Path of the user loaded image
@@ -31,6 +32,7 @@ namespace Factorio_Image_Converter
         List<UTile> AvailableTiles;             //Currently loaded tiles from palette
         List<Color> ImageColors;                //All colors in the image
         Root FactorioBlueprint;                 //Root for the result json
+        private Dictionary<string, int> D_RequiredBlocks;       //Dictionary that contains how many blocks are present in the picture <block name, amount>
         public Dictionary<string, string> D_colorConversion;    //Dictionary that ties image colors with the Factorio colors <original color hex, result block name>
 
         public BitmapImage CurrentImage
@@ -92,49 +94,45 @@ namespace Factorio_Image_Converter
             UTile resultTile = new UTile();
             Color resultColor = new Color();
             Bitmap bitmap = BitmapImage2Bitmap(inputImage);
+            D_RequiredBlocks = new Dictionary<string, int>();
 
-            List<string> debugList = new List<string>();
+            //List<string> debugList = new List<string>();
             for (int y = 0; y < bitmap.Height; y++)
             {
                 for (int x = 0; x < bitmap.Width; x++)
                 {
+                    /*
+                     * TODO: This is very unoptimized as there are a lot of actions happening for every pixel, optimize this
+                     * Optimize this maybe by detecting if the pixel color has already been used in the past and using that instead of checking it again
+                     * Or assign a range for every block (2 colors creating a line in 3D space if you consider the colors to be vectors) and check if the current color is in the range
+                    */
+
                     Color pixelColor = bitmap.GetPixel(x, y);
                     string pixelColorHex = ColorTranslator.ToHtml(pixelColor).ToLower();
                     //TODO: Implement NiX3r's pixel compression code
-                    /*
-                    if (!debugList.Contains(pixelColorHex))
+
+                    //Find the block selected for this color
+                    foreach (KeyValuePair<string, string> pair in D_colorConversion)    //Iterate through the dictionary
                     {
-                        debugList.Add(pixelColorHex);
-                    }
-                    */
-                    //TODO: Optimize this later maybe by detecting if the pixel color has already been used in the past and using that instead of checking it again
-                    List<string> tempList = D_colorConversion.Keys.ToList();
-                    List<Color> keyColors = new List<Color>();
-                    foreach(string hex in tempList)
-                    {
-                        keyColors.Add(ColorTranslator.FromHtml(hex));
-                    }
-                    foreach (KeyValuePair<string, string> pair in D_colorConversion)
-                    {
-                        Color dictColor = ColorTranslator.FromHtml(pair.Key);
-                        //Debug.WriteLine("R: " + pixelColor.R + "\tG:" + pixelColor.G + "\tB:" + pixelColor.B);
-                        //Debug.WriteLine("R: " + dictColor.R + "\tG:" + dictColor.G + "\tB:" + dictColor.B);
+                        Color dictColor = ColorTranslator.FromHtml(pair.Key);   //Color from the Dictionary
+
                         if (pixelColor.R < (dictColor.R + colorRange) && pixelColor.R > (dictColor.R - colorRange) &&
                             pixelColor.G < (dictColor.G + colorRange) && pixelColor.G > (dictColor.G - colorRange) &&
                             pixelColor.B < (dictColor.B + colorRange) && pixelColor.B > (dictColor.B - colorRange))
                         {
-                            //What was I even thinking here? Why did I complicate this so much
-                            /*
-                            if (!D_colorConversion.ContainsKey(pixelColorHex))
+                            //If the current color is in the color range of the current pixel
+                            pixelColorHex = pair.Key;   //assign the current color as the color of the pixel
+
+                            //TODO: Check that this actually works using debug
+                            //Count required blocks
+                            if (!D_RequiredBlocks.ContainsKey(pair.Value))
                             {
-                                //Runs only when there isn't a conversion specified for the current color
-                                Color closestColor = GetClosestColorFromList(ColorTranslator.FromHtml(pixelColorHex), keyColors);
-                                pixelColorHex = ColorTranslator.ToHtml(closestColor).ToLower();
+                                D_RequiredBlocks.Add(pair.Value, 1);    //First time block has been found in the image, add it and initialize its amount as 1
                             }
-                            */
+                            else
+                                D_RequiredBlocks[pair.Value]++;         //Block already exists in the image, increase its count
 
-                            pixelColorHex = pair.Key;   //This literally works better than the thing above, seriously, the hell was I doing.
-
+                            //Check if the color corresponds to a block or a tile
                             if (AvailableBlocks.Count(block => block.name == pair.Value) > 0)
                             {
                                 resultBlock = AvailableBlocks.Find(block => block.name == pair.Value);
@@ -158,6 +156,7 @@ namespace Factorio_Image_Converter
                         //Debug.WriteLine("");
                     }
 
+                    //I'm not sure what's exactly happening below
                     bool foundBlock = false;
                     foreach (UBlock block in AvailableBlocks)
                     {
@@ -250,16 +249,18 @@ namespace Factorio_Image_Converter
         {
             //Converts the blueprint structure into a bitmap
             //TODO: Optimize this
-            int width = (int)CurrentImage.Width*4;
-            int height = (int)CurrentImage.Height*4;
+            int width = (int)CurrentImage.Width*4;      //X
+            int height = (int)CurrentImage.Height*4;    //Y
             int minX = 0;
             int minY = 0;
 
-            foreach (Entity e in FactorioBlueprint.blueprint.entities)
+            foreach (Entity e in FactorioBlueprint.blueprint.entities)  //Go through all blocks
             {
-                UBlock block = AvailableBlocks.Find(b => b.name == e.name);
+                UBlock block = AvailableBlocks.Find(b => b.name == e.name); //Find available block that matches the blueprint block
                 int sizeX = Convert.ToInt32(block.occupied_space[0].ToString());
-                int sizeY = Convert.ToInt32(block.occupied_space[2].ToString());
+                int sizeY = Convert.ToInt32(block.occupied_space[2].ToString());    //Get block size
+
+                //Get minimum X and Y coordinates of the blueprint
                 if((int)e.position.x < minX)
                 {
                     minX = (int)e.position.x;
@@ -270,7 +271,7 @@ namespace Factorio_Image_Converter
                 }
             }
 
-            foreach(Tile t in FactorioBlueprint.blueprint.tiles)
+            foreach(Tile t in FactorioBlueprint.blueprint.tiles)        //Go through all tiles
             {
                 if ((int)t.position.x < minX)
                 {
@@ -284,7 +285,8 @@ namespace Factorio_Image_Converter
 
             Bitmap resultBitmap = new Bitmap(width,height);
 
-            foreach(Entity e in FactorioBlueprint.blueprint.entities)
+            //Debug.WriteLine("Bitmap size: " + resultBitmap.Width + "x" + resultBitmap.Height);
+            foreach (Entity e in FactorioBlueprint.blueprint.entities)
             {
                 UBlock block = AvailableBlocks.Find(b => b.name == e.name);
                 Color c = ColorTranslator.FromHtml(block.color);
@@ -298,7 +300,8 @@ namespace Factorio_Image_Converter
                     {
                         for (int x = 0; x < sizeX; x++)
                         {
-                            resultBitmap.SetPixel(posX + x, posY + y, c);
+                            //Debug.WriteLine("Block:" + block.name + " Size:" + sizeX + "x" + sizeY + " Coordinates:" + (posX+x) + ", " + (posY + y));
+                            resultBitmap.SetPixel(posX + x - 1, posY + y - 1, c);
                         }
                     }
                 }
@@ -319,6 +322,33 @@ namespace Factorio_Image_Converter
 
             return resultBitmap;
         }
+        private void CalculateRequiredBlocks()
+        {
+            int imageScaleMultiplier = 4;       //Currently hardcoded here, I couldn't find it anywhere else
+            int originalCount;
+            int blockArea = 1;
+            bool isTile;
+            UBlock block;
+            UTile tile;
+
+            Debug.WriteLine("Required blocks:");
+            List<string> keys = new List<string>(D_RequiredBlocks.Keys);
+            foreach(string key in keys)
+            {
+                block = AvailableBlocks.Find(b => b.name == key);
+                tile = AvailableTiles.Find(t => t.name == key);
+                isTile = block == null;
+
+                originalCount = D_RequiredBlocks[key];
+                if(!isTile)
+                    blockArea = Convert.ToInt32(block.occupied_space[0].ToString()) * Convert.ToInt32(block.occupied_space[2].ToString()); ;
+                D_RequiredBlocks[key] = originalCount * (imageScaleMultiplier / blockArea);
+                Debug.WriteLine(key + " - " + D_RequiredBlocks[key]);
+
+                block = null;
+                tile = null;
+            }
+        }
         public void ConvertBlocksToJSON(string path)
         {
             //FIX: Can crash, for some reason the file cannot be accessed as it's already being used
@@ -331,7 +361,7 @@ namespace Factorio_Image_Converter
         }
         private void CompressAndEncodeJSON(string path)
         {
-            //Compress the JSON file using zlib deflate compression level 9, then convert to base64 and put '0' at the start
+            //Compress the JSON file using zlib deflate compression level 9, then convert to base64
 
             //This code was mostly copied from Gachl's Factorio Imager https://github.com/Gachl/FactorioImager
             //This program wouldn't be possible without them unless I would spend a lot of time trying to figure out how to make this work
@@ -524,19 +554,23 @@ namespace Factorio_Image_Converter
             //TODO: Image too big warning
         }
 
-        private void btn_Export_Click(object sender, RoutedEventArgs e)
+        private void btn_Export_Click(object sender, RoutedEventArgs e)     //Export
         {
             if(imagePath != null && imagePath != "")
             {
-                ConvertImageToBlocks(CurrentImage);       //This will convert only colors that are present in UsableBlocks.json, currently there is no color conversion
+                ConvertImageToBlocks(CurrentImage);
                 ConvertBlocksToJSON(@"..\..\2-Resources\Blueprint.json");
                 CompressAndEncodeJSON(@"..\..\2-Resources\Blueprint.json");
                 Bitmap ResultBitmap = ConvertBlocksToBitmap();
                 ResultBitmap.Save(@"..\..\2-Resources\output.png");
                 ResultImage = Bitmap2BitmapImage(ResultBitmap);
+                Debug.WriteLine("Original Image Size: " + (int)OriginalImage.Width + "x" + (int)OriginalImage.Height);
+                Debug.WriteLine("Original Image Area: " + (int)OriginalImage.Width * (int)OriginalImage.Height);
+                Debug.WriteLine("Result Image Size: " + (int)ResultBitmap.Width + "x" + (int)ResultBitmap.Height);
+                Debug.WriteLine("Result Image Area: " + (int)ResultBitmap.Width * (int)ResultBitmap.Height);
+                CalculateRequiredBlocks();
 
-
-                ResultWindow resultWindow = new ResultWindow(BlueprintString);
+                ResultWindow resultWindow = new ResultWindow(BlueprintString, D_RequiredBlocks);
                 resultWindow.ShowDialog();
             }
             else
@@ -545,26 +579,22 @@ namespace Factorio_Image_Converter
             }
         }
 
-        private void btn_ColorConv_Click(object sender, RoutedEventArgs e)
+        private void btn_ColorConv_Click(object sender, RoutedEventArgs e) //Color Conversion
         {
-            if (imagePath != null && imagePath != "")
+            if (imagePath != null && imagePath != "")   //Check for valid image path
             {
-                ColorConversionWindow colorWindow = new ColorConversionWindow(ImageColors, AvailableBlocks, AvailableTiles, D_colorConversion);
-                if(D_colorConversion.Count > 0)
-                    colorWindow.D_colorConversion = D_colorConversion;
-                colorWindow.ShowDialog();
-                D_colorConversion = colorWindow.D_colorConversion;
+                ColorConversionWindow colorWindow;
+                if(D_colorConversion.Count > 0)     //If there are already entries
+                    colorWindow = new ColorConversionWindow(ImageColors, AvailableBlocks, AvailableTiles, D_colorConversion);      //Assign the existing entries to the window
+                else                                                        //Otherwise initialize the Dictionary
+                    colorWindow = new ColorConversionWindow(ImageColors, AvailableBlocks, AvailableTiles);
+                colorWindow.ShowDialog();           //Display the window
+                D_colorConversion = colorWindow.D_colorConversion;  //Update the conversion based on the result from the window
             }
             else
             {
                 MessageBox.Show("No image selected");
             }
-            /*
-            foreach(KeyValuePair<string,string> entry in D_colorConversion)
-            {
-                Debug.WriteLine(entry.Key + " - " + entry.Value);
-            }
-            */
         }
     }
 }

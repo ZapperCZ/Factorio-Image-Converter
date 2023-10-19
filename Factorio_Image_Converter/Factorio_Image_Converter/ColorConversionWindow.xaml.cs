@@ -12,27 +12,31 @@ namespace Factorio_Image_Converter
 {
     public partial class ColorConversionWindow : Window
     {
-        List<System.Drawing.Color> ImageColors;
-        List<UBlock> AvailableBlocks;
-        List<UTile> AvailableTiles;
-        public Dictionary<string, string> D_colorConversion; //<original color hex, result block name>
-        public ColorConversionWindow(List<System.Drawing.Color> ImageColors, List<UBlock> AvailableBlocks, List<UTile> AvailableTiles, Dictionary<string, string> D_colorConversion)
+        List<System.Drawing.Color> ImageColors;                 //List of all the unique colors in the original image
+        List<UBlock> AvailableBlocks;                           //All possible blocks
+        List<UTile> AvailableTiles;                             //All possible tiles
+        public Dictionary<string, string> D_colorConversion;    //<original color hex, result block name>
+
+        public ColorConversionWindow(List<System.Drawing.Color> ImageColors, List<UBlock> AvailableBlocks, List<UTile> AvailableTiles, Dictionary<string, string> D_colorConversion = null)
         {
-            this.D_colorConversion = D_colorConversion;// = new Dictionary<string, string>();
+            if (D_colorConversion == null)
+                this.D_colorConversion = new Dictionary<string, string>();
+            else
+                this.D_colorConversion = D_colorConversion;
             this.ImageColors = ImageColors;
             this.AvailableBlocks = AvailableBlocks;
             this.AvailableTiles = AvailableTiles;
             InitializeComponent();
             GenerateControls(ImageColors);
         }
-        private void GenerateControls(List<System.Drawing.Color> SourceColors)
+        private void GenerateControls(List<System.Drawing.Color> SourceColors)  //Generates all the color conversion buttons
         {
-            string sourceColorHexValue = "";
+            string sourceColorHexValue = "";    //Original HEX value from the image pixel
             bool colorIsAssigned;
-            string resultColorHtml = "";
+            string resultColorHtml = "";        //Resulting HEX value of the converted color
             UBlock uBlock;
             UTile uTile;
-            //TODO: Load colors that are already present in the dictionary
+
             foreach (System.Drawing.Color color in SourceColors)
             {
                 sourceColorHexValue = ColorTranslator.ToHtml(color).ToLower();

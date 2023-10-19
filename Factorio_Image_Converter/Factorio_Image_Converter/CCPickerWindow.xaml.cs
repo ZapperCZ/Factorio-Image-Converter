@@ -18,6 +18,7 @@ namespace Factorio_Image_Converter
         string _currentBlock = "none";
         List<UBlock> AvailableBlocks;
         List<UTile> AvailableTiles;
+
         public string CurrentBlock
         {
             get { return _currentBlock.Replace('-',' '); }
@@ -45,24 +46,36 @@ namespace Factorio_Image_Converter
         private void GenerateControls()
         {
             //TODO: Generate this only when opening the window for the first time and then somehow reference it when opening it again window
-            int maxY = (AvailableBlocks.Count + AvailableTiles.Count) / 6;  //6 is the amount of colors in 1 row
+            //TODO: Add the original color for easier orientation
+
+            int columnAmount = 6;
+            int rowAmount = ((AvailableBlocks.Count + AvailableTiles.Count) / columnAmount) + 1;  //Amount of rows, 6 is the amount of colors in 1 row
             int index = 0;
             bool stop = false;
-            for(int y = 0; y <= maxY; y++)
+            Grid grid = new Grid();
+
+            //Generate rows
+            for(int x = 0; x < rowAmount; x++)
             {
-                Grid grid = new Grid
+                RowDefinition row = new RowDefinition();
+                row.Height = new GridLength(40);                        //Height of the button, determined by experimentation to make the button look square
+                grid.RowDefinitions.Add(row);
+            }
+            //Generate columns
+            for (int y = 0; y < columnAmount; y++)
+            {
+                ColumnDefinition column = new ColumnDefinition();
+                column.Width = new GridLength(1, GridUnitType.Star);    //Width of the button, changes with the width of the window
+                grid.ColumnDefinitions.Add(column);
+            }
+            //Generate controls
+            for (int x = 0; x < rowAmount; x++)      //Row iteration
+            {
+                for (int y = 0; y < columnAmount; y++)      //Column iteration
                 {
-                    Height = 40
-                };
-
-                for (int x = 0; x < 6; x++)     //Amount of columns
-                {
-                    ColumnDefinition column = new ColumnDefinition();
-                    column.Width = new GridLength(1, GridUnitType.Star);
-                    grid.ColumnDefinitions.Add(column);
-
                     Button colorBtn = new Button();
-                    colorBtn.SetValue(Grid.ColumnProperty, x);
+                    colorBtn.SetValue(Grid.RowProperty, x);
+                    colorBtn.SetValue(Grid.ColumnProperty, y);
                     colorBtn.Margin = new Thickness(1);
                     if(index < AvailableBlocks.Count)
                     {
@@ -82,16 +95,16 @@ namespace Factorio_Image_Converter
 
                     grid.Children.Add(colorBtn);
 
-                    if (index++ >= AvailableBlocks.Count + AvailableTiles.Count - 1)
+                    if (++index >= AvailableBlocks.Count + AvailableTiles.Count)
                     {
                         stop = true;
                         break;
                     }
                 }
-                stackPanel.Children.Add(grid);
                 if (stop)
                     break;
             }
+            stackPanel.Children.Add(grid);
         }
         private void btn_Color_Click(object sender, RoutedEventArgs e)
         {
@@ -109,7 +122,7 @@ namespace Factorio_Image_Converter
             resultBlock = CurrentBlock.Replace(' ','-');
             Close();
         }
-        private System.Windows.Media.Color DrawingC2MediaC(Color inputColor)
+        private System.Windows.Media.Color DrawingC2MediaC(Color inputColor)    //Converts Drawing Color to Media Color
         {
             System.Windows.Media.Color newColor;
             newColor = System.Windows.Media.Color.FromArgb(inputColor.A, inputColor.R, inputColor.G, inputColor.B);

@@ -8,12 +8,6 @@
         "has_direction": false
       },
       {
-        "name": "iron-chest",
-        "color": "#19709e",
-        "occupied_space": "1x1",
-        "has_direction": false
-      },
-      {
         "name": "burner-inserter",
         "color": "#19709e",
         "occupied_space": "1x1",

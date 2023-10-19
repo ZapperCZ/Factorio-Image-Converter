@@ -5,22 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Factorio_Image_Converter"
         mc:Ignorable="d"
-        Title="Result Blueprint" Height="220" Width="350" ResizeMode="NoResize">
+        Title="Result Blueprint" Height="220" Width="310" ResizeMode="NoResize">
     <Border Padding="10">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="5*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="4*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Column = "0" Grid.Row="0" Text="Blueprint" FontWeight ="Bold" Margin="0 5"/>
-            <Button Grid.Column="1" Grid.Row="0" Content="Copy" Margin="5 0" Click="Button_Click"/>
+            <TextBlock Grid.Column = "0" Grid.Row="0" Text="Blueprint" FontWeight ="Bold"/>
+            
+            <TextBox Grid.Column="0" Grid.Row="1" Text="{Binding Path=BlueprintString, Mode=OneWay, NotifyOnSourceUpdated=True}"  IsReadOnly="True" TextWrapping="NoWrap" Margin="0 0 0 0"/>
+            <Button Grid.Column="1" Grid.Row="1" Content="Copy" Margin="5 0 0 0" Click="Button_Click"/>
+            
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="Required Blocks" FontWeight="Bold" Margin="0 5"/>
 
-            <TextBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Path=BlueprintString, Mode=OneWay, NotifyOnSourceUpdated=True}"  IsReadOnly="True" TextWrapping="Wrap" Margin="0 5 0 0"/>
+            <Border Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" BorderBrush="Gray" BorderThickness="1">
+                <ScrollViewer Padding="0 0 5 0">
+                    <StackPanel x:Name="stackPanel_Blocks">
+
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+            
         </Grid>
     </Border>
 </Window>
